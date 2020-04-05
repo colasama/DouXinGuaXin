@@ -1,2 +1,2 @@
-# buaase-2020-chatplatform
-BUAA 2020 Software Engineering Practice Project 3: Books and Movies Chatting Platform
+# 软件工程基础-2020-书籍影视交流平台
+[!logo](logov1.jpg)
