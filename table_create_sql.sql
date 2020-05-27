@@ -1,9 +1,9 @@
 CREATE TABLE User(
 User_id int PRIMARY KEY,
-User_password varchar(20) not null, -- Î´Ìí¼ÓÔ¼Êø
+User_password varchar(20) not null, -- æœªæ·»åŠ çº¦æŸ
 User_name varchar(20) not null unique,
-User_email varchar(20) not null unique,	-- Î´Ìí¼ÓÔ¼Êø
-User_phonenum decimal(11,0) not null unique,
+User_email varchar(20) not null unique,	-- æœªæ·»åŠ çº¦æŸ
+User_phonenum varchar(11) not null unique,
 User_authority int check(User_authority >= 0 and User_authority <= 3),
 User_motto varchar(20)
 )
@@ -11,8 +11,8 @@ CREATE TABLE Books(
 Book_id int PRIMARY KEY,
 Book_name varchar(50) not null,
 Book_intro varchar(100) not null,
-Book_score decimal(2,1) check(Book_score >= 0 and Book_score <= 10),
-Book_ISBN decimal(10,0) not null unique,
+Book_score float check(Book_score >= 0 and Book_score <= 10),
+Book_ISBN varchar(15) not null unique,
 Book_writer varchar(10) not null,
 Book_publisher varchar(15) not null,
 Book_src varchar(50) not null
@@ -21,7 +21,7 @@ CREATE TABLE Movies(
 Movie_id int PRIMARY KEY,
 Movie_name varchar(50) not null,
 Movie_intro varchar(100) not null,
-Movie_score decimal(2,1) check(Movie_score >= 0 and Movie_score <= 10),
+Movie_score float check(Movie_score >= 0 and Movie_score <= 10),
 Movie_director varchar(10) not null,
 Movie_src varchar(50) not null
 )
@@ -57,7 +57,7 @@ Topic_intro varchar(100) not null
 CREATE TABLE Topic_Contents(
 Topic_content_id int PRIMARY KEY,
 Topic_content_content varchar(200) not null,
-Topic_content_image varchar(200),	-- Í¼Æ¬Â·¾¶
+Topic_content_image varchar(200),	-- å›¾ç‰‡è·¯å¾„
 Topic_id int,
 User_id int,
 FOREIGN KEY (Topic_id) REFERENCES Topics(Topic_id),
