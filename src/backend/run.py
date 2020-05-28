@@ -42,22 +42,25 @@ def create_token(User_id):
     # 接收用户id转换与编码
     token = s.dumps({"id": User_id}).decode("ascii")
     return token
+
+
 def verify_token(token):
     '''
     校验token
     :param token: 
     :return: 用户信息 or None
     '''
-    
-    #参数为私有秘钥，跟上面方法的秘钥保持一致
+
+    # 参数为私有秘钥，跟上面方法的秘钥保持一致
     s = Serializer(app.config["SECRET_KEY"])
     try:
-        #转换为字典
+        # 转换为字典
         data = s.loads(token)
     except Exception:
         return None
-    #拿到转换后的数据
+    # 拿到转换后的数据
     return data["id"]
+
 
 class register(Resource):
     def post(self):
@@ -117,6 +120,23 @@ class login(Resource):
             return {'message': 'Login error, incorrect password or username.'}, 403
 
 
+class get_user_info(Resource):
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("token", type=str,
+                            location="args", required=True)
+        req = parser.parse_args(strict=True)
+        token = req['token']
+        user_id = verify_token(token)
+        if user_id!=None:
+            cursor.execute(
+            "SELECT User_id,User_name,User_email,User_phonenum,User_authority,User_motto FROM User WHERE User_id LIKE '%s'" %
+            (user_id))
+            result = cursor.fetchone()
+            return{'result':result}
+        else:
+            return {'message': 'Illegal token.'}, 403
+
 class get_all_movies(Resource):
     def get(self):
         cursor.execute('SELECT * FROM Movies;')
@@ -130,7 +150,13 @@ class get_movies_by_id(Resource):
         result = cursor.fetchone()
         if result == None:
             abort_if_doesnt_exist("Movie_id")
-        return {'result': result}
+        cursor.execute(
+            "SELECT * FROM Movie_Comments WHERE Movie_id LIKE '%s'" % (movie_id))
+        content = cursor.fetchall()
+        return {'result': {
+            'info': result,
+            'comments': content,
+        }}
 
 
 class get_movies_by_keywords(Resource):
@@ -159,7 +185,13 @@ class get_books_by_id(Resource):
         result = cursor.fetchone()
         if result == None:
             abort_if_doesnt_exist("Book_id")
-        return {'result': result}
+        cursor.execute(
+            "SELECT * FROM Book_Comments WHERE Book_id LIKE '%s'" % (book_id))
+        content = cursor.fetchall()
+        return {'result': {
+            'info': result,
+            'comments': content,
+        }}
 
 
 class get_books_by_keywords(Resource):
@@ -175,10 +207,46 @@ class get_books_by_keywords(Resource):
         return {'result': result}
 
 
+class get_all_topics(Resource):
+    def get(self):
+        cursor.execute('SELECT * FROM Topics;')
+        return {'result': cursor.fetchall()}
+
+
+class get_topics_by_id(Resource):
+    def get(self, topics_id):
+        cursor.execute(
+            "SELECT * FROM Topics WHERE Topic_id LIKE '%s'" % (topics_id))
+        result = cursor.fetchone()
+        if result == None:
+            abort_if_doesnt_exist("Topic_id")
+        cursor.execute(
+            "SELECT * FROM Topic_Contents WHERE Topic_id LIKE '%s'" % (topics_id))
+        content = cursor.fetchall()
+        return {'result': {
+            'info': result,
+            'contents': content,
+        }}
+
+
+class get_topics_by_keywords(Resource):
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("keywords", type=str,
+                            location="args", required=True)
+        req = parser.parse_args(strict=True)
+        keywords = '%'+req.get("keywords")+'%'
+        cursor.execute(
+            "SELECT * FROM Topics WHERE Topic_name LIKE '%s' OR Topic_related LIKE '%s' " % (keywords, keywords))
+        result = cursor.fetchall()
+        return {'result': result}
+
+
 # 添加API路由
 # 用户
 api.add_resource(register, '/register')
 api.add_resource(login, '/login')
+api.add_resource(get_user_info, '/userinfo')
 
 
 # 电影
@@ -188,6 +256,10 @@ api.add_resource(get_movies_by_id, '/movies/<movie_id>')
 # 书籍
 api.add_resource(get_all_books, '/books')
 api.add_resource(get_books_by_id, '/books/<books_id>')
+
+# 话题
+api.add_resource(get_all_topics, '/topics')
+api.add_resource(get_topics_by_id, '/topics/<topics_id>')
 
 # 检索
 api.add_resource(get_movies_by_keywords, '/search/movies')

@@ -89,9 +89,16 @@ HTTP方法：`GET`
 
 返回参数
 
-| 参数   | 类型 | 说明                                              |
-| ------ | ---- | ------------------------------------------------- |
-| 无名称 | 列表 | 包含所有的电影数据的列表，具体数据类型参照下方API |
+返回数据类型为列表，列表内参数表如下
+
+| 参数           | 类型   | 说明                   |
+| -------------- | ------ | ---------------------- |
+| Movie_id       | int    | 自动分配的id           |
+| Movie_name     | string | 电影名                 |
+| Movie_intro    | string | 电影介绍               |
+| Movie_score    | float  | 电影评分               |
+| Movie_director | string | 电影导演               |
+| Movie_src      | string | 该电影对应的资源文件夹 |
 
 #### 根据id获取电影
 
@@ -103,14 +110,22 @@ HTTP方法：`GET`
 
 返回参数
 
-| 参数           | 类型   | 说明                   |
-| -------------- | ------ | ---------------------- |
-| Movie_id       | int    | 自动分配的id           |
-| Movie_name     | string | 电影名                 |
-| Movie_intro    | string | 电影介绍               |
-| Movie_score    | float  | 电影评分               |
-| Movie_director | string | 电影导演               |
-| Movie_src      | string | 该电影对应的资源文件夹 |
+| 参数     | 类型 | 说明                             |
+| -------- | ---- | -------------------------------- |
+| info     | 对象 | 电影信息，具体信息上述列表内参数 |
+| comments | 列表 | 该电影对应的评论列表             |
+
+`comments`参数
+
+| 参数                     | 类型   | 说明       |
+| ------------------------ | ------ | ---------- |
+| Movie_comment_id         | int    | 评论id     |
+| Movie_comment_title      | string | 评论标题   |
+| Movie_comment_approve    | int    | 评论赞同数 |
+| Movie_comment_disapprove | int    | 评论反对数 |
+| Movie_comment_content    | string | 评论内容   |
+| User_id                  | int    | 评论用户id |
+| Movie_id                 | int    | 评论电影id |
 
 ### 书籍相关
 
@@ -124,19 +139,7 @@ HTTP方法：`GET`
 
 返回参数
 
-| 参数   | 类型 | 说明                                          |
-| ------ | ---- | --------------------------------------------- |
-| 无名称 | 列表 | 包含所有的数据的列表，具体数据类型参照下方API |
-
-#### 根据id获取书籍
-
-HTTP方法：`GET`
-
-请求URL：`http://182.92.57.178:5000/books/[Book_id]`
-
-**返回说明**
-
-返回参数
+返回数据类型为列表，列表内参数表如下
 
 | 参数           | 类型   | 说明                   |
 | -------------- | ------ | ---------------------- |
@@ -149,17 +152,78 @@ HTTP方法：`GET`
 | Book_publisher | string | 出版社                 |
 | Book_src       | string | 该书籍对应的资源文件夹 |
 
+#### 根据id获取书籍
 
+HTTP方法：`GET`
+
+请求URL：`http://182.92.57.178:5000/books/[Book_id]`
+
+**返回说明**
+
+返回参数
+
+| 参数     | 类型 | 说明                             |
+| -------- | ---- | -------------------------------- |
+| info     | 对象 | 书籍信息，具体信息上述列表内参数 |
+| comments | 列表 | 该书籍对应的评论列表             |
+
+`comments`参数
+
+| 参数                    | 类型   | 说明       |
+| ----------------------- | ------ | ---------- |
+| Book_comment_id         | int    | 评论id     |
+| Book_comment_title      | string | 评论标题   |
+| Book_comment_approve    | int    | 评论赞同数 |
+| Book_comment_disapprove | int    | 评论反对数 |
+| Book_comment_content    | string | 评论内容   |
+| User_id                 | int    | 评论用户id |
+| Book_id                 | int    | 评论书籍id |
 
 ### 话题相关
 
 #### 获取话题列表
 
+HTTP方法：`GET`
 
+请求URL：`http://182.92.57.178:5000/topics`
 
-#### 获取话题内容
+**返回说明**
 
+返回参数
 
+返回数据类型为列表，列表内参数表如下
+
+| 参数          | 类型   | 说明     |
+| ------------- | ------ | -------- |
+| Topic_id      | int    | 话题id   |
+| Topic_name    | string | 话题名   |
+| Topic_related | string | 话题相关 |
+| Topic_intro   | string | 话题介绍 |
+
+#### 根据id获取话题
+
+HTTP方法：`GET`
+
+请求URL：`http://182.92.57.178:5000/books/[Book_id]`
+
+**返回说明**
+
+返回参数
+
+| 参数      | 类型 | 说明                             |
+| --------- | ---- | -------------------------------- |
+| info      | 对象 | 话题信息，具体信息上述列表内参数 |
+| ccontents | 列表 | 该话题对应的内容列表             |
+
+`contents`参数
+
+| 参数                  | 类型   | 说明                         |
+| --------------------- | ------ | ---------------------------- |
+| Topic_content_id      | int    | 话题内容id                   |
+| Topic_content_content | string | 话题内容正文                 |
+| Topic_content_image   | string | 话题内容对应的图片资源文件夹 |
+| Topic_id              | int    | 该内容所在话题               |
+| User_id               | int    | 该内容的发布人id             |
 
 ### 小组相关
 
@@ -199,7 +263,38 @@ URL参数：
 
 ## 需要token的API
 
+**所有返回说明默认token合法，token不合法时有统一的返回内容**
 
+| 参数    | 类型   | 说明                   |
+| ------- | ------ | ---------------------- |
+| message | string | 内容为'Illegal token.' |
+
+返回状态码：403
+
+### 用户相关
+
+#### 获取用户信息
+
+HTTP方法：`GET`
+
+请求URL：`http://182.92.57.178:5000/userinfo?token=[获取的token]`
+
+URL参数：
+
+| 参数  | 是否可选 | 类型   | 范围 | 说明            |
+| ----- | -------- | ------ | ---- | --------------- |
+| token | 否       | string | 无   | 登录获得的token |
+
+**返回说明**
+
+| 参数           | 类型   | 说明     |
+| -------------- | ------ | -------- |
+| User_id        | int    | 用户id   |
+| User_name      | string | 用户名   |
+| User_email     | string | 用户邮箱 |
+| User_phonenum  | string | 手机号   |
+| User_authority | int    | 用户权限 |
+| User_motto     | string | 个性签名 |
 
 ## 附录
 
