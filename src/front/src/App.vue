@@ -12,8 +12,11 @@
           <a-menu-item key="movie" @click = "toMovie">影视</a-menu-item>
           <a-menu-item key="group" @click = "toGroup">小组</a-menu-item>
           <a-menu-item key="topic" @click = "toTopic">话题</a-menu-item>
-          <a-button type="primary" style="margin-left:20px">
+          <a-button type="primary" size="small" @click="toRegister" style="margin-left:10px">
             注册
+          </a-button>
+          <a-button type="primary" size="small" @click="toLogin" style="margin-left:15px">
+            登录
           </a-button>
         </a-menu>
       </a-layout-header>
@@ -44,7 +47,6 @@
 }
 
 .header-menu{
-  width: 100%;
   text-align:right;
 }
 </style>
@@ -77,6 +79,14 @@ export default {
     toGroup(){
       this.current='group';
       this.$router.push({path:"/group"});
+    },
+    toRegister(){
+      this.current='register';
+      this.$router.push({path:"/register"});
+    },
+    toLogin(){
+      this.current='login';
+      this.$router.push({path:"/login"});
     }
   }
 };

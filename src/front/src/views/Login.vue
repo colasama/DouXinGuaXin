@@ -1,0 +1,41 @@
+<template>
+  <div>
+  <a-layout >
+      <a-layout-content class="fugai-layout-content" >
+      <a-row type="flex" justify="center">
+        <a-col :span="8">
+        </a-col>
+        <a-col :span="8">
+        
+        <a-card style="width:300px;text-align: center;margin-top:50px">
+          <h2>登录</h2>
+          <a-input placeholder="用户名" ref="usernameInput" v-model="username" style="margin-top:20px">
+            <a-icon slot="prefix" type="user" />
+          </a-input>
+          <a-input placeholder="密码" ref="passwordInput" type="password" v-model="password" style="margin-top:20px">
+            <a-icon slot="prefix" type="info-circle" />
+          </a-input>
+          <a-row type="flex" justify="center" style="margin-top:40px;margin-bottom:30px">
+          <a-col :span="11" style="margin-right:10px">
+          <a-button type="primary" block>注册</a-button>
+          </a-col>
+          <a-col :span="11">
+          <a-button type="primary" block>登录</a-button>
+          </a-col>
+          </a-row>
+        </a-card>
+        </a-col>
+        <a-col :span="8">
+        </a-col>
+        </a-row>
+      </a-layout-content>
+      <a-layout-footer><h6>书籍影视交流平台</h6></a-layout-footer>
+    </a-layout>
+  </div>
+</template>
+
+<style>
+  .fugai-layout-content{
+    text-align: center;
+  }
+</style>
