@@ -246,7 +246,7 @@ class get_topics_by_keywords(Resource):
 # 用户
 api.add_resource(register, '/register')
 api.add_resource(login, '/login')
-api.add_resource(get_user_info, '/userinfo')
+api.add_resource(get_user_info, '/users/info')
 
 
 # 电影
