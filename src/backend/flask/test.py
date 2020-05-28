@@ -31,7 +31,7 @@ post('http://localhost:5000/movies/1/comments',
 post('http://localhost:5000/movies/1/scores', data={'movie_score': '9.0'}).json()
 
 # AddUserToGroup + token
-post('http://localhost:5000/groups/1').json()
+post('http://localhost:5000/groups/1/join').json()
 
 # AddUserToTopic + token
-post('http://localhost:5000/topicss/1').json()
+post('http://localhost:5000/topicss/1/join').json()

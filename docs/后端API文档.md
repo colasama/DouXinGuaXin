@@ -424,7 +424,7 @@ HTTP方法：`POST`
 
 HTTP方法：`POST`
 
-请求URL：`http://182.92.57.178:5000//groups/<int:group_id>`
+请求URL：`http://182.92.57.178:5000//groups/<int:group_id>/join`
 
 请求参数
 
@@ -454,7 +454,7 @@ HTTP方法：`POST`
 
 HTTP方法：`POST`
 
-请求URL：`http://182.92.57.178:5000//topics/<int:topic_id>`
+请求URL：`http://182.92.57.178:5000//topics/<int:topic_id>/join`
 
 请求参数
 
