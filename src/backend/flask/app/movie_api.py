@@ -26,7 +26,7 @@ class Get_movies_by_id(Resource):
         content = cursor.fetchall()
         connection.commit()
         for i in content:
-            i['Create_time']=str(i['Create_time'])
+            i['Create_time'] = str(i['Create_time'])
         return {'result': {
             'info': result,
             'comments': content,
@@ -47,16 +47,18 @@ class Get_movies_by_keywords(Resource):
         return {'result': result}
 
 
+
 class Movie_comment(Resource):
     def post(self, movie_id):
-        token = request.headers["token"]
-        user_id = verify_token(token)
-        if user_id is None:
-            return {'message': 'Illegal token.'}, 403
         parser = RequestParser()
+        parser.add_argument('token', type=str, location='headers', required=True)
         parser.add_argument('movie_comment_content', type=str, required=True)
         parser.add_argument('movie_comment_title', type=str, required=True)
         args = parser.parse_args(strict=True)
+        token = args.get('token')
+        user_id = verify_token(token)
+        if user_id is None:
+            return {'message': 'Illegal token.'}, 403
         movie_com = args.get('movie_comment_content')
         movie_com_t = args.get('movie_comment_title')
         cursor.execute(
@@ -69,26 +71,61 @@ class Movie_comment(Resource):
         cursor.execute(
             "SELECT LAST_INSERT_ID()"
         )
+        connection.commit()
         result = cursor.fetchone()['LAST_INSERT_ID()']
         cursor.execute(
             "SELECT * FROM Movie_Comments where Movie_comment_id = '%d'" % result
         )
         result = cursor.fetchone()
+        result['Create_time'] = str(result['Create_time'])
         connection.commit()
-        result['Create_time']=str(result['Create_time'])
+        return {'result': result}
+
+
+class Movie_comment_report(Resource):
+    def post(self, movie_comment_id):
+        parser = RequestParser()
+        parser.add_argument('token', type=str, location='headers', required=True)
+        parser.add_argument('movie_report_title', type=str, required=True)
+        parser.add_argument('movie_report_reason', type=str, required=True)
+        args = parser.parse_args()
+        token = args.get('token')
+        user_id = verify_token(token)
+        if user_id is None:
+            return {'message': 'Illegal token.'}, 403
+        report_t = args.get('movie_report_title')
+        report_r = args.get('movie_report_reason')
+        cursor.execute(
+            "INSERT INTO Movie_Reports(Movie_report_title, Movie_report_reason, User_id, Movie_comment_id) \
+            values('%s', '%s', '%d', '%d')"
+            % (report_t, report_r, user_id, movie_comment_id)
+        )
+        connection.commit()
+        cursor.execute(
+            "SELECT LAST_INSERT_ID()"
+        )
+        connection.commit()
+        result = cursor.fetchone()['LAST_INSERT_ID()']
+        cursor.execute(
+            "SELECT * FROM Movie_Reports WHERE Movie_report_id = '%d'" % result
+        )
+        connection.commit()
+        result = cursor.fetchone()
+        result['Create_time'] = str(result['Create_time'])
         return {'result': result}
 
 
 class Movie_score(Resource):
     def post(self, movie_id):
-        token = request.headers["token"]
+        # 如果用户之前已经评了分，这里默认无法再评分
+        parser = RequestParser()
+        parser.add_argument('token', type=str, location='headers', required=True)
+        parser.add_argument('movie_score', type=float, required=True)
+        args = parser.parse_args()
+        token = args.get('token')
         user_id = verify_token(token)
         if user_id is None:
             return {'message': 'Illegal token.'}, 403
-        # 如果用户之前已经评了分，这里默认无法再评分
-        parser = RequestParser()
-        parser.add_argument('movie_score', type=float, required=True)
-        args = parser.parse_args()
         movie_score = float(args.get('movie_score'))
         cursor.execute(
             "SELECT Movie_score, Movie_score_num from Movies where Movie_id = '%d'" % movie_id
@@ -115,3 +152,4 @@ api.add_resource(Get_movies_by_id, '/movies/<movie_id>')
 api.add_resource(Movie_comment, '/movies/<int:movie_id>/comments')
 api.add_resource(Movie_score, '/movies/<int:movie_id>/scores')
 api.add_resource(Get_movies_by_keywords, '/search/movies')
+api.add_resource(Movie_comment_report, '/report/movies/<int:movie_comment_id>')

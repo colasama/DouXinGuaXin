@@ -2,10 +2,11 @@
 # -*- coding:utf-8 -*-
 import functools
 from flask import request
+from flask_restful.reqparse import RequestParser
+
 from app._api import cursor, connection, verify_token, abort_if_doesnt_exist
 from app import api
 from flask_restful import Resource, reqparse
-from flask_restful.reqparse import RequestParser
 
 
 class Get_all_topics(Resource):
@@ -50,7 +51,10 @@ class Get_topics_by_keywords(Resource):
 
 class Add_user_to_topic(Resource):
     def post(self, topic_id):   # 点击按钮进行参与，post请求
-        token = request.headers["token"]
+        parser = RequestParser()
+        parser.add_argument('token', type=str, location='headers', required=True)
+        args = parser.parse_args(strict=True)
+        token = args["token"]
         user_id = verify_token(token)
         if user_id is None:
             return {'message': 'Illegal token.'}, 403
@@ -121,5 +125,6 @@ class Post_topic_content(Resource):
 api.add_resource(Get_all_topics, '/topics')
 api.add_resource(Get_topics_by_id, '/topics/<topic_id>')
 api.add_resource(Add_user_to_topic, '/topics/<int:topic_id>/join')
+api.add_resource(Get_topics_by_keywords, '/search/topics')
 api.add_resource(Get_topics_by_keywords, '/search/topics')
 api.add_resource(Post_topic_content, '/topics/<int:topic_id>/add_content')

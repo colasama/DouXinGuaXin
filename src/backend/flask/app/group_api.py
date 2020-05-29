@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 from flask import request
+from flask_restful.reqparse import RequestParser
+
 from app import api
 from app._api import cursor, connection, verify_token, abort_if_doesnt_exist
 from flask_restful import Resource
-from flask_restful.reqparse import RequestParser
 
 
 class Get_all_groups(Resource):
@@ -35,7 +36,10 @@ class Get_groups_by_id(Resource):
 
 class Add_user_to_group(Resource):
     def post(self, group_id):   # 点击按钮进行参与，post请求
-        token = request.headers["token"]
+        parser = RequestParser()
+        parser.add_argument('token', type=str, location='headers', required=True)
+        args = parser.parse_args(strict=True)
+        token = args["token"]
         user_id = verify_token(token)
         if user_id is None:
             return {'message': 'Illegal token.'}, 403

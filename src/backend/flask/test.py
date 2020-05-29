@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 from requests import post, get, put
 
+
 # Register
 post('http://localhost:5000/register', data={'name': 'yzy', 'password': 'yzy123456',
                                              'email': '123@qq.com', 'phonenum': '123456789', 'motto': 'balabalabala'}).json()
@@ -12,17 +13,17 @@ post('http://localhost:5000/login',
 
 token = post('http://localhost:5000/login',
              data={'name': 'yzy', 'password': 'yzy123456'}).json()['result']['token']
-# 添加token到头
+# 添加 token到头
 headers = {"User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.1.6) ",
            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
            "Accept-Language": "en-us",
            "Connection": "keep-alive",
            "Accept-Charset": "GB2312,utf-8;q=0.7,*;q=0.7",
            "token": token}
-#get测试
+# get测试
 get('http://localhost:5000/movies/1').json()
 
-#post测试
+# post测试
 # 下面我是用 postman测试的，token需要加在 header里
 # ModifyPassword + token
 post('http://localhost:5000/modify/passwd',
@@ -48,12 +49,30 @@ post('http://localhost:5000/movies/1/scores',
 post('http://localhost:5000/groups/1/join', headers=headers).json()
 
 # AddUserToTopic + token
+post('http://localhost:5000/topicss/1/join', headers=headers).json()
 post('http://localhost:5000/topics/1/join', headers=headers).json()
 
 # Add Group Content + token
 post('http://localhost:5000/groups/1/add_content',
-     data={'group_content_title': 'test', 'group_content_content': 'testtesttest', 'group_content_image':'/example'}, headers=headers).json()
+     data={'group_content_title': 'test', 'group_content_content': 'testtesttest', 'group_content_image':'/example'}
+     , headers=headers).json()
 
 # Add Topic Content + token
 post('http://localhost:5000/topics/1/add_content',
      data={'topic_content_content': 'testtesttest'}, headers=headers).json()
+
+# Send_email
+post('http://localhost:5000/users/reset_password/send_email', data={'user_email':'394739138@qq.com'}
+    ).json()
+
+# Reset_password + token
+post('http://localhost:5000/users/reset_password', data={'new_password':'zhk12345678'}
+    , headers=headers).json()
+
+# Book_comment_report + token
+post('http://localhost:5000/report/books/1', data={'book_report_title':'yzygod', 'book_report_reason':
+    'yzygoddddddddddddd'}, headers=headers).json()
+
+# Movie_comment_report + token
+post('http://localhost:5000/report/movies/1', data={'movie_report_title':'yzygod', 'movie_report_reason':
+    'yzygoddddddddddddd'}, headers=headers).json()

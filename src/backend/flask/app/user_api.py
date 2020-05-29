@@ -88,15 +88,16 @@ class Get_user_info(Resource):
 
 class Modify_password(Resource):
     def post(self):
-        token = request.headers["token"]
-        user_id = verify_token(token)
-        if user_id is None:
-            return {'message': 'Illegal token.'}, 403
         parser = RequestParser()
+        parser.add_argument('token', type=str, location='headers', required=True)
         parser.add_argument('old_password', type=str, required=True)
         parser.add_argument('new_password', type=str, required=True)
         args = parser.parse_args(strict=True)
         # 前端记得验证两次密码不同
+        token = args.get('token')
+        user_id = verify_token(token)
+        if user_id is None:
+            return {'message': 'Illegal token.'}, 403
         old_p = args.get('old_password')
         new_p = args['new_password']
         new_p_hash = generate_password_hash(
@@ -124,17 +125,12 @@ class Modify_password(Resource):
 class Send_email(Resource):
     '''发送重设密码邮件'''
     def post(self):
-        token = request.headers["token"]
-        user_id = verify_token(token)
-        if user_id is None:
-            return {'message': 'Illegal token.'}, 403
         parser = RequestParser()
         parser.add_argument('user_email', type=str, required=True)
         args = parser.parse_args(strict=True)
         email = args.get('user_email')
         cursor.execute(
-            "SELECT * FROM User WHERE User_id = '%d' and User_email = '%s'"
-            % (user_id, email)
+            "SELECT * FROM User WHERE User_email = '%s'" % email
         )
         connection.commit()
         result = cursor.fetchone()
@@ -143,12 +139,33 @@ class Send_email(Resource):
         send_email('[豆辛瓜辛] Reset Your Password',
                    sender=app.config['ADMINS'][0],
                    recipients=[email],  # templates中内容暂时用于测试
-                   text_body=render_template('reset_password.txt', user=result, token=token),
-                   html_body=render_template('reset_password.html', user=result, token=token))
+                   text_body=render_template('reset_password.txt', user=result),
+                   html_body=render_template('reset_password.html', user=result))
+
+
+class Reset_password(Resource):
+    def post(self):
+        parser = RequestParser()
+        parser.add_argument('new_password', type=str, required=True)
+        parser.add_argument('token', type=str, location="headers", required=True)
+        args = parser.parse_args(strict=True)
+        token = args.get('token')
+        user_id = verify_token(token)
+        if user_id is None:
+            return {'message': 'Illegal token.'}, 403
+        n_pw = args.get('new_password')
+        n_pwhash = generate_password_hash(n_pw)
+        cursor.execute(
+            "UPDATE User set User_password = '%s' where User_id = '%d'"
+            % (n_pwhash, user_id)
+        )
+        connection.commit()
+        return {'message': 'Reset successfully.'}
 
 
 api.add_resource(Register, '/register')
 api.add_resource(Login, '/login')
 api.add_resource(Get_user_info, '/users/info')
 api.add_resource(Modify_password, '/users/modify_password')
-api.add_resource(Send_email, '/users/modify_password/send_email')
+api.add_resource(Send_email, '/users/reset_password/send_email')
+api.add_resource(Reset_password, '/users/reset_password')

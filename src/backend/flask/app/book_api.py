@@ -26,7 +26,7 @@ class Get_books_by_id(Resource):
         content = cursor.fetchall()
         connection.commit()
         for i in content:
-            i['Create_time']=str(i['Create_time'])
+            i['Create_time'] = str(i['Create_time'])
         return {'result': {
             'info': result,
             'comments': content,
@@ -49,23 +49,17 @@ class Get_books_by_keywords(Resource):
 
 class Book_comment(Resource):
     def post(self, book_id):
-        token = request.headers["token"]
-        user_id = verify_token(token)
-        if user_id is None:
-            return {'message': 'Illegal token.'}, 403
-        # cursor.execute(   # 可能没有必要
-        #     "SELECT * from User where User_id = '%d'" % (user_id)
-        # )
-        # if cursor.fetchone() is None:
-        #     return {'message': 'User does not exist.'}, 403
         parser = RequestParser()
+        parser.add_argument('token', type=str, location='headers', required=True)
         parser.add_argument('book_comment_content', type=str, required=True)
         parser.add_argument('book_comment_title', type=str, required=True)
         args = parser.parse_args(strict=True)
+        token = args["token"]
+        user_id = verify_token(token)
+        if user_id is None:
+            return {'message': 'Illegal token.'}, 403
         book_com = args.get('book_comment_content')
         book_com_t = args.get('book_comment_title')
-        # if len(book_com) < 25:    # 验证评论字符数 前端可搞定
-        #     return {'message': 'Comment should be longer.'}, 403
         cursor.execute(
             "INSERT into Book_Comments(Book_comment_title, Book_comment_approve, Book_comment_disapprove, \
             Book_comment_content, User_id, Book_id) \
@@ -76,36 +70,61 @@ class Book_comment(Resource):
         cursor.execute(
             "SELECT LAST_INSERT_ID()"
         )
+        connection.commit()
         result = cursor.fetchone()['LAST_INSERT_ID()']
         cursor.execute(
             "SELECT * FROM Book_Comments where Book_comment_id = '%d'" % result
         )
         result = cursor.fetchone()
         connection.commit()
-        result['Create_time']=str(result['Create_time'])
+        result['Create_time'] = str(result['Create_time'])
         return {'result': result}
 
 
 class Book_comment_report(Resource):
-    def post(self):
-        token = request.headers["token"]
+    def post(self, book_comment_id):
+        parser = RequestParser()
+        parser.add_argument('token', type=str, location='headers', required=True)
+        parser.add_argument('book_report_title', type=str, required=True)
+        parser.add_argument('book_report_reason', type=str, required=True)
+        args = parser.parse_args()
+        token = args["token"]
         user_id = verify_token(token)
         if user_id is None:
             return {'message': 'Illegal token.'}, 403
-        # 如果用户之前已经评了分，这里默认无法再评分
-        parser = RequestParser()
+        report_t = args.get('book_report_title')
+        report_r = args.get('book_report_reason')
+        cursor.execute(
+            "INSERT INTO Book_Reports(Book_report_title, Book_report_reason, User_id, Book_comment_id) \
+            values('%s', '%s', '%d', '%d')"
+            % (report_t, report_r, user_id, book_comment_id)
+        )
+        connection.commit()
+        cursor.execute(
+            "SELECT LAST_INSERT_ID()"
+        )
+        connection.commit()
+        result = cursor.fetchone()['LAST_INSERT_ID()']
+        cursor.execute(
+            "SELECT * FROM Book_Reports WHERE Book_report_id = '%d'" % result
+        )
+        connection.commit()
+        result = cursor.fetchone()
+        result['Create_time'] = str(result['Create_time'])
+        return {'result': result}
 
 
 class Book_score(Resource):
     def post(self, book_id):
-        token = request.headers["token"]
+        # 如果用户之前已经评了分，这里默认无法再评分
+        parser = RequestParser()
+        parser.add_argument('token', type=str, location='headers', required=True)
+        parser.add_argument('book_score', type=float, required=True)
+        args = parser.parse_args()
+        token = args["token"]
         user_id = verify_token(token)
         if user_id is None:
             return {'message': 'Illegal token.'}, 403
-        # 如果用户之前已经评了分，这里默认无法再评分
-        parser = RequestParser()
-        parser.add_argument('book_score', type=float, required=True)
-        args = parser.parse_args()
         book_score = float(args.get('book_score'))
         cursor.execute(
             "SELECT Book_score, Book_score_num from Books where book_id = '%d'" % book_id
@@ -132,3 +151,4 @@ api.add_resource(Get_books_by_id, '/books/<books_id>')
 api.add_resource(Book_comment, '/books/<int:book_id>/comments')
 api.add_resource(Book_score, '/books/<int:book_id>/scores')
 api.add_resource(Get_books_by_keywords, '/search/books')
+api.add_resource(Book_comment_report, '/report/books/<int:book_comment_id>')
