@@ -25,6 +25,8 @@ class Get_topics_by_id(Resource):
             "SELECT * FROM Topic_Contents WHERE Topic_id LIKE '%s'" % (topic_id))
         content = cursor.fetchall()
         connection.commit()
+        for i in content:
+            i['Create_time']=str(i['Create_time'])
         return {'result': {
             'info': result,
             'contents': content,

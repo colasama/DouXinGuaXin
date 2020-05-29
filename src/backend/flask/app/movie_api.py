@@ -25,6 +25,8 @@ class Get_movies_by_id(Resource):
             "SELECT * FROM Movie_Comments WHERE Movie_id LIKE '%s'" % (movie_id))
         content = cursor.fetchall()
         connection.commit()
+        for i in content:
+            i['Create_time']=str(i['Create_time'])
         return {'result': {
             'info': result,
             'comments': content,
@@ -73,6 +75,7 @@ class Movie_comment(Resource):
         )
         result = cursor.fetchone()
         connection.commit()
+        result['Create_time']=str(result['Create_time'])
         return {'result': result}
 
 

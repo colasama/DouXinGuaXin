@@ -24,6 +24,8 @@ class Get_groups_by_id(Resource):
             "SELECT * FROM Group_Contents WHERE Group_id LIKE '%s'" % (group_id))
         content = cursor.fetchall()
         connection.commit()
+        for i in content:
+            i['Create_time']=str(i['Create_time'])
         return {'result': {
             'info': result,
             'contents': content,
