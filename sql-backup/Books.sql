@@ -1,0 +1,1 @@
+INSERT INTO `Books`(`Book_id`, `Book_name`, `Book_intro`, `Book_score`, `Book_ISBN`, `Book_writer`, `Book_publisher`, `Book_src`, `Book_score_num`) VALUES (1, 'this is a book', 'bbbbb', 5.4, '1234567', 'me', 'me', 'me', 5);
