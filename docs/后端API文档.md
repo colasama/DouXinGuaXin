@@ -308,7 +308,7 @@ HTTP方法：`GET`
 
 请求URL：`http://182.92.57.178:5000/search/[type]?keywords=[关键词]`
 
-type可选：`movies,books,groups,topics,group_content,topic_content`
+type可选：`movies,books,groups,topics,group_contents,topic_contents`
 
 URL参数：
 

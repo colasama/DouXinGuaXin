@@ -5,7 +5,7 @@ from flask_restful.reqparse import RequestParser
 
 from app import api
 from app._api import cursor, connection, verify_token, abort_if_doesnt_exist
-from flask_restful import Resource
+from flask_restful import Resource, reqparse
 
 
 class Get_all_groups(Resource):
@@ -34,10 +34,41 @@ class Get_groups_by_id(Resource):
         }}
 
 
+class Get_group_by_keywords(Resource):
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("keywords", type=str,
+                            location="args", required=True)
+        req = parser.parse_args(strict=True)
+        keywords = '%'+req.get("keywords")+'%'
+        cursor.execute(
+            "SELECT * FROM Groups WHERE Group_name LIKE '%s' OR Group_related LIKE '%s' " % (keywords, keywords))
+        result = cursor.fetchall()
+        connection.commit()
+        return {'result': result}
+
+
+class Get_group_content_by_keywords(Resource):
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("keywords", type=str,
+                            location="args", required=True)
+        req = parser.parse_args(strict=True)
+        keywords = '%'+req.get("keywords")+'%'
+        cursor.execute(
+            "SELECT * FROM Group_Contents WHERE Group_content_title LIKE '%s' OR Group_content_content LIKE '%s' " % (keywords, keywords))
+        result = cursor.fetchall()
+        connection.commit()
+        for i in result:
+            i['Create_time'] = str(i['Create_time'])
+        return {'result': result}
+
+
 class Add_user_to_group(Resource):
     def post(self, group_id):   # 点击按钮进行参与，post请求
         parser = RequestParser()
-        parser.add_argument('token', type=str, location='headers', required=True)
+        parser.add_argument('token', type=str,
+                            location='headers', required=True)
         args = parser.parse_args(strict=True)
         token = args["token"]
         user_id = verify_token(token)
@@ -111,5 +142,7 @@ class Post_group_content(Resource):
 
 api.add_resource(Get_all_groups, '/groups')
 api.add_resource(Get_groups_by_id, '/groups/<int:group_id>')
+api.add_resource(Get_group_by_keywords, '/search/groups')
+api.add_resource(Get_group_content_by_keywords, '/search/group_contents')
 api.add_resource(Add_user_to_group, '/groups/<int:group_id>/join')
 api.add_resource(Post_group_content, '/groups/<int:group_id>/add_content')

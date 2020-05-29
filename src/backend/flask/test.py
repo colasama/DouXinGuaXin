@@ -22,6 +22,7 @@ headers = {"User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9
            "token": token}
 # get测试
 get('http://localhost:5000/movies/1').json()
+get('http://127.0.0.1:5000/search/group_contents?keywords=testtesttest').json()
 
 # post测试
 # 下面我是用 postman测试的，token需要加在 header里

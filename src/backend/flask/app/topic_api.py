@@ -35,7 +35,7 @@ class Get_topics_by_id(Resource):
         }}
 
 
-class Get_topics_by_keywords(Resource):
+class Get_topic_by_keywords(Resource):
     def get(self):
         parser = reqparse.RequestParser()
         parser.add_argument("keywords", type=str,
@@ -46,6 +46,22 @@ class Get_topics_by_keywords(Resource):
             "SELECT * FROM Topics WHERE Topic_name LIKE '%s' OR Topic_related LIKE '%s' " % (keywords, keywords))
         result = cursor.fetchall()
         connection.commit()
+        return {'result': result}
+
+
+class Get_topic_content_by_keywords(Resource):
+    def get(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("keywords", type=str,
+                            location="args", required=True)
+        req = parser.parse_args(strict=True)
+        keywords = '%'+req.get("keywords")+'%'
+        cursor.execute(
+            "SELECT * FROM Topic_Contents WHERE Topic_content_content LIKE '%s' " % (keywords))
+        result = cursor.fetchall()
+        connection.commit()
+        for i in result:
+            i['Create_time'] = str(i['Create_time'])
         return {'result': result}
 
 
@@ -125,6 +141,6 @@ class Post_topic_content(Resource):
 api.add_resource(Get_all_topics, '/topics')
 api.add_resource(Get_topics_by_id, '/topics/<topic_id>')
 api.add_resource(Add_user_to_topic, '/topics/<int:topic_id>/join')
-api.add_resource(Get_topics_by_keywords, '/search/topics')
-api.add_resource(Get_topics_by_keywords, '/search/topics')
+api.add_resource(Get_topic_by_keywords, '/search/topics')
+api.add_resource(Get_topic_content_by_keywords, '/search/topic_contents')
 api.add_resource(Post_topic_content, '/topics/<int:topic_id>/add_content')
