@@ -5,6 +5,7 @@ from flask import request
 from app._api import cursor, connection, verify_token, abort_if_doesnt_exist
 from app import api
 from flask_restful import Resource, reqparse
+from flask_restful.reqparse import RequestParser
 
 
 class Get_all_topics(Resource):
@@ -26,7 +27,7 @@ class Get_topics_by_id(Resource):
         content = cursor.fetchall()
         connection.commit()
         for i in content:
-            i['Create_time']=str(i['Create_time'])
+            i['Create_time'] = str(i['Create_time'])
         return {'result': {
             'info': result,
             'contents': content,
@@ -75,7 +76,50 @@ class Add_user_to_topic(Resource):
         return {'result': result}
 
 
+class Post_topic_content(Resource):
+    def post(self, topic_id):
+        parser = RequestParser()
+        parser.add_argument("token", type=str,
+                            location="headers", required=True)
+        parser.add_argument('topic_content_content', type=str, required=True)
+        parser.add_argument('topic_content_image', type=str)
+        args = parser.parse_args(strict=True)
+        token = args["token"]
+        user_id = verify_token(token)
+        if user_id is None:
+            return {'message': 'Illegal token.'}, 403
+        cursor.execute(
+            "SELECT * FROM User_Topic where User_id = %d and Topic_id = %d" % (
+                user_id, topic_id)
+        )
+        result = cursor.fetchone()
+        connection.commit()
+        if result is None:
+            return {'message': 'You have not joined the topic.'}, 403
+        topic_content_content = args['topic_content_content']
+        topic_content_image = args['topic_content_image']
+        cursor.execute(
+            "INSERT into Topic_Contents( Topic_content_content, Topic_id, \
+            User_id, Topic_content_image) \
+            values('%s',%d,%d,'%s')" %
+            (topic_content_content,topic_id, user_id, topic_content_image)
+        )
+        connection.commit()
+        cursor.execute(
+            "SELECT LAST_INSERT_ID()"
+        )
+        result = cursor.fetchone()['LAST_INSERT_ID()']
+        cursor.execute(
+            "SELECT * FROM Topic_Contents where Topic_content_id = %d" % result
+        )
+        result = cursor.fetchone()
+        connection.commit()
+        result['Create_time'] = str(result['Create_time'])
+        return {'result': result}
+
+
 api.add_resource(Get_all_topics, '/topics')
 api.add_resource(Get_topics_by_id, '/topics/<topic_id>')
 api.add_resource(Add_user_to_topic, '/topics/<int:topic_id>/join')
 api.add_resource(Get_topics_by_keywords, '/search/topics')
+api.add_resource(Post_topic_content, '/topics/<int:topic_id>/add_content')

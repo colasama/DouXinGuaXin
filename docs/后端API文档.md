@@ -12,7 +12,7 @@ src
 
 1. API遵循RESTful设计，通过域名来决定调用的API种类。
 2. 用户身份验证采用token机制，用户登录时通过用户名和密码获取token，之后的身份验证均使用token进行。
-3. 返回结果为JSON文件，正确的返回结果均位于`result`，如果出现错误一般会返回`message`。
+3. 返回结果为JSON文件，正确的返回结果均位于`result`，如果出现错误一般会返回`message`，其中会包含错误信息。
 4. 对于进行添加操作的API，一般规则是添加什么，返回什么。
 
 **目前还处于开发阶段，并未进行部署。**
@@ -116,15 +116,16 @@ HTTP方法：`GET`
 
 `comments`参数
 
-| 参数                     | 类型   | 说明       |
-| ------------------------ | ------ | ---------- |
-| Movie_comment_id         | int    | 评论id     |
-| Movie_comment_title      | string | 评论标题   |
-| Movie_comment_approve    | int    | 评论赞同数 |
-| Movie_comment_disapprove | int    | 评论反对数 |
-| Movie_comment_content    | string | 评论内容   |
-| User_id                  | int    | 评论用户id |
-| Movie_id                 | int    | 评论电影id |
+| 参数                     | 类型   | 说明         |
+| ------------------------ | ------ | ------------ |
+| Movie_comment_id         | int    | 评论id       |
+| Movie_comment_title      | string | 评论标题     |
+| Movie_comment_approve    | int    | 评论赞同数   |
+| Movie_comment_disapprove | int    | 评论反对数   |
+| Movie_comment_content    | string | 评论内容     |
+| User_id                  | int    | 评论用户id   |
+| Movie_id                 | int    | 评论电影id   |
+| Create_time              | string | 记录创建时间 |
 
 ### 书籍相关
 
@@ -168,15 +169,16 @@ HTTP方法：`GET`
 
 `comments`参数
 
-| 参数                    | 类型   | 说明       |
-| ----------------------- | ------ | ---------- |
-| Book_comment_id         | int    | 评论id     |
-| Book_comment_title      | string | 评论标题   |
-| Book_comment_approve    | int    | 评论赞同数 |
-| Book_comment_disapprove | int    | 评论反对数 |
-| Book_comment_content    | string | 评论内容   |
-| User_id                 | int    | 评论用户id |
-| Book_id                 | int    | 评论书籍id |
+| 参数                    | 类型   | 说明         |
+| ----------------------- | ------ | ------------ |
+| Book_comment_id         | int    | 评论id       |
+| Book_comment_title      | string | 评论标题     |
+| Book_comment_approve    | int    | 评论赞同数   |
+| Book_comment_disapprove | int    | 评论反对数   |
+| Book_comment_content    | string | 评论内容     |
+| User_id                 | int    | 评论用户id   |
+| Book_id                 | int    | 评论书籍id   |
+| Create_time             | string | 记录创建时间 |
 
 ### 话题相关
 
@@ -223,6 +225,7 @@ HTTP方法：`GET`
 | Topic_content_image   | string | 话题内容对应的图片资源文件夹 |
 | Topic_id              | int    | 该内容所在话题               |
 | User_id               | int    | 该内容的发布人id             |
+| Create_time           | string | 记录创建时间                 |
 
 ### 小组相关
 
@@ -271,6 +274,7 @@ HTTP方法：`GET`
 | Group_id              | int    | 该帖子所在小组               |
 | User_id               | int    | 该帖子的发布人id             |
 | Group_content_image   | string | 帖子对应的图片资源文件夹     |
+| Create_time           | string | 记录创建时间                 |
 
 ### 检索相关
 
@@ -331,7 +335,7 @@ HTTP方法：`GET`
 
 #### 密码修改
 
-HTTP方法：`POSTs`
+HTTP方法：`POST`
 
 请求URL：`http://182.92.57.178:5000/users/modify_password`
 
@@ -367,7 +371,7 @@ HTTP方法：`POSTs`
 
 HTTP方法：`POST`
 
-请求URL：`http://182.92.57.178:5000//books/<int:book_id>/comments`
+请求URL：`http://182.92.57.178:5000/books/<int:book_id>/comments`
 
 请求参数
 
@@ -379,13 +383,13 @@ HTTP方法：`POST`
 
 **返回说明**
 
-返回添加的完整评论信息，具体参见`comments`参数
+返回添加的完整评论信息，具体参见**根据id获取书籍**的`comments`参数
 
 #### 书籍评分
 
 HTTP方法：`POST`
 
-请求URL：`http://182.92.57.178:5000//books/<int:book_id>/scroes`
+请求URL：`http://182.92.57.178:5000/books/<int:book_id>/scroes`
 
 请求参数
 
@@ -408,7 +412,7 @@ HTTP方法：`POST`
 
 HTTP方法：`POST`
 
-请求URL：`http://182.92.57.178:5000//movies/<int:movie_id>/comments`
+请求URL：`http://182.92.57.178:5000/movies/<int:movie_id>/comments`
 
 请求参数
 
@@ -420,13 +424,13 @@ HTTP方法：`POST`
 
 **返回说明**
 
-返回添加的完整评论信息，具体参见`comments`参数
+返回添加的完整评论信息，具体参见**根据id获取电影**的`comments`参数
 
 #### 电影评分
 
 HTTP方法：`POST`
 
-请求URL：`http://182.92.57.178:5000//movies/<int:movie_id>/scroes`
+请求URL：`http://182.92.57.178:5000/movies/<int:movie_id>/scroes`
 
 请求参数
 
@@ -449,7 +453,7 @@ HTTP方法：`POST`
 
 HTTP方法：`POST`
 
-请求URL：`http://182.92.57.178:5000//groups/<int:group_id>/join`
+请求URL：`http://182.92.57.178:5000/groups/<int:group_id>/join`
 
 请求参数
 
@@ -474,13 +478,39 @@ HTTP方法：`POST`
 
 返回码 403
 
+#### 发布帖子
+
+HTTP方法：`POST`
+
+请求URL：`http://182.92.57.178:5000/groups/<int:group_id>/add_content`
+
+请求参数
+
+| 参数                  | 是否可选 | 类型   | 范围  | 说明               |
+| --------------------- | -------- | ------ | ----- | ------------------ |
+| group_content_title   | 否       | string | 1-20  | 帖子标题           |
+| group_content_content | 否       | string | 1-200 | 帖子内容           |
+| group_content_image   | 是       | string | 1-50  | 帖子图片资源的路径 |
+
+**返回说明**
+
+返回添加的完整帖子信息，具体参见**根据id获取小组**中的`contents`参数
+
+如果用户未加入小组则返回
+
+| 参数    | 类型   | 说明                           |
+| ------- | ------ | ------------------------------ |
+| message | string | You have not joined the group. |
+
+返回码403
+
 ### 话题相关
 
 #### 用户参与话题
 
 HTTP方法：`POST`
 
-请求URL：`http://182.92.57.178:5000//topics/<int:topic_id>/join`
+请求URL：`http://182.92.57.178:5000/topics/<int:topic_id>/join`
 
 请求参数
 
@@ -506,6 +536,31 @@ HTTP方法：`POST`
 | message | string | 返回You have joined the topic before. |
 
 返回码 403
+
+#### 发布话题内容
+
+HTTP方法：`POST`
+
+请求URL：`http://182.92.57.178:5000/topics/<int:topic_id>/add_content`
+
+请求参数
+
+| 参数                  | 是否可选 | 类型   | 范围  | 说明               |
+| --------------------- | -------- | ------ | ----- | ------------------ |
+| topic_content_content | 否       | string | 1-200 | 内容正文           |
+| topic_content_image   | 是       | string | 1-50  | 内容图片资源的路径 |
+
+**返回说明**
+
+返回添加成功的完整帖子信息，具体参见**根据id获取话题**中的`contents`参数
+
+如果用户未加入话题则返回
+
+| 参数    | 类型   | 说明                           |
+| ------- | ------ | ------------------------------ |
+| message | string | You have not joined the topic. |
+
+返回码403
 
 ## 附录
 

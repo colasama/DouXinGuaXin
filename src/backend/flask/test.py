@@ -48,4 +48,12 @@ post('http://localhost:5000/movies/1/scores',
 post('http://localhost:5000/groups/1/join', headers=headers).json()
 
 # AddUserToTopic + token
-post('http://localhost:5000/topicss/1/join', headers=headers).json()
+post('http://localhost:5000/topics/1/join', headers=headers).json()
+
+# Add Group Content + token
+post('http://localhost:5000/groups/1/add_content',
+     data={'group_content_title': 'test', 'group_content_content': 'testtesttest', 'group_content_image':'/example'}, headers=headers).json()
+
+# Add Topic Content + token
+post('http://localhost:5000/topics/1/add_content',
+     data={'topic_content_content': 'testtesttest'}, headers=headers).json()

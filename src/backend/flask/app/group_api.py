@@ -4,6 +4,7 @@ from flask import request
 from app import api
 from app._api import cursor, connection, verify_token, abort_if_doesnt_exist
 from flask_restful import Resource
+from flask_restful.reqparse import RequestParser
 
 
 class Get_all_groups(Resource):
@@ -25,7 +26,7 @@ class Get_groups_by_id(Resource):
         content = cursor.fetchall()
         connection.commit()
         for i in content:
-            i['Create_time']=str(i['Create_time'])
+            i['Create_time'] = str(i['Create_time'])
         return {'result': {
             'info': result,
             'contents': content,
@@ -59,6 +60,52 @@ class Add_user_to_group(Resource):
         return {'result': result}
 
 
+class Post_group_content(Resource):
+    def post(self, group_id):
+        parser = RequestParser()
+        parser.add_argument("token", type=str,
+                            location="headers", required=True)
+        parser.add_argument('group_content_title', type=str, required=True)
+        parser.add_argument('group_content_content', type=str, required=True)
+        parser.add_argument('group_content_image', type=str)
+        args = parser.parse_args(strict=True)
+        token = args["token"]
+        user_id = verify_token(token)
+        if user_id is None:
+            return {'message': 'Illegal token.'}, 403
+        cursor.execute(
+            "SELECT * FROM User_Group where User_id = %d and Group_id = %d" % (
+                user_id, group_id)
+        )
+        result = cursor.fetchone()
+        connection.commit()
+        if result is None:
+            return {'message': 'You have not joined the group.'}, 403
+        group_content_title = args['group_content_title']
+        group_content_content = args['group_content_content']
+        group_content_image = args['group_content_image']
+        cursor.execute(
+            "INSERT into Group_Contents(Group_content_title, Group_content_content, Group_id, \
+            User_id, Group_content_image) \
+            values('%s','%s',%d,%d,'%s')" %
+            (group_content_title, group_content_content,
+             group_id, user_id, group_content_image)
+        )
+        connection.commit()
+        cursor.execute(
+            "SELECT LAST_INSERT_ID()"
+        )
+        result = cursor.fetchone()['LAST_INSERT_ID()']
+        cursor.execute(
+            "SELECT * FROM Group_Contents where Group_content_id = %d" % result
+        )
+        result = cursor.fetchone()
+        connection.commit()
+        result['Create_time'] = str(result['Create_time'])
+        return {'result': result}
+
+
 api.add_resource(Get_all_groups, '/groups')
 api.add_resource(Get_groups_by_id, '/groups/<int:group_id>')
 api.add_resource(Add_user_to_group, '/groups/<int:group_id>/join')
+api.add_resource(Post_group_content, '/groups/<int:group_id>/add_content')
