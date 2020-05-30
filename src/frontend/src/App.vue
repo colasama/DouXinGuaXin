@@ -21,29 +21,23 @@
         </a-menu>
       </a-layout-header>
     </a-layout>
-    <router-view style="text-align: center;margin-top:2px"/>
+    <router-view style="text-align: center;margin-top:4px"/>
   </div>
 </template>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
 
 .components-layout-demo-top-logo {
   width: 83px;
   height: 40px;
   background: url("assets/8340_logo_green.png");
-  margin: 16px 24px 16px 0;
+  margin: 14px 0px 0px 0;
   float: left;
 }
 
 .re-header{
   background: rgb(255,255,255);
+  height: 62px;
 }
 
 .header-menu{
@@ -60,25 +54,25 @@ export default {
     };
   },
   methods: {
-    toBook(){
-      this.current='book';
-      this.$router.push({path:"/book"});
-    },
     toIndex(){
       this.current='index';
       this.$router.push({path:"/"});
     },
+    toBook(){
+      this.current='book';
+      this.$router.push({path:"/book/index"});
+    },
     toMovie(){
       this.current='movie';
-      this.$router.push({path:"/movie"});
+      this.$router.push({path:"/movie/index"});
     },
     toTopic(){
       this.current='topic';
-      this.$router.push({path:"/topic"});
+      this.$router.push({path:"/topic/index"});
     },
     toGroup(){
       this.current='group';
-      this.$router.push({path:"/group"});
+      this.$router.push({path:"/group/index"});
     },
     toRegister(){
       this.current='register';

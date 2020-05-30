@@ -11,24 +11,24 @@ Vue.use(VueRouter)
     component: Home
   },
   {
-    path: '/book',
+    path: '/book/index',
     name: 'Book',
-    component: () => import('../views/Book.vue')
+    component: () => import('../views/Book/Index.vue')
   },
   {
-    path: '/movie',
+    path: '/movie/index',
     name: 'Movie',
-    component: () => import('../views/Movie.vue')
+    component: () => import('../views/Movie/Index.vue')
   },
   {
-    path: '/topic',
+    path: '/topic/index',
     name: 'Topic',
-    component: () => import('../views/Topic.vue')
+    component: () => import('../views/Topic/Index.vue')
   },
   {
-    path: '/group',
+    path: '/group/index',
     name: 'Group',
-    component: () => import('../views/Group.vue')
+    component: () => import('../views/Group/Index.vue')
   },
   {
     path: '/register',
@@ -39,6 +39,16 @@ Vue.use(VueRouter)
     path: '/login',
     name: 'Login',
     component: () => import('../views/Login.vue')
+  },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('../views/Admin.vue')
+  },
+  {
+    path: '/book/book',
+    name: 'Book',
+    component: () => import('../views/Book/Book.vue')
   }
 ]
 
