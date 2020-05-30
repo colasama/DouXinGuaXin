@@ -1,5 +1,6 @@
 <template>
   <div>
+  {{this.$route.params.id}}
   <a-layout>
       <a-layout-content style="margin-top:30px">
         
@@ -76,7 +77,7 @@ export default {
             author:'富坚义博', 
             pro:'故事讲述一个自幼丧母的少年小冈，为了要寻找失散多年的父亲，及成为一个和父亲一样出色的“猎人”，踏上了崎岖而漫长的旅程，接受重重测试，途中遇上各色各样的同伴和敌人，各自为了不同的目的而展开一场又一场的战斗……',
             star:'5',
-            coversrc:"https://img9.doubanio.com/view/subject/s/public/s26041185.jpg"},
+            coversrc:"https://img9.doubanio.com/view/subject/l/public/s26041185.jpg"},
             
         ],
         data: [

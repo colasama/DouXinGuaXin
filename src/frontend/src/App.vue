@@ -53,6 +53,14 @@ export default {
       current: ['index'],
     };
   },
+  created: function(){
+    document.title = this.$route.meta.title || this.$route.meta.pathName
+  },
+  watch:{
+    $route(){
+      document.title = this.$route.meta.title || this.$route.meta.pathName
+    }
+  },
   methods: {
     toIndex(){
       this.current='index';
