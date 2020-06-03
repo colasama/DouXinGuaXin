@@ -58,6 +58,8 @@ post('http://localhost:5000/groups/1/add_content',
      data={'group_content_title': 'test', 'group_content_content': 'testtesttest', 'group_content_image':'/example'}
      , headers=headers).json()
 
+post('http://localhost:5000/groups/delete_content/3',headers=headers).json()
+
 # Add Topic Content + token
 post('http://localhost:5000/topics/1/add_content',
      data={'topic_content_content': 'testtesttest'}, headers=headers).json()

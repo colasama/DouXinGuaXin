@@ -140,9 +140,47 @@ class Post_group_content(Resource):
         return {'result': result}
 
 
+class Delete_group_content(Resource):
+    def post(self, group_content_id):
+        parser = RequestParser()
+        parser.add_argument("token", type=str,
+                            location="headers", required=True)
+        args = parser.parse_args(strict=True)
+        token = args["token"]
+        user_id = verify_token(token)
+        if user_id is None:
+            return {'message': 'Illegal token.'}, 403
+        cursor.execute(
+            "SELECT * FROM Group_Contents WHERE Group_content_id like '%s' " % (
+                group_content_id, )
+        )
+        result = cursor.fetchone()
+        connection.commit()
+        if result is None:
+            abort_if_doesnt_exist("Group_content_id")
+        group_id = result['Group_id']
+        cursor.execute(
+            "SELECT * FROM Groups WHERE Group_id like '%s' " % (
+                group_id, )
+        )
+        result = cursor.fetchone()
+        if result['User_id'] != user_id:
+            return{'message': 'Unauthorized.'}, 401
+        cursor.execute(
+            "DELETE FROM Group_Contents WHERE Group_content_id like '%s' " % (
+                group_content_id, )
+        )
+        connection.commit()
+        return{'result': {
+            'message': 'Delete success.'
+        }}
+
+
 api.add_resource(Get_all_groups, '/groups')
 api.add_resource(Get_groups_by_id, '/groups/<int:group_id>')
 api.add_resource(Get_group_by_keywords, '/search/groups')
 api.add_resource(Get_group_content_by_keywords, '/search/group_contents')
 api.add_resource(Add_user_to_group, '/groups/<int:group_id>/join')
 api.add_resource(Post_group_content, '/groups/<int:group_id>/add_content')
+api.add_resource(Delete_group_content,
+                 '/groups/delete_content/<int:group_content_id>')
