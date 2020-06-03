@@ -55,10 +55,13 @@ post('http://localhost:5000/topics/1/join', headers=headers).json()
 
 # Add Group Content + token
 post('http://localhost:5000/groups/1/add_content',
-     data={'group_content_title': 'test', 'group_content_content': 'testtesttest', 'group_content_image':'/example'}
+     data={'group_content_title': 'test123', 'group_content_content': 'testtesttest123', 'group_content_image':'/example'}
      , headers=headers).json()
-
+#删除，加精，置顶
 post('http://localhost:5000/groups/delete_content/3',headers=headers).json()
+post('http://localhost:5000/groups/highlighted_content/5',headers=headers).json()
+post('http://localhost:5000/groups/pinned_content/5',headers=headers).json()
+
 
 # Add Topic Content + token
 post('http://localhost:5000/topics/1/add_content',
