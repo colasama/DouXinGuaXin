@@ -64,6 +64,12 @@ Vue.use(VueRouter)
     name: 'Search',
     meta:{title: '搜索 - 豆辛瓜辛 - 一个书籍影视分享平台',},
     component: () => import('../views/Search/Index.vue')
+  },
+  {
+    path: '/user/index',
+    name: 'User',
+    meta:{title: '个人主页 - 豆辛瓜辛 - 一个书籍影视分享平台',},
+    component: () => import('../views/User/Index.vue')
   }
 ]
 
