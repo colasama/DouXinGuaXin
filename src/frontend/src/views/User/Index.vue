@@ -3,7 +3,7 @@
   <a-layout class="wrapper">
       <a-layout-content class="contenter">
         <a-page-header
-            style="margin-left:10%;margin-top:30px"
+            style="margin-left:28px;margin-top:30px"
             title="个人主页"
             sub-title="Profile"
         />
