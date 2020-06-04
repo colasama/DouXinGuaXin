@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-from requests import post, get, put
+from requests import post, get, put, delete
 
 
 # Register
@@ -38,6 +38,11 @@ post('http://localhost:5000/books/1/comments',
 post('http://localhost:5000/books/1/scores',
      data={'book_score': '9.0'}, headers=headers).json()
 
+# Book_Comment_Approve
+post('http://localhost:5000/movie_comments/1/approve',
+     data={'type': 1}, headers=headers).json()
+delete('http://localhost:5000/movie_comments/1/approve',headers = headers).json()
+
 # Movie_Comment + token
 post('http://localhost:5000/movies/1/comments',
      data={'movie_comment_content': 'test', 'movie_comment_title': 'test'}, headers=headers).json()
@@ -55,12 +60,11 @@ post('http://localhost:5000/topics/1/join', headers=headers).json()
 
 # Add Group Content + token
 post('http://localhost:5000/groups/1/add_content',
-     data={'group_content_title': 'test123', 'group_content_content': 'testtesttest123', 'group_content_image':'/example'}
-     , headers=headers).json()
-#删除，加精，置顶
-post('http://localhost:5000/groups/delete_content/3',headers=headers).json()
-post('http://localhost:5000/groups/highlighted_content/5',headers=headers).json()
-post('http://localhost:5000/groups/pinned_content/5',headers=headers).json()
+     data={'group_content_title': 'test123', 'group_content_content': 'testtesttest123', 'group_content_image': '/example'}, headers=headers).json()
+# 删除，加精，置顶
+post('http://localhost:5000/groups/delete_content/3', headers=headers).json()
+post('http://localhost:5000/groups/highlighted_content/5', headers=headers).json()
+post('http://localhost:5000/groups/pinned_content/5', headers=headers).json()
 
 
 # Add Topic Content + token
@@ -68,17 +72,17 @@ post('http://localhost:5000/topics/1/add_content',
      data={'topic_content_content': 'testtesttest'}, headers=headers).json()
 
 # Send_email
-post('http://localhost:5000/users/reset_password/send_email', data={'user_email':'394739138@qq.com'}
-    ).json()
+post('http://localhost:5000/users/reset_password/send_email', data={'user_email': '394739138@qq.com'}
+     ).json()
 
 # Reset_password + token
-post('http://localhost:5000/users/reset_password', data={'new_password':'zhk12345678'}
-    , headers=headers).json()
+post('http://localhost:5000/users/reset_password',
+     data={'new_password': 'zhk12345678'}, headers=headers).json()
 
 # Book_comment_report + token
-post('http://localhost:5000/report/books/1', data={'book_report_title':'yzygod', 'book_report_reason':
-    'yzygoddddddddddddd'}, headers=headers).json()
+post('http://localhost:5000/report/books/1', data={'book_report_title': 'yzygod', 'book_report_reason':
+                                                   'yzygoddddddddddddd'}, headers=headers).json()
 
 # Movie_comment_report + token
-post('http://localhost:5000/report/movies/1', data={'movie_report_title':'yzygod', 'movie_report_reason':
-    'yzygoddddddddddddd'}, headers=headers).json()
+post('http://localhost:5000/report/movies/1', data={'movie_report_title': 'yzygod', 'movie_report_reason':
+                                                    'yzygoddddddddddddd'}, headers=headers).json()

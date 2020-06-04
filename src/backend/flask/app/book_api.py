@@ -145,10 +145,93 @@ class Book_score(Resource):
         connection.commit()
         return {'result': result}
 
+class Book_comment_approve(Resource):
+    def post(self,book_comment_id):
+        parser = RequestParser()
+        parser.add_argument('token', type=str, location='headers', required=True)
+        parser.add_argument('type', type=int, required=True)
+        args = parser.parse_args()
+        token = args["token"]
+        approve_type = args['type']
+        user_id = verify_token(token)
+        if user_id is None:
+            return {'message': 'Illegal token.'}, 403
+        if approve_type !=-1 and approve_type != 1:
+            return {'message':'Illegal type(not -1 or 1).'}, 400
+        cursor.execute(
+            "SELECT Type FROM Book_Comment_Approvals WHERE Book_comment_id = %d AND User_id = %d"
+            %(book_comment_id,user_id)
+        )
+        result = cursor.fetchone()
+        if result != None:
+            connection.commit()
+            return {'message':'duplicate approve or disapprove.'},403
+        cursor.execute(
+            "INSERT INTO Book_Comment_Approvals(Book_comment_id,User_id,type) VALUES(%d,%d,%d)" 
+            %(book_comment_id,user_id,approve_type)
+        )
+        if approve_type==1:
+            temp_str="Book_comment_approve"
+        else:
+            temp_str="Book_comment_disapprove"
+        cursor.execute(
+            "UPDATE Book_Comments \
+            SET %s = %s + 1 \
+            WHERE Book_comment_id = %d" % (temp_str,temp_str,book_comment_id,)
+        )
+        connection.commit()
+        cursor.execute(
+            "SELECT * FROM Book_Comments WHERE Book_comment_id = %d "
+            % (book_comment_id)
+        )
+        result = cursor.fetchone()
+        result['Create_time'] = str(result['Create_time'])
+        return {'result': result}
+    
+    def delete(self,book_comment_id):
+        parser = RequestParser()
+        parser.add_argument('token', type=str, location='headers', required=True)
+        args = parser.parse_args()
+        token = args["token"]
+        user_id = verify_token(token)
+        if user_id is None:
+            return {'message': 'Illegal token.'}, 403
+        cursor.execute(
+            "SELECT Type FROM Book_Comment_Approvals WHERE Book_comment_id = %d AND User_id = %d"
+            %(book_comment_id,user_id)
+        )
+        result = cursor.fetchone()
+        if result == None:
+            connection.commit()
+            abort_if_doesnt_exist("book_comment_id")
+        approve_type = result['Type']
+        cursor.execute(
+            "DELETE FROM Book_Comment_Approvals WHERE Book_comment_id = %d AND User_id = %d " 
+            %(book_comment_id,user_id)
+        )
+        if approve_type==1:
+            temp_str="Book_comment_approve"
+        else:
+            temp_str="Book_comment_disapprove"
+        cursor.execute(
+            "UPDATE Book_Comments \
+            SET %s = %s - 1 \
+            WHERE Book_comment_id = %d" % (temp_str,temp_str,book_comment_id)
+        )
+        connection.commit()
+        cursor.execute(
+            "SELECT * FROM Book_Comments WHERE Book_comment_id = %d "
+            % (book_comment_id)
+        )
+        result = cursor.fetchone()
+        result['Create_time'] = str(result['Create_time'])
+        connection.commit()
+        return {'result': result}
 
 api.add_resource(Get_all_books, '/books')
 api.add_resource(Get_books_by_id, '/books/<books_id>')
 api.add_resource(Book_comment, '/books/<int:book_id>/comments')
 api.add_resource(Book_score, '/books/<int:book_id>/scores')
 api.add_resource(Get_books_by_keywords, '/search/books')
-api.add_resource(Book_comment_report, '/report/books/<int:book_comment_id>')
+api.add_resource(Book_comment_report, '/book_comments/<int:book_comment_id>/report')
+api.add_resource(Book_comment_approve,'/book_comments/<int:book_comment_id>/approve')

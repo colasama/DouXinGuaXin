@@ -290,15 +290,17 @@ HTTP方法：`GET`
 
 `contents`参数
 
-| 参数                  | 类型   | 说明                         |
-| --------------------- | ------ | ---------------------------- |
-| Group_content_id      | int    | 帖子id                       |
-| Group_content_content | string | 帖子正文                     |
-| Group_content_title   | string | 帖子内容对应的图片资源文件夹 |
-| Group_id              | int    | 该帖子所在小组               |
-| User_id               | int    | 该帖子的发布人id             |
-| Group_content_image   | string | 帖子对应的图片资源文件夹     |
-| Create_time           | string | 记录创建时间                 |
+| 参数                  | 类型   | 说明                             |
+| --------------------- | ------ | -------------------------------- |
+| Group_content_id      | int    | 帖子id                           |
+| Group_content_content | string | 帖子正文                         |
+| Group_content_title   | string | 帖子内容对应的图片资源文件夹     |
+| Group_id              | int    | 该帖子所在小组                   |
+| User_id               | int    | 该帖子的发布人id                 |
+| Group_content_image   | string | 帖子对应的图片资源文件夹         |
+| Create_time           | string | 记录创建时间                     |
+| Is_highlighted        | int    | 是否为精华帖，1表示是，0表示不是 |
+| Is_pinned             | int    | 是否置顶，1表示是，0表示不是     |
 
 ### 检索相关
 
@@ -337,6 +339,8 @@ token均通过headers传入，参数名为`token`
 | message | string | 内容为'Illegal token.' |
 
 返回状态码：403
+
+**返回说明并没有覆盖所有不成功情况，具体见实际调用时的返回内容**
 
 ### 用户相关
 
@@ -460,7 +464,7 @@ HTTP方法：`POST`
 
 HTTP方法：`POST`
 
-请求URL：`http://182.92.57.178:5000/report/books/<int:book_comment_id>`
+请求URL：`http://182.92.57.178:5000/book_comments/<int:book_comment_id>/report`
 
 请求参数
 
@@ -474,9 +478,48 @@ HTTP方法：`POST`
 
 返回参数
 
-| 参数        | 类型 | 说明                     |
-| ----------- | ---- | ------------------------ |
-| book_report | json | 关于该举报详情的所有信息 |
+该举报的详细信息
+
+| 参数 | 类型 | 说明                     |
+| ---- | ---- | ------------------------ |
+| /    | json | 关于该举报详情的所有信息 |
+
+#### 点赞/反对评论
+
+HTTP方法：`POST`
+
+请求URL：`http://182.92.57.178:5000/book_comments/<int:book_comment_id>/approve`
+
+请求参数
+
+| 参数            | 是否可选 | 类型 | 范围    | 说明                    |
+| --------------- | -------- | ---- | ------- | ----------------------- |
+| book_comment_id | 否       | int  | /       | 从url获取，不用显式传递 |
+| type            | 否       | int  | 1 或 -1 | 1表示点赞，-1表示反对   |
+
+**返回说明**
+
+返回参数
+
+返回修改后的完整评论信息，具体参见**根据id获取书籍**的`comments`参数
+
+#### 取消点赞/反对评论
+
+HTTP方法：`DELETE`
+
+请求URL：`http://182.92.57.178:5000/book_comments/<int:book_comment_id>/approve`
+
+请求参数
+
+| 参数            | 是否可选 | 类型 | 范围 | 说明                    |
+| --------------- | -------- | ---- | ---- | ----------------------- |
+| book_comment_id | 否       | int  | /    | 从url获取，不用显式传递 |
+
+**返回说明**
+
+返回参数
+
+返回修改后的完整评论信息，具体参见**根据id获取书籍**的`comments`参数
 
 ### 电影相关
 
@@ -523,7 +566,7 @@ HTTP方法：`POST`
 
 HTTP方法：`POST`
 
-请求URL：`http://182.92.57.178:5000/report/movies/<int:movie_comment_id>`
+请求URL：`http://182.92.57.178:5000/movie_comments/<int:movie_comment_id>/report`
 
 请求参数
 
@@ -537,9 +580,46 @@ HTTP方法：`POST`
 
 返回参数
 
-| 参数         | 类型 | 说明                     |
-| ------------ | ---- | ------------------------ |
-| movie_report | json | 关于该举报详情的所有信息 |
+| 参数 | 类型 | 说明                     |
+| ---- | ---- | ------------------------ |
+| /    | json | 关于该举报详情的所有信息 |
+
+#### 点赞/反对评论
+
+HTTP方法：`POST`
+
+请求URL：`http://182.92.57.178:5000/movie_comments/<int:movie_comment_id>/approve`
+
+请求参数
+
+| 参数             | 是否可选 | 类型 | 范围    | 说明                    |
+| ---------------- | -------- | ---- | ------- | ----------------------- |
+| movie_comment_id | 否       | int  | /       | 从url获取，不用显式传递 |
+| type             | 否       | int  | 1 或 -1 | 1表示点赞，-1表示反对   |
+
+**返回说明**
+
+返回参数
+
+返回修改后的完整评论信息，具体参见**根据id获取电影**的`comments`参数
+
+#### 取消点赞/反对评论
+
+HTTP方法：`DELETE`
+
+请求URL：`http://182.92.57.178:5000/movie_comments/<int:movie_comment_id>/approve`
+
+请求参数
+
+| 参数             | 是否可选 | 类型 | 范围 | 说明                    |
+| ---------------- | -------- | ---- | ---- | ----------------------- |
+| movie_comment_id | 否       | int  | /    | 从url获取，不用显式传递 |
+
+**返回说明**
+
+返回参数
+
+返回修改后的完整评论信息，具体参见**根据id获取电影**的`comments`参数
 
 ### 小组相关
 
