@@ -1,5 +1,5 @@
 <template>
-<div class="re-header">
+  <div class="re-header">
         <div @click ="toIndex" class="components-layout-demo-top-logo" />
         <a-menu mode="horizontal"  v-model="current" :style="{ lineHeight: '64px' }" class="header-menu">
           <a-menu-item key="index" @click = "toIndex">首页</a-menu-item>
@@ -10,27 +10,26 @@
           <a-button type="primary" size="small" @click="toRegister" style="margin-left:10px">
             注册
           </a-button>
-          <a-button type="primary" size="small" @click="toLogin" style="margin-left:15px">
+          <a-button type="primary" size="small" @click="toLogin" style="margin-left:15px;margin-right:48px">
             登录
           </a-button>
         </a-menu>
-</div>
+  </div>
 </template>
 
 <style>
 .components-layout-demo-top-logo {
+  cursor: pointer;
   width: 83px;
   height: 40px;
   background: url("../assets/8340_logo_green.png");
-  margin: 14px 0px 0px 0;
+  margin: 14px 48px 0px 48px;
   float: left;
 }
 
 .re-header{
   background: rgb(255,255,255);
   height: 62px;
-  margin-left:48px;
-  margin-right:48px;
   text-align:center;
   
 }

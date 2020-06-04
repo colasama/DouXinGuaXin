@@ -1,7 +1,7 @@
 <template>
   <div>
   <a-layout>
-      <a-layout-content style="margin-top:30px">
+      <a-layout-content style="margin-top:30px;height:100%" >
         <a-select style="width: 70px" default-value="书籍">
           <a-select-option value="book">
             书籍
