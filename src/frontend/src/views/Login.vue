@@ -20,7 +20,6 @@
           </a-row>
         </a-card>
       </a-layout-content>
-      <a-layout-footer class="footer"><h6>书籍影视交流平台</h6></a-layout-footer>
   </a-layout>
   </div>
 </template>
@@ -39,12 +38,4 @@
     height: calc(100% - 100px) ;
     background: rgb(240, 242, 245);
   }
-
-.footer{
-  flex: 0;
-  position:absolute;
-  bottom:0;
-  width:100%;
-  background: rgb(227, 232, 236);
-}
 </style>

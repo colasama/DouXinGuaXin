@@ -12,7 +12,7 @@
         </a-select>
         <a-input-search placeholder="书籍搜索" style="width: 200px" @search="onSearch"/>
         <!--以下是列表渲染部分-->
-        <a-list :grid="{ gutter: 16, column: 4 }" :data-source="books" style="margin-top:20px">
+        <a-list :grid="{ gutter: 16, column: 4 }" :data-source="books" style="margin:24px">
           <a-list-item slot="renderItem" slot-scope="book">
             <a-card>
               <a-row type="flex" justify="center" align="center">
@@ -31,9 +31,7 @@
             </a-card>
           </a-list-item>
         </a-list>
-
       </a-layout-content>
-      <a-layout-footer><h6>书籍影视交流平台</h6></a-layout-footer>
     </a-layout>
   </div>
 </template>

@@ -94,11 +94,9 @@
             <a-button style="margin:15px 5px 0 5px;">发表</a-button>
         </a-card>
         </div>
-
         </a-col>
        </a-row> 
       </a-layout-content>
-      <a-layout-footer><h6>书籍影视交流平台</h6></a-layout-footer>
     </a-layout>
   </div>
 </template>

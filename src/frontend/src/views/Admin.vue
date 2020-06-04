@@ -31,7 +31,6 @@
       >
         Content
       </a-layout-content>
-      <a-layout-footer><h6>书籍影视交流平台</h6></a-layout-footer>
     </a-layout>
     
   </a-layout>

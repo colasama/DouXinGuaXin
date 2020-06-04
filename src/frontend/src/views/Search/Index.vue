@@ -19,7 +19,6 @@
         </a-select>
         <a-input-search placeholder="书籍搜索" style="width: 400px;height:40px;" @search="onSearch"/>
       </a-layout-content>
-      <a-layout-footer><h6>书籍影视交流平台</h6></a-layout-footer>
     </a-layout>
   </div>
 </template>
