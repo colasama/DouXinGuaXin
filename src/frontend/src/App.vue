@@ -2,7 +2,7 @@
   <div>
     <a-layout>
       <a-layout-header class="re-header">
-        <div class="components-layout-demo-top-logo" />
+        <div @click ="toIndex" class="components-layout-demo-top-logo" />
         
         <a-menu mode="horizontal"  v-model="current" :style="{ lineHeight: '64px' }" class="header-menu">
 

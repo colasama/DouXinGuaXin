@@ -2,7 +2,7 @@
   <div>
   {{this.$route.params.id}}
   <a-layout>
-      <a-layout-content style="margin-top:30px">
+      <a-layout-content style="margin-top:30px;text-align:center">
         
         <a-layout>
             <a-layout-content>
@@ -37,18 +37,39 @@
             title="评论列表"
             sub-title="Comments"
         />
+        <a-row type="flex" justify="space-around" align="middle">
+        <a-col :span="24">
+
+        
+        <div>
+            <a-avatar icon="user" />
+            <a-avatar>
+            <a-icon slot="icon" type="user" />
+            </a-avatar>
+            <a-avatar>U</a-avatar>
+            <a-avatar>USER</a-avatar>
+            <a-avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
+            <a-avatar style="color: #f56a00; backgroundColor: #fde3cf">
+            U
+            </a-avatar>
+            <a-avatar style="backgroundColor:#87d068" icon="user" />
+        </div>
+        
         <!--以下是列表渲染部分-->
         <a-list
             class="comment-list"
-            :header="`${data.length} replies`"
-            item-layout="horizontal"
+            :header="`共有${data.length}条评论`"
+            item-layout="vertical"
             :data-source="data"
-            style="margin-top:20px"
+            style="margin:20px;text-align:center"
         >
-          <a-list-item slot="renderItem" slot-scope="item">
+          <a-list-item slot="renderItem" slot-scope="item" >
             <a-comment :author="item.author" :avatar="item.avatar">
-                <template slot="actions">
-                <span v-bind:key="action" v-for="action in item.actions">{{ action }}</span>
+                <template slot="actions" >
+                <span> <a-icon type="like-o" style="margin-left: 8px" /> 赞</span>
+                <span> <a-icon type="dislike-o" style="margin-left: 8px" /> 踩</span>
+                <span> <a-icon type="message" style="margin-left: 8px" /> 回复</span>
+                <span> <a-icon type="warning" style="margin-left: 8px" /> 举报</span>
                 </template>
                 <p slot="content">
                 {{ item.content }}
@@ -60,6 +81,22 @@
           </a-list-item>
         </a-list>
 
+        <div style="margin:0 auto;max-width:1000px">
+        <a-card title="发表评论" style="text-align:center;margin:24px">
+            <div style="font-size:30px" v-if="commentRate">{{commentRate}}</div>
+            <a-rate v-model="commentRate" allow-half />
+            <a-textarea 
+            v-model="commentValue"
+            placeholder="请输入评论内容"
+            :auto-size="{ minRows: 4, maxRows: 4 }"
+            style="margin:14px 5px 0 5px;"
+            />
+            <a-button style="margin:15px 5px 0 5px;">发表</a-button>
+        </a-card>
+        </div>
+
+        </a-col>
+       </a-row> 
       </a-layout-content>
       <a-layout-footer><h6>书籍影视交流平台</h6></a-layout-footer>
     </a-layout>
@@ -72,6 +109,7 @@ import moment from 'moment';
 export default {
     data() {
         return {
+        commentRate: 0,
         book: [
             {name:'Hunter X Hunter', 
             author:'富坚义博', 
@@ -82,7 +120,6 @@ export default {
         ],
         data: [
             {
-            actions: ['Reply to','Like'],
             author: 'Han Solo',
             avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
             content:
@@ -90,7 +127,6 @@ export default {
             datetime: moment().subtract(1, 'days'),
             },
             {
-            actions: ['Reply to','Like'],
             author: 'Han Solo',
             avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
             content:

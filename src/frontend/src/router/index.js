@@ -58,6 +58,12 @@ Vue.use(VueRouter)
     name: 'Object',
     meta:{title: '书籍 - 豆辛瓜辛 - 一个书籍影视分享平台',},
     component: () => import('../views/Book/Object.vue')
+  },
+  {
+    path: '/search/index',
+    name: 'Search',
+    meta:{title: '搜索 - 豆辛瓜辛 - 一个书籍影视分享平台',},
+    component: () => import('../views/Search/Index.vue')
   }
 ]
 
