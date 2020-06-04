@@ -74,7 +74,7 @@ class Movie_comment(Resource):
         connection.commit()
         result = cursor.fetchone()['LAST_INSERT_ID()']
         cursor.execute(
-            "SELECT * FROM Movie_Comments where movie_comment_id = '%d'" % result
+            "SELECT * FROM Movie_Comments where Movie_comment_id = '%d'" % result
         )
         result = cursor.fetchone()
         result['Create_time'] = str(result['Create_time'])
@@ -96,7 +96,7 @@ class Movie_comment_report(Resource):
         report_t = args.get('movie_report_title')
         report_r = args.get('movie_report_reason')
         cursor.execute(
-            "INSERT INTO Movie_Reports(Movie_report_title, Movie_report_reason, User_id, movie_comment_id) \
+            "INSERT INTO Movie_Reports(Movie_report_title, Movie_report_reason, User_id, Movie_comment_id) \
             values('%s', '%s', '%d', '%d')"
             % (report_t, report_r, user_id, movie_comment_id)
         )
