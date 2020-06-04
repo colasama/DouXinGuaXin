@@ -1,0 +1,2 @@
+INSERT INTO `Group_Contents`(`Group_content_id`, `Group_content_content`, `Group_content_title`, `Group_id`, `User_id`, `Group_content_image`, `Create_time`, `Is_highlighted`, `Is_pinned`) VALUES (4, 'testtesttest', 'test', 1, 15, '/example', '2020-06-03 17:50:52', 1, 1);
+INSERT INTO `Group_Contents`(`Group_content_id`, `Group_content_content`, `Group_content_title`, `Group_id`, `User_id`, `Group_content_image`, `Create_time`, `Is_highlighted`, `Is_pinned`) VALUES (5, 'testtesttest123', 'test123', 1, 15, '/example', '2020-06-03 18:30:04', 1, 1);

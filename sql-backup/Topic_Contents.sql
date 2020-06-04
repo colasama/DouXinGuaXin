@@ -1,0 +1,2 @@
+INSERT INTO `Topic_Contents`(`Topic_content_id`, `Topic_content_content`, `Topic_content_image`, `Topic_id`, `User_id`, `Create_time`) VALUES (1, 'testtesttest', '/example', 1, 15, '2020-05-29 11:43:56');
+INSERT INTO `Topic_Contents`(`Topic_content_id`, `Topic_content_content`, `Topic_content_image`, `Topic_id`, `User_id`, `Create_time`) VALUES (2, 'testtesttest', 'None', 1, 15, '2020-05-29 11:44:28');

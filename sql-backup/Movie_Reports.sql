@@ -1,0 +1,1 @@
+INSERT INTO `Movie_Reports`(`Movie_report_id`, `Movie_report_title`, `Movie_report_reason`, `User_id`, `Movie_comment_id`, `Create_time`) VALUES (1, 'yzygod', 'yzygoddddddddddddddd', 18, 2, '2020-05-29 11:11:52');
