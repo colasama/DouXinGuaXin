@@ -1,6 +1,6 @@
 <template>
   <div class="re-header">
-        <div @click ="toIndex" class="components-layout-demo-top-logo" />
+        <div @click ="toIndex" class="top-logo" />
         <a-menu mode="horizontal"  v-model="current" :style="{ lineHeight: '64px' }" class="header-menu">
           <a-menu-item key="index" @click = "toIndex">首页</a-menu-item>
           <a-menu-item key="book" @click = "toBook">书籍</a-menu-item>
@@ -18,7 +18,7 @@
 </template>
 
 <style>
-.components-layout-demo-top-logo {
+.top-logo {
   cursor: pointer;
   width: 83px;
   height: 40px;
