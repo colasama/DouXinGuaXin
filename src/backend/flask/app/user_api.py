@@ -49,8 +49,6 @@ class Login(Resource):
         req = parser.parse_args(strict=True)
         name = req['name']
         password = req['password']
-        print(name)
-        print(password)
         cursor.execute(
             "SELECT * FROM User WHERE User_name LIKE '%s'" % name
         )
