@@ -18,6 +18,9 @@ class Config(object):
     ADMINS = ['394739138@qq.com']
     #定时任务
     SCHEDULER_API_ENABLED = True
+    #
+    accesslog = "log/access.log"
+    errorlog = "log/debug.log"
 
 
 
