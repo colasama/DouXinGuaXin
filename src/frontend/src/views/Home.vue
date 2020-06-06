@@ -82,10 +82,13 @@
 <script>
 // @ is an alias to /src
 
+import global_ from '../components/Global'
 export default {
-  name: 'Home',
   components: {
 
+  },
+  created:function(){
+    console.log(global_.username);
   },
   methods: {
     onChange(a, b, c) {
