@@ -80,7 +80,6 @@
     },
     methods:{ 
       toLogin(){
-      this.current='login';
       this.$router.push({path:"/login"});
     },
       register(){
@@ -114,10 +113,10 @@
             phonenum:this.phonenum
         }).then(function(res){
           console.log(res.data);
-          this.toLogin();
         }).catch(function(error){
           console.log(error); 
         })
+        this.toLogin();
       }
     }
   }
