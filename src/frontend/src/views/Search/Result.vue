@@ -1,6 +1,6 @@
 <template>
   <div>
-  <a-layout>
+  <a-layout style="min-height:100%">
       <a-layout-content style="margin-top:25px">
         <a-page-header
           style="text-align:center"

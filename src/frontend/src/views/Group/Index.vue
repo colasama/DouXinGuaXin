@@ -1,6 +1,6 @@
 <template>
   <div>
-  <a-layout>
+  <a-layout style="min-height:100%">
       <a-layout-content>
          <wordcloud
           :data="groups"
@@ -23,7 +23,20 @@
             title="今日神贴"
             sub-title="God Posts"
         />
-        
+
+        <a-list item-layout="horizontal" :data-source="posts">
+          <a-list-item style="margin:0 200px 0 200px" slot="renderItem" slot-scope="item">
+            <a-list-item-meta
+              :description="item.content"
+            >
+              <a slot="title" :href="'/#/group/object/'+item.id">{{ item.title }}</a>
+              <a-avatar
+                slot="avatar"
+                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
+              />
+            </a-list-item-meta>
+          </a-list-item>
+        </a-list>
       </a-layout-content>
     </a-layout>
   </div>
@@ -42,6 +55,10 @@ export default {
         {"name":"系统编程","value":"4"},
         {"name":"面向对象","value":"5"},
         {"name":"软件工程","value":"5"}
+      ],
+      posts:[
+        {"name":"rr","title":"aa","content":"aasasasas","id":"1"},
+        {"name":"rr","title":"aa","content":"aasasasas","id":"2"}
       ],
       groupp: [
         "软件工程","面向对象","系统编程"

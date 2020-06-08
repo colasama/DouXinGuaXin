@@ -1,7 +1,7 @@
 <template>
   <div>
-  <a-layout class="wrapper">
-      <a-layout-content class="contenter" >
+  <a-layout style="min-height:100%">
+      <a-layout-content>
         <a-card style="width:300px;margin:100px auto;">
           <h2>登录</h2>
           <a-input placeholder="用户名" ref="usernameInput" v-model="username" style="margin-top:20px">
@@ -25,19 +25,7 @@
 </template>
 
 <style>
-.wrapper{
-  display:flex;
-  flex-direction:column;
-  min-height:100%;
-}
 
-.contenter{
-    text-align: center;
-    position:absolute;
-    width:100%;
-    height: calc(100% - 100px) ;
-    background: rgb(240, 242, 245);
-  }
 </style>
 
 <script>

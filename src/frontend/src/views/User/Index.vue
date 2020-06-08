@@ -1,7 +1,7 @@
 <template>
   <div>
-  <a-layout class="wrapper">
-      <a-layout-content class="contenter">
+  <a-layout style="min-height:100%">
+      <a-layout-content>
         <a-page-header
             style="margin-left:28px;margin-top:30px"
             title="个人主页"
@@ -32,27 +32,6 @@
 </template>
 
 <style>
-.wrapper{
-  display:flex;
-  flex-direction:column;
-  min-height:100%;
-}
-
-.contenter{
-    text-align: center;
-    position:absolute;
-    width:100%;
-    height: calc(100% - 100px) ;
-    background: rgb(240, 242, 245);
-  }
-
-.footer{
-  flex: 0;
-  position:absolute;
-  bottom:0;
-  width:100%;
-  background: rgb(227, 232, 236);
-}
 </style>
 
 <script>

@@ -36,6 +36,12 @@ Vue.use(VueRouter)
     component: () => import('../views/Group/Index.vue')
   },
   {
+    path: '/group/object/:id',
+    name: 'GroupObject',
+    meta:{title: '具体小组 - 豆辛瓜辛 - 一个书籍影视交流平台',},
+    component: () => import('../views/Group/Object.vue')
+  },
+  {
     path: '/register',
     name: 'Register',
     meta:{title: '注册 - 豆辛瓜辛 - 一个书籍影视交流平台',},

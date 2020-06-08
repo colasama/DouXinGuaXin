@@ -1,7 +1,7 @@
 <template>
   <div>
-  <a-layout>
-      <a-layout-content style="margin-top:30px;height:100%" >
+  <a-layout style="min-height:100%">
+      <a-layout-content style="margin-top:30px" >
         <a-button @click="refresh">Refresh</a-button>
         <a-select style="width: 70px" default-value="书籍">
           <a-select-option value="book">

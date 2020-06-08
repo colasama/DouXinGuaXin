@@ -1,7 +1,7 @@
 <template>
   <div>
-  <a-layout class="wrapper" >
-      <a-layout-content class="contenter" >
+  <a-layout style="min-height:100%">
+      <a-layout-content>
 
         <div style="width:300px;margin:100px auto;">
         <a-card>

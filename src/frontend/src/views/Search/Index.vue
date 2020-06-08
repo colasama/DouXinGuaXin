@@ -1,6 +1,6 @@
 <template>
   <div>
-  <a-layout>
+  <a-layout style="min-height:100%">
       <a-layout-content style="margin-top:15%;margin-bottom:15%">
           <h1 style="font-size:40px">千度搜索</h1>
         <a-select style="width: 70px;height: 40px;" default-value="书籍">
