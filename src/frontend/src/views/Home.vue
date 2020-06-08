@@ -3,11 +3,11 @@
     
     <a-layout style="min-height:100%">
       <a-layout-content>
-      <a-carousel :after-change="onChange">
-          <div><h3>1</h3></div>
-          <div><h3>2</h3></div>
-          <div><h3>3</h3></div>
-          <div><h3>4</h3></div>
+      <a-carousel :after-change="onChange" autoplay arrows>
+          <div><img :src="head[0]" style="width:100%" /></div>
+          <div><img :src="head[1]" style="width:100%" /></div>
+          <div><img :src="head[2]" style="width:100%" /></div>
+          <div><img :src="head[3]" style="width:100%" /></div>
         </a-carousel>
         <a-tabs style="text-align: center" default-active-key="1" @change="callback">
           <a-tab-pane key="1" tab="书籍">
@@ -87,6 +87,16 @@ export default {
   components: {
 
   },
+  data(){
+    return{
+      head:[
+        "https://i.loli.net/2020/06/08/Sj6c3gY9Ilebf1N.png",
+        "https://i.loli.net/2020/06/08/TG8EqWNlRjt6MVo.png",
+        "https://i.loli.net/2020/06/08/t5GDicomyeKW7ad.jpg",
+        "https://i.loli.net/2020/06/08/eyvBgJF6lbIVLRp.jpg",
+      ]
+    }
+  },
   created:function(){
     console.log(global_.username);
   },
@@ -103,7 +113,7 @@ export default {
 /* For demo */
 .ant-carousel >>> .slick-slide {
   text-align: center;
-  height: 240px;
+  height: 520px;
   line-height: 240px;
   background: #FFE4B5;
   overflow: hidden;
