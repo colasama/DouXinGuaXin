@@ -23,7 +23,7 @@ headers = {"User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9
 # get测试
 get('http://localhost:5000/movies/1').json()
 get('http://127.0.0.1:5000/search/group_contents?keywords=testtesttest').json()
-
+get('http://localhost:5000/users/book_approvals',headers = headers).json()
 # post测试
 # 下面我是用 postman测试的，token需要加在 header里
 # ModifyPassword + token
@@ -38,8 +38,8 @@ post('http://localhost:5000/books/1/comments',
 post('http://localhost:5000/books/1/scores',
      data={'book_score': '9.0'}, headers=headers).json()
 
-# Book_Comment_Approve
-post('http://localhost:5000/movie_comments/1/approve',
+# Comment_Approve
+post('http://localhost:5000/book_comments/6/approve',
      data={'type': 1}, headers=headers).json()
 delete('http://localhost:5000/movie_comments/1/approve',headers = headers).json()
 

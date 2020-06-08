@@ -15,7 +15,11 @@ src
 3. 返回结果为JSON文件，正确的返回结果均位于`result`，如果出现错误一般会返回`message`，其中会包含错误信息。
 4. 对于进行添加操作的API，一般规则是添加什么，返回什么。
 
-**目前还处于开发阶段，并未进行部署。**
+**URL示例**
+
+`http://182.92.57.178:5000/movies/[Movie_id]`的示例是`http://182.92.57.178:5000/movies/1`
+
+`http://182.92.57.178:5000/books/<int:book_id>/scroes`的示例是`http://182.92.57.178:5000/books/1/scroes`
 
 ## 无需token的API
 
@@ -360,6 +364,18 @@ HTTP方法：`GET`
 | User_phonenum  | string | 手机号   |
 | User_authority | int    | 用户权限 |
 | User_motto     | string | 个性签名 |
+
+#### 获取点赞
+
+HTTP方法：`GET`
+
+请求URL：`http://182.92.57.178:5000/users/[movie或book]_approvals`
+
+| 参数                             | 类型 | 说明                  |
+| -------------------------------- | ---- | --------------------- |
+| Book_comment_id/Movie_comment_id | int  | 书籍/电影评论id       |
+| User_id                          | int  | 用户id                |
+| Type                             | int  | 1表示点赞，-1表示反对 |
 
 #### 密码修改
 

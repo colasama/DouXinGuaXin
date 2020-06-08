@@ -84,10 +84,47 @@ class Get_user_info(Resource):
             return {'message': 'Illegal token.'}, 403
 
 
+class Get_user_movie_approvals(Resource):
+    def get(self):
+        parser = RequestParser()
+        parser.add_argument('token', type=str,
+                            location='headers', required=True)
+        args = parser.parse_args(strict=True)
+        token = args["token"]
+        user_id = verify_token(token)
+        if user_id is None:
+            return {'message': 'Illegal token.'}, 403
+        cursor.execute(
+            "SELECT * FROM Movie_Comment_Approvals WHERE User_id = %d" %
+            (user_id))
+        result = cursor.fetchall()
+        connection.commit()
+        return {"result": result}
+
+
+class Get_user_book_approvals(Resource):
+    def get(self):
+        parser = RequestParser()
+        parser.add_argument('token', type=str,
+                            location='headers', required=True)
+        args = parser.parse_args(strict=True)
+        token = args["token"]
+        user_id = verify_token(token)
+        if user_id is None:
+            return {'message': 'Illegal token.'}, 403
+        cursor.execute(
+            "SELECT * FROM Book_Comment_Approvals WHERE User_id = %d" %
+            (user_id))
+        result = cursor.fetchall()
+        connection.commit()
+        return {"result": result}
+
+
 class Modify_password(Resource):
     def post(self):
         parser = RequestParser()
-        parser.add_argument('token', type=str, location='headers', required=True)
+        parser.add_argument('token', type=str,
+                            location='headers', required=True)
         parser.add_argument('old_password', type=str, required=True)
         parser.add_argument('new_password', type=str, required=True)
         args = parser.parse_args(strict=True)
@@ -122,6 +159,7 @@ class Modify_password(Resource):
 
 class Send_email(Resource):
     '''发送重设密码邮件'''
+
     def post(self):
         parser = RequestParser()
         parser.add_argument('user_email', type=str, required=True)
@@ -137,7 +175,8 @@ class Send_email(Resource):
         send_email('[豆辛瓜辛] Reset Your Password',
                    sender=app.config['ADMINS'][0],
                    recipients=[email],  # templates中内容暂时用于测试
-                   text_body=render_template('reset_password.txt', user=result),
+                   text_body=render_template(
+                       'reset_password.txt', user=result),
                    html_body=render_template('reset_password.html', user=result))
 
 
@@ -145,7 +184,8 @@ class Reset_password(Resource):
     def post(self):
         parser = RequestParser()
         parser.add_argument('new_password', type=str, required=True)
-        parser.add_argument('token', type=str, location="headers", required=True)
+        parser.add_argument('token', type=str,
+                            location="headers", required=True)
         args = parser.parse_args(strict=True)
         token = args.get('token')
         user_id = verify_token(token)
@@ -167,3 +207,5 @@ api.add_resource(Get_user_info, '/users/info')
 api.add_resource(Modify_password, '/users/modify_password')
 api.add_resource(Send_email, '/users/reset_password/send_email')
 api.add_resource(Reset_password, '/users/reset_password')
+api.add_resource(Get_user_movie_approvals, '/users/movie_approvals')
+api.add_resource(Get_user_book_approvals,'/users/book_approvals')
