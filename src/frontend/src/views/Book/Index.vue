@@ -2,6 +2,7 @@
   <div>
   <a-layout>
       <a-layout-content style="margin-top:30px;height:100%" >
+        <a-button @click="refresh">Refresh</a-button>
         <a-select style="width: 70px" default-value="书籍">
           <a-select-option value="book">
             书籍
@@ -11,6 +12,7 @@
           </a-select-option>
         </a-select>
         <a-input-search placeholder="书籍搜索" style="width: 200px" @search="onSearch"/>
+        <div>{{books}}</div>
         <!--以下是列表渲染部分-->
         <a-list :grid="{ gutter: 16, column: 4 }" :data-source="books" style="margin:24px">
           <a-list-item slot="renderItem" slot-scope="book">
@@ -41,17 +43,30 @@ export default {
   data() {
     return {
       books: [
-        {name:'rua1', pro:'re1',star:'5',coversrc:'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png'},
-        {name:'rua2', pro:'re2',star:'5',coversrc:'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png'},
-        {name:'rua3', pro:'re3',star:'5',coversrc:'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png'},
-        {name:'rua4', pro:'re4',star:'5',coversrc:'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png'},
-        {name:'rua5', pro:'re5',star:'5',coversrc:'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png'},
-        {name:'rua6', pro:'re6',star:'5',coversrc:'https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png'}
       ],
     };
   },
   methods: {
-    
+    created(){
+      this.$http.get('http://182.92.57.178:5000/books').then((response)=>{
+        console.log("rua");
+        console.log(response.data);
+        this.books=response.data;
+      }).catch((response)=>{
+        console.log(response);
+      })
+    },
+    refresh(){
+      this.$http.get('http://182.92.57.178:5000/books').then((response)=>{
+        console.log("rua");
+        console.log(response.data);
+        this.books=response.data;
+      }).catch((response)=>{
+        console.log(response);
+      })
+    }
+
+
   }
 };
 </script>
