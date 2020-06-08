@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
+  <div id="app" style="display:flex;flex-direction:column;">
     <AppHeader></AppHeader>
-    <router-view style="text-align: center;margin-top:4px;"/>
+    <router-view style="text-align: center;margin-top:4px;flex:1;"/>
     <AppFooter></AppFooter>
   </div>
 </template>
@@ -9,9 +9,11 @@
 <style>
 html,body,#app{
   height: 100%;
+  min-height: 100%;
   width: 100%;
   margin: 0;
 }
+
 </style>
 
 

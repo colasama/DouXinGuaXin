@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     
-    <a-layout>
+    <a-layout style="min-height:100%">
       <a-layout-content>
       <a-carousel :after-change="onChange">
           <div><h3>1</h3></div>
