@@ -4,6 +4,16 @@
     <a-layout style="min-height:100%">
       <a-layout-content>
       <a-carousel :after-change="onChange" autoplay arrows>
+        <div
+          slot="prevArrow"
+          class="custom-slick-arrow"
+          style="left: 20px;zIndex: 1"
+        >
+          <a-icon type="left-circle" />
+        </div>
+        <div slot="nextArrow"  class="custom-slick-arrow" style="right: 20px">
+          <a-icon type="right-circle" />
+        </div>
           <div><img :src="head[0]" style="width:100%" /></div>
           <div><img :src="head[1]" style="width:100%" /></div>
           <div><img :src="head[2]" style="width:100%" /></div>
@@ -121,5 +131,21 @@ export default {
 
 .ant-carousel >>> .slick-slide h3 {
   color: #fff;
+}
+
+.ant-carousel >>> .custom-slick-arrow {
+  width: 25px;
+  height: 25px;
+  font-size: 25px;
+  color: #fff;
+  background-color: rgba(31, 45, 61, 0.11);
+  opacity: 0.3;
+}
+
+.ant-carousel >>> .custom-slick-arrow:before {
+  display: none;
+}
+.ant-carousel >>> .custom-slick-arrow:hover {
+  opacity: 0.5;
 }
 </style>
