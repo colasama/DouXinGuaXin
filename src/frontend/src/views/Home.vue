@@ -82,6 +82,64 @@
           </a-tab-pane>
           <a-tab-pane key="2" tab="影视">
             <!--这里是影视-->
+            <a-page-header
+              style="border: 1px solid rgb(235, 237, 240);margin-left:25%"
+              title="热点影视"
+              sub-title="24小时内最热影视"
+            />
+            <!--这里是书籍内容-->
+            <div style="padding: 20px;margin: auto;">
+              <a-row type="flex" justify="center" align="top">
+                <a-col :span="4">
+
+                  <a-card hoverable style="width: 240px">
+                    <img
+                      slot="cover"
+                      alt="example"
+                      src="https://img9.doubanio.com/view/subject/l/public/s33621450.jpg"
+                    />
+                    <a-card-meta title="Book1">
+                      <template slot="description">
+                        description 1
+                      </template>
+                    </a-card-meta>
+                  </a-card>
+
+                </a-col>
+                <a-col :span="4">
+
+                  <a-card hoverable style="width: 240px">
+                    <img
+                      slot="cover"
+                      alt="example"
+                      src="https://img9.doubanio.com/view/subject/l/public/s33613369.jpg"
+                    />
+                    <a-card-meta title="Book2">
+                      <template slot="description">
+                        description 2
+                      </template>
+                    </a-card-meta>
+                  </a-card>
+
+                </a-col>
+                <a-col>
+
+                  <a-card hoverable style="width: 240px">
+                    <img
+                      slot="cover"
+                      alt="example"
+                      src="https://img9.doubanio.com/view/subject/l/public/s33601722.jpg"
+                    />
+                    <a-card-meta title="Book3">
+                      <template slot="description">
+                        escription 3
+                      </template>
+                    </a-card-meta>
+                  </a-card>
+                  
+                </a-col>
+              </a-row>
+            </div>
           </a-tab-pane>
         </a-tabs>
       </a-layout-content>

@@ -10,7 +10,8 @@
           <a-input-password placeholder="密码" ref="passwordInput" v-model="password" style="margin-top:20px">
             <a-icon slot="prefix" type="info-circle" />
           </a-input-password>
-          <a-row type="flex" justify="center" style="margin-top:40px;margin-bottom:30px">
+          <a-button type="link" @click="toResetpw" style="text-align:right;margin:10px 0 0 0;">忘记密码？</a-button>
+          <a-row type="flex" justify="center" style="margin-top:10px;margin-bottom:30px">
           <a-col :span="11" style="margin-right:10px">
           <a-button type="primary" block @click="toRegister">注册</a-button>
           </a-col>
@@ -48,6 +49,9 @@
       },   
     },
     methods:{
+      toResetpw(){
+        this.$router.push({path:"/forgetpw"});
+      },
       toRegister(){
       this.$router.push({path:"/register"});
       },

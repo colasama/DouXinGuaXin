@@ -72,6 +72,18 @@ Vue.use(VueRouter)
     component: () => import('../views/Login.vue')
   },
   {
+    path: '/forgetpw',
+    name: 'ForgetPassword',
+    meta:{title: '忘记密码 - 豆辛瓜辛 - 一个书籍影视交流平台',},
+    component: () => import('../views/Forgetpw.vue')
+  },
+  {
+    path: '/user/resetpw',
+    name: 'ResetPassword',
+    meta:{title: '重设密码 - 豆辛瓜辛 - 一个书籍影视交流平台',},
+    component: () => import('../views/User/Resetpw.vue')
+  },
+  {
     path: '/admin',
     name: 'Admin',
     meta:{title: '后台管理 - 豆辛瓜辛 - 一个书籍影视交流平台',},

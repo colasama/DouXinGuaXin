@@ -75,13 +75,28 @@
         repassword:"",
         email:'',
         phonenum:'',
-        message:[]
+        message:[],
+        successVisible:false,
       };
     },
     methods:{ 
       toLogin(){
       this.$router.push({path:"/login"});
     },
+      destroyALL(){
+        this.$destroyAll();
+      },
+      showSuccess(){
+        this.$success({
+          centered: true,
+          title: '注册成功',
+          content: "已经将激活邮件发送至您的邮箱，请点击链接后完成最后的注册！",//<a-result status="success" title=""/>,
+          onOK(){
+            this.destroyALL();
+            this.toLogin();
+            }
+        })
+      },
       register(){
         var regEmail = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
         var regPhone = /^[0-9]{11}$/;
@@ -116,7 +131,7 @@
         }).catch(function(error){
           console.log(error); 
         })
-        this.toLogin();
+        this.showSuccess();
       }
     }
   }
