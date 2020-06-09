@@ -23,25 +23,33 @@
         </a-list>
         
         <a-divider/>
+        
         <a-page-header
             style="margin-left:10%;margin-top:30px"
-            title="今日神贴"
-            sub-title="God Posts"
+            title="热门帖子"
+            sub-title="Hot Posts"
         />
-
-        <a-list item-layout="horizontal" :data-source="posts">
-          <a-list-item style="margin:0 200px 0 200px" slot="renderItem" slot-scope="item">
-            <a-list-item-meta
-              :description="item.content"
-            >
-              <a slot="title" :href="'/#/group/object/'+item.id">{{ item.title }}</a>
-              <a-avatar
-                slot="avatar"
-                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-              />
-            </a-list-item-meta>
-          </a-list-item>
-        </a-list>
+              <a-list
+                  class="comment-list"
+                  item-layout="vertical"
+                  :data-source="posts"
+                  style="margin:24px 200px 0 200px;text-align:center"
+              >
+              <a-list-item slot="renderItem" slot-scope="item" style="text-align:left">
+                  <a-list-item-meta :description="item.content">
+                      <a slot="title" :href="'/object/'+item.id">
+                      {{item.title}}
+                      </a>
+                      <!--a-avatar slot="avatar" :src="item.avatar" /-->
+                  </a-list-item-meta>
+                  <template slot="actions" >
+                      <span> <a-icon type="like-o" style="margin-left: 8px" /> 赞</span>
+                      <span> <a-icon type="dislike-o" style="margin-left: 8px" /> 踩</span>
+                      <span> <a-icon type="warning" style="margin-left: 8px" /> 举报</span>
+                      <a-tooltip :title="item.Create_time"><span>{{ item.Create_time}}</span></a-tooltip>    
+                  </template>
+              </a-list-item>
+              </a-list>
       </a-layout-content>
     </a-layout>
   </div>

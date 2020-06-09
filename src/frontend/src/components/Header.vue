@@ -18,7 +18,7 @@
             </a-button>
             <a-dropdown v-if="!showLogin">
               <a-menu slot="overlay" @click="handleMenuClick">
-                <a-menu-item key="1">
+                <a-menu-item key="1" @click="toUserindex">
                   个人主页
                 </a-menu-item>
                 <a-menu-item key="2">
@@ -27,8 +27,8 @@
                 <a-menu-item key="3">
                   退出
                 </a-menu-item>
-              </a-menu>
-              <a-button type="link"> 欢迎回来，{{username}}。 <a-icon type="down" /> </a-button>
+              </a-menu> 
+              <a-button type="link" @clock="toUserindex"> 欢迎回来，{{username}}。 <a-icon type="down" /> </a-button>
             </a-dropdown>
             <!--a-sub-menu key="topic" v-if="showExit">
               <span>
@@ -121,6 +121,9 @@ export default {
     }
   },
   methods: {
+    handleMenuClick(){
+      this.toUserindex();
+    },
     exit(){
       this.showExit=false;
       this.showLogin=true;
@@ -152,7 +155,11 @@ export default {
     toLogin(){
       this.current='login';
       this.$router.push({path:"/login"});
-    }
+    },
+    toUserindex(){
+      this.current='login';
+      this.$router.push({path:"/user/index"});
+    },
   }
 };
 </script>
