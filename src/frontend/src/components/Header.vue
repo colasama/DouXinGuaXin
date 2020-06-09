@@ -16,7 +16,21 @@
             <a-button type="primary" size="small" @click="toLogin" style="margin-left:15px;margin-right:48px" v-if="showLogin">
               登录
             </a-button>
-            <a-sub-menu key="topic" v-if="showExit">
+            <a-dropdown v-if="!showLogin">
+              <a-menu slot="overlay" @click="handleMenuClick">
+                <a-menu-item key="1">
+                  个人主页
+                </a-menu-item>
+                <a-menu-item key="2">
+                  设置
+                </a-menu-item>
+                <a-menu-item key="3">
+                  退出
+                </a-menu-item>
+              </a-menu>
+              <a-button type="link"> 欢迎回来，{{username}}。 <a-icon type="down" /> </a-button>
+            </a-dropdown>
+            <!--a-sub-menu key="topic" v-if="showExit">
               <span>
                 <a-icon/>欢迎您：{{username_head}}
               </span>
@@ -24,7 +38,7 @@
                 <a-menu-item key="setting:1">Option 1</a-menu-item>
                 <a-menu-item key="setting:2" @click="exit">登出</a-menu-item>
               </a-menu-item-group>
-            </a-sub-menu>
+            </a-sub-menu-->
         </a-menu>
   </div>
 </template>
@@ -70,14 +84,19 @@ export default {
   data() {
     return {
       showExit:false,
-      showLogin:true,
+      showLogin:false,//控制注册登录按钮和按钮菜单的出现
       current: ['index'],
+      username:"Colanns",
     };
   },
   created: function(){
     document.title = this.$route.meta.title || this.$route.meta.pathName
-    console.log(global_.token)
-    console.log('head has been created')
+    console.log(global_.token);
+    console.log('head has been created');
+    if(global_.username!='not login'){//意念写代码，可能有点问题
+      this.showLogin=false;
+      this.username=global_.username;
+    }
   },
   computed:{
     token_head:function(){

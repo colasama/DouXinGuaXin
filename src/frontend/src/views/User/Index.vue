@@ -15,15 +15,20 @@
           :active-tab-key="noTitleKey"
           @tabChange="key => onTabChange(key, 'noTitleKey')"
         >
-          <p v-if="noTitleKey === 'article'">
-            article content
-          </p>
-          <p v-else-if="noTitleKey === 'app'">
-            app content
-          </p>
-          <p v-else-if="noTitleKey === 'project'">
-            project content
-          </p>
+          <div v-if="noTitleKey === 'article'" style="margin-bottom:20px">
+            <a-avatar :size="128" style="margin-top:20px"></a-avatar>
+            <div style="font-size:24px;color:grey;margin:10px"><b>{{User_name}}</b></div>
+            <div>账号：colanns</div>
+            <div>ID: 0000001</div>
+            <div>手机号：13051008168</div>
+            <div>邮箱：mycolands@gmail.com</div>
+          </div>
+          <div v-else-if="noTitleKey === 'project'">
+            <div><a-input placeholder="手机号" style="width:400px;margin-top:20px"></a-input></div>
+            <div><a-input placeholder="修改邮箱" style="width:400px;margin-top:20px"></a-input></div>
+            <div><a-input placeholder="昵称" style="width:400px;margin-top:20px"></a-input></div>
+            <div><a-button type="primary" style="width:400px;margin:20px 0 20px 0">保存</a-button></div>
+          </div>
         </a-card>
       </div>
       </a-layout-content>
@@ -38,6 +43,7 @@
 export default {
   data() {
     return {
+      User_name:"Colanns",
       tabList: [
         {
           key: 'tab1',
@@ -59,16 +65,12 @@ export default {
           tab: '个人信息',
         },
         {
-          key: 'app',
-          tab: '头像',
-        },
-        {
           key: 'project',
           tab: '设置',
         },
       ],
       key: 'tab1',
-      noTitleKey: 'app',
+      noTitleKey: 'article',
     };
   },
   methods: {

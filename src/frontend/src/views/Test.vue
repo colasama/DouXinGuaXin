@@ -22,10 +22,9 @@
 
 <script>
     import cReport from '../components/Report.vue';
-
     export default {
         components:{
-            cReport
+            cReport,
         },
         data() {
             return {

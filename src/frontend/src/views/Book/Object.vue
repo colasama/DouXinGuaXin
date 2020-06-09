@@ -61,9 +61,6 @@
                       <a-icon type="dislike-o" style="margin-left: 8px" />踩
                     </span>
                     <span>
-                      <a-icon type="message" style="margin-left: 8px" />回复
-                    </span>
-                    <span>
                       <a-icon type="warning" style="margin-left: 8px" />举报
                     </span>
                   </template>

@@ -22,15 +22,16 @@
         <a-tabs style="text-align: center" default-active-key="1" @change="callback">
           <a-tab-pane key="1" tab="书籍">
             <a-page-header
-              style="border: 1px solid rgb(235, 237, 240);margin-left:25%"
+              style="margin-left:25%"
               title="热点书籍"
               sub-title="24小时内最热书籍"
             />
             <!--这里是书籍内容-->
             <div style="padding: 20px;margin: auto;">
               <a-row type="flex" justify="center" align="top">
-                <a-col :span="4">
+                <a-col :span="4"/>
 
+                <a-col :span="4">
                   <a-card hoverable style="width: 240px">
                     <img
                       slot="cover"
@@ -43,10 +44,11 @@
                       </template>
                     </a-card-meta>
                   </a-card>
-
                 </a-col>
-                <a-col :span="4">
 
+                <a-col :span="2"/>
+
+                <a-col :span="4">
                   <a-card hoverable style="width: 240px">
                     <img
                       slot="cover"
@@ -59,10 +61,11 @@
                       </template>
                     </a-card-meta>
                   </a-card>
-
                 </a-col>
-                <a-col>
 
+                <a-col :span="2"/>
+                
+                <a-col :span="4">
                   <a-card hoverable style="width: 240px">
                     <img
                       slot="cover"
@@ -75,23 +78,25 @@
                       </template>
                     </a-card-meta>
                   </a-card>
-                  
                 </a-col>
+
+              <a-col :span="4"/>
               </a-row>
             </div>
           </a-tab-pane>
           <a-tab-pane key="2" tab="影视">
             <!--这里是影视-->
             <a-page-header
-              style="border: 1px solid rgb(235, 237, 240);margin-left:25%"
+              style="margin-left:25%"
               title="热点影视"
               sub-title="24小时内最热影视"
             />
-            <!--这里是书籍内容-->
+             <!--这里是书籍内容-->
             <div style="padding: 20px;margin: auto;">
               <a-row type="flex" justify="center" align="top">
-                <a-col :span="4">
+                <a-col :span="4"/>
 
+                <a-col :span="4">
                   <a-card hoverable style="width: 240px">
                     <img
                       slot="cover"
@@ -104,10 +109,11 @@
                       </template>
                     </a-card-meta>
                   </a-card>
-
                 </a-col>
-                <a-col :span="4">
 
+                <a-col :span="2"/>
+
+                <a-col :span="4">
                   <a-card hoverable style="width: 240px">
                     <img
                       slot="cover"
@@ -120,10 +126,11 @@
                       </template>
                     </a-card-meta>
                   </a-card>
-
                 </a-col>
-                <a-col>
 
+                <a-col :span="2"/>
+                
+                <a-col :span="4">
                   <a-card hoverable style="width: 240px">
                     <img
                       slot="cover"
@@ -136,12 +143,66 @@
                       </template>
                     </a-card-meta>
                   </a-card>
-                  
                 </a-col>
+
+              <a-col :span="4"/>
               </a-row>
             </div>
           </a-tab-pane>
         </a-tabs>
+
+        <div>
+          <a-row>
+            <a-col :span="3" />
+
+            <a-col :span="12">
+              <a-page-header
+                style="margin-left:24px"
+                title="今日神评"
+              />
+              <!--帖子渲染部分-->
+              <a-list
+                  class="comment-list"
+                  item-layout="vertical"
+                  :data-source="posts"
+                  style="margin:24px;text-align:center"
+              >
+              <a-list-item slot="renderItem" slot-scope="item" style="text-align:left">
+                  <a-list-item-meta :description="item.Group_content_content">
+                      <a slot="title" :href="'/object/'+item.Group_content_id">
+                      {{item.Group_content_title}}
+                      </a>
+                      <!--a-avatar slot="avatar" :src="item.avatar" /-->
+                  </a-list-item-meta>
+                  <template slot="actions" >
+                      <span> <a-icon type="like-o" style="margin-left: 8px" /> 赞</span>
+                      <span> <a-icon type="dislike-o" style="margin-left: 8px" /> 踩</span>
+                      <span> <a-icon type="warning" style="margin-left: 8px" /> 举报</span>
+                      <a-tooltip :title="item.Create_time"><span>{{ item.Create_time}}</span></a-tooltip>    
+                  </template>
+              </a-list-item>
+              </a-list>
+            </a-col>
+
+            <a-col :span="1">
+              <a-divider type="vertical"></a-divider>
+            </a-col>
+            <a-col :span="5" style="text-align:left">
+              <a-page-header
+                style="margin-left:0px"
+                title="热门话题"
+              />
+              <a-card style="margin-top:10px">
+                <div style="color:rgb(170, 46, 24);"><b>#一个小组</b></div>
+              </a-card>
+              <a-card style="margin-top:10px">
+                <div style="color:rgb(170, 46, 24);"><b>#二个小组</b></div>
+              </a-card>
+            </a-col>
+
+            <a-col :span="3"/>
+          </a-row>
+        </div>
       </a-layout-content>
     </a-layout>
   </div>
@@ -162,7 +223,13 @@ export default {
         "https://i.loli.net/2020/06/08/TG8EqWNlRjt6MVo.png",
         "https://i.loli.net/2020/06/08/t5GDicomyeKW7ad.jpg",
         "https://i.loli.net/2020/06/08/eyvBgJF6lbIVLRp.jpg",
-      ]
+      ],
+      posts:[
+            {"Group_content_id": 4, "Group_content_content": "testtesttest", "Group_content_title": "test", "Group_id":1, 
+            "User_id": 15, "Username":"test","Group_content_image": "/example", "Create_time": "2020-06-03 17:50:52", "Is_highlighted": 1, "Is_pinned": 1}, 
+            {"Group_content_id": 5, "Group_content_content": "testtesttest123", "Group_content_title": "test123", "Group_id": 1, 
+            "User_id": 15,  "Username":"test","Group_content_image": "/example", "Create_time": "2020-06-03 18:30:04", "Is_highlighted": 1, "Is_pinned": 1}
+        ]
     }
   },
   created:function(){
@@ -183,7 +250,7 @@ export default {
   text-align: center;
   height: 520px;
   line-height: 240px;
-  background: #FFE4B5;
+  background: rgb(255, 192, 181);
   overflow: hidden;
 }
 

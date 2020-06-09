@@ -57,9 +57,10 @@ export default {
   data() {
     return {
       groups: [
-        {"name":"系统编程","value":"4"},
-        {"name":"面向对象","value":"5"},
-        {"name":"软件工程","value":"5"}
+        {"name":"系统编程","value":"28"},
+        {"name":"面向对象","value":"30"},
+        {"name":"软件工程","value":"31"},
+        {"name":"面向对象","value":"20"},
       ],
       posts:[
         {"name":"rr","title":"aa","content":"aasasasas","id":"1"},
