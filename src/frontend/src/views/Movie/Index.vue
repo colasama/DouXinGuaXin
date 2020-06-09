@@ -1,18 +1,14 @@
 <template>
   <div>
   <a-layout style="min-height:100%">
-      <a-layout-content style="margin-top:30px;" >
+      <a-layout-content>
+        <a-page-header
+            style="margin-left:28px;margin-top:30px"
+            title="影视"
+            sub-title="Movies"
+        />
         <a-button @click="refresh">Refresh</a-button>
-        <a-select style="width: 70px" default-value="书籍">
-          <a-select-option value="book">
-            书籍
-          </a-select-option>
-          <a-select-option value="movie">
-            影视
-          </a-select-option>
-        </a-select>
-        <a-input-search placeholder="影视搜索" style="width: 200px" @search="onSearch"/>
-        <div>{{books}}</div>
+        <div>{{books}}</div><!--调试用div, 最后请删除-->
         <!--以下是列表渲染部分-->
         <a-list :grid="{ gutter: 16, column: 4 }" :data-source="books.result" style="margin:24px">
           <a-list-item slot="renderItem" slot-scope="book">

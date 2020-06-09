@@ -2,6 +2,11 @@
   <div>
   <a-layout style="min-height:100%">
       <a-layout-content>
+        <a-page-header
+            style="margin-left:28px;margin-top:30px"
+            title="小组"
+            sub-title="Groups"
+        />
          <wordcloud
           :data="groups"
           nameKey="name"

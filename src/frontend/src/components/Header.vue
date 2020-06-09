@@ -1,7 +1,9 @@
 <template>
   <div class="re-header">
         <div @click ="toIndex" class="top-logo" />
+        
         <a-menu mode="horizontal"  v-model="current" :style="{ lineHeight: '64px' }" class="header-menu">
+          <cSearch class="search"/>
           <a-menu-item key="index" @click = "toIndex">首页</a-menu-item>
           <a-menu-item key="book" @click = "toBook">书籍</a-menu-item>
           <a-menu-item key="movie" @click = "toMovie">影视</a-menu-item>
@@ -37,6 +39,13 @@
   float: left;
 }
 
+.search{
+  cursor: pointer;
+  height: 40px;
+  margin: 0px 0px 0px calc(50vw - 300px);
+  float: left;
+}
+
 .re-header{
   background: rgb(255,255,255);
   height: 62px;
@@ -52,8 +61,12 @@
 
 
 <script>
-import global_ from '../components/Global'
+import global_ from '../components/Global';
+import cSearch from '../components/Search.vue';
 export default {
+  components:{
+    cSearch
+  },
   data() {
     return {
       showExit:false,

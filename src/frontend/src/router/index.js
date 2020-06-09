@@ -13,32 +13,50 @@ Vue.use(VueRouter)
   },
   {
     path: '/book/index',
-    name: 'Book',
+    name: 'Books',
     meta:{title: '书籍 - 豆辛瓜辛 - 一个书籍影视交流平台',},
     component: () => import('../views/Book/Index.vue')
   },
   {
     path: '/movie/index',
-    name: 'Movie',
+    name: 'Movies',
     meta:{title: '电影 - 豆辛瓜辛 - 一个书籍影视交流平台',},
     component: () => import('../views/Movie/Index.vue')
   },
   {
     path: '/topic/index',
-    name: 'Topic',
+    name: 'Topics',
     meta:{title: '话题 - 豆辛瓜辛 - 一个书籍影视交流平台',},
     component: () => import('../views/Topic/Index.vue')
   },
   {
+    path: '/topic/topic/:id',
+    name: 'Topic',
+    meta:{title: '某个话题 - 豆辛瓜辛 - 一个书籍影视交流平台',},
+    component: () => import('../views/Topic/Topic.vue')
+  },
+  {
+    path: '/topic/object/:id',
+    name: 'Some Pictexts',
+    meta:{title: '图文 - 豆辛瓜辛 - 一个书籍影视交流平台',},
+    component: () => import('../views/Topic/Object.vue')
+  },
+  {
     path: '/group/index',
-    name: 'Group',
+    name: 'Groups',
     meta:{title: '小组 - 豆辛瓜辛 - 一个书籍影视交流平台',},
     component: () => import('../views/Group/Index.vue')
   },
   {
+    path: '/group/group/:id',
+    name: 'Group',
+    meta:{title: '某个小组 - 豆辛瓜辛 - 一个书籍影视交流平台',},
+    component: () => import('../views/Group/Group.vue')
+  },
+  {
     path: '/group/object/:id',
     name: 'GroupObject',
-    meta:{title: '具体小组 - 豆辛瓜辛 - 一个书籍影视交流平台',},
+    meta:{title: '帖子 - 豆辛瓜辛 - 一个书籍影视交流平台',},
     component: () => import('../views/Group/Object.vue')
   },
   {
@@ -82,6 +100,12 @@ Vue.use(VueRouter)
     name: 'User',
     meta:{title: '个人主页 - 豆辛瓜辛 - 一个书籍影视交流平台',},
     component: () => import('../views/User/Index.vue')
+  },
+  {
+    path: '/test',
+    name: 'Test',
+    meta:{title: '功能测试页面 - 豆辛瓜辛 - 一个书籍影视交流平台',},
+    component: () => import('../views/Test.vue')
   }
 ]
 
