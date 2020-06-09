@@ -36,7 +36,6 @@
                 <template slot="actions" >
                     <span> <a-icon type="like-o" style="margin-left: 8px" /> 赞</span>
                     <span> <a-icon type="dislike-o" style="margin-left: 8px" /> 踩</span>
-                    <span> <a-icon type="message" style="margin-left: 8px" /> 回复</span>
                     <span> <a-icon type="warning" style="margin-left: 8px" /> 举报</span>
                     <a-tooltip :title="item.Create_time"><span>{{ item.Create_time}}</span></a-tooltip>    
                 </template>
