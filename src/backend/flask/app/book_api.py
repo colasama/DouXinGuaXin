@@ -41,7 +41,7 @@ class Get_books_by_keywords(Resource):
         parser.add_argument("keywords", type=str,
                             location="args", required=True)
         req = parser.parse_args(strict=True)
-        keywords = '%'+req.get("keywords")+'%'
+        keywords = '%' + req.get("keywords") + '%'
         cursor.execute(
             "SELECT * FROM Books WHERE Book_name LIKE '%s' " % (keywords))
         result = cursor.fetchall()
@@ -147,8 +147,9 @@ class Book_score(Resource):
         connection.commit()
         return {'result': result}
 
+
 class Book_comment_approve(Resource):
-    def post(self,book_comment_id):
+    def post(self, book_comment_id):
         parser = RequestParser()
         parser.add_argument('token', type=str, location='headers', required=True)
         parser.add_argument('type', type=int, required=True)
@@ -158,28 +159,28 @@ class Book_comment_approve(Resource):
         user_id = verify_token(token)
         if user_id is None:
             return {'message': 'Illegal token.'}, 403
-        if approve_type !=-1 and approve_type != 1:
-            return {'message':'Illegal type(not -1 or 1).'}, 400
+        if approve_type != -1 and approve_type != 1:
+            return {'message': 'Illegal type(not -1 or 1).'}, 400
         cursor.execute(
             "SELECT Type FROM Book_Comment_Approvals WHERE Book_comment_id = %d AND User_id = %d"
-            %(book_comment_id,user_id)
+            % (book_comment_id, user_id)
         )
         result = cursor.fetchone()
         if result != None:
             connection.commit()
-            return {'message':'duplicate approve or disapprove.'},403
+            return {'message': 'duplicate approve or disapprove.'}, 403
         cursor.execute(
-            "INSERT INTO Book_Comment_Approvals(Book_comment_id,User_id,type) VALUES(%d,%d,%d)" 
-            %(book_comment_id,user_id,approve_type)
+            "INSERT INTO Book_Comment_Approvals(Book_comment_id,User_id,type) VALUES(%d,%d,%d)"
+            % (book_comment_id, user_id, approve_type)
         )
-        if approve_type==1:
-            temp_str="Book_comment_approve"
+        if approve_type == 1:
+            temp_str = "Book_comment_approve"
         else:
-            temp_str="Book_comment_disapprove"
+            temp_str = "Book_comment_disapprove"
         cursor.execute(
             "UPDATE Book_Comments \
             SET %s = %s + 1 \
-            WHERE Book_comment_id = %d" % (temp_str,temp_str,book_comment_id,)
+            WHERE Book_comment_id = %d" % (temp_str, temp_str, book_comment_id,)
         )
         connection.commit()
         cursor.execute(
@@ -189,8 +190,8 @@ class Book_comment_approve(Resource):
         result = cursor.fetchone()
         result['Create_time'] = str(result['Create_time'])
         return {'result': result}
-    
-    def delete(self,book_comment_id):
+
+    def delete(self, book_comment_id):
         parser = RequestParser()
         parser.add_argument('token', type=str, location='headers', required=True)
         args = parser.parse_args()
@@ -200,7 +201,7 @@ class Book_comment_approve(Resource):
             return {'message': 'Illegal token.'}, 403
         cursor.execute(
             "SELECT Type FROM Book_Comment_Approvals WHERE Book_comment_id = %d AND User_id = %d"
-            %(book_comment_id,user_id)
+            % (book_comment_id, user_id)
         )
         result = cursor.fetchone()
         if result == None:
@@ -208,17 +209,17 @@ class Book_comment_approve(Resource):
             abort_if_doesnt_exist("book_comment_id")
         approve_type = result['Type']
         cursor.execute(
-            "DELETE FROM Book_Comment_Approvals WHERE Book_comment_id = %d AND User_id = %d " 
-            %(book_comment_id,user_id)
+            "DELETE FROM Book_Comment_Approvals WHERE Book_comment_id = %d AND User_id = %d "
+            % (book_comment_id, user_id)
         )
-        if approve_type==1:
-            temp_str="Book_comment_approve"
+        if approve_type == 1:
+            temp_str = "Book_comment_approve"
         else:
-            temp_str="Book_comment_disapprove"
+            temp_str = "Book_comment_disapprove"
         cursor.execute(
             "UPDATE Book_Comments \
             SET %s = %s - 1 \
-            WHERE Book_comment_id = %d" % (temp_str,temp_str,book_comment_id)
+            WHERE Book_comment_id = %d" % (temp_str, temp_str, book_comment_id)
         )
         connection.commit()
         cursor.execute(
@@ -230,10 +231,36 @@ class Book_comment_approve(Resource):
         connection.commit()
         return {'result': result}
 
+
+class getAll_comments(Resource):
+    def get(self):
+        def get(self):
+            cursor.execute(
+                "SELECT * FROM Books_Comments"
+            )
+            resultb = cursor.fetchone()
+            connection.commit()
+            cursor.execute(
+                "SELECT * FROM Movies_Comments"
+            )
+            resultm = cursor.fetchone()
+            connection.commit()
+            for i in resultb:
+                i['Create_time'] = str(i['Create_time'])
+            for i in resultm:
+                i['Create_time'] = str(i['Create_time'])
+            return {'result': {
+                'book_comments': resultb,
+                'movie_comments': resultm,
+            }}
+
+
 api.add_resource(Get_all_books, '/books')
-api.add_resource(Get_books_by_id, '/books/<int:book_id>')
+api.add_resource(Get_books_by_id, '/books/<book_id>')
 api.add_resource(Book_comment, '/books/<int:book_id>/comments')
 api.add_resource(Book_score, '/books/<int:book_id>/scores')
 api.add_resource(Get_books_by_keywords, '/search/books')
 api.add_resource(Book_comment_report, '/book_comments/<int:book_comment_id>/report')
-api.add_resource(Book_comment_approve,'/book_comments/<int:book_comment_id>/approve')
+api.add_resource(Book_comment_approve, '/book_comments/<int:book_comment_id>/approve')
+api.add_resource(getAll_comments,'/all_comments')
+
