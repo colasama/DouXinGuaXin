@@ -108,7 +108,7 @@ Vue.use(VueRouter)
     component: () => import('../views/Search/Index.vue')
   },
   {
-    path: '/search/result/',
+    path: '/search/result/:kind/:keywords',
     name: 'SearchResult',
     meta:{title: '搜索结果 - 豆辛瓜辛 - 一个书籍影视交流平台',},
     component: () => import('../views/Search/Result.vue')

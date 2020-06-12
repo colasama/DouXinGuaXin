@@ -24,7 +24,6 @@
     </div>
 </template>
 <script>
-    import Vue from "vue";
     export default{
         data() {
             return{
@@ -34,14 +33,9 @@
         },
         methods:{
             onSearch(){
-                Vue.axios.get('http://182.92.57.178:5000/search/' + this.value + 's', {
-                    params:{keywords:this.keywords}
-                }).then(res=>{
-                    console.log(res)    //后续处理
-                }).catch(function(error){
-                    console.log(error);
+                this.$router.push({
+                    path: "/search/result/" + this.value + "/" + this.keywords
                 })
-                console.log(this.value) //可删
             }
         }
     }

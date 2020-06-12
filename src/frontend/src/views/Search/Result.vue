@@ -6,7 +6,7 @@
           style="text-align:center"
           title="搜索结果"
         />
-        <a-select style="width: 70px;height: 40px;" default-value="书籍">
+        <a-select style="width: 70px;height: 40px;" v-model="kind">
           <a-select-option value="book">
             书籍
           </a-select-option>
@@ -20,7 +20,7 @@
             图文
           </a-select-option>
         </a-select>
-        <a-input-search placeholder="书籍搜索" style="width: 400px;height:40px;" @search="onSearch"/>
+        <a-input-search placeholder="书籍搜索" style="width: 400px;height:40px;" @search="refresh" v-model="keywords"/>
       
       <a-list item-layout="horizontal" :data-source="data">
         <a-list-item slot="renderItem" slot-scope="item">
@@ -28,7 +28,7 @@
           <a-list-item-meta
             :description="item.des"
           >
-            <a slot="title" :href="'/books/' + item.id">{{ item.title }}</a>
+            <a slot="title" :href="'/#/'+ kind + '/object/' + item.id">{{ item.title }}</a>
             <!--a-avatar
               slot="avatar"
               src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
@@ -47,19 +47,47 @@
   export default{
   data() {
       return {
+        kind: this.$route.params.kind,
+        keywords: this.$route.params.keywords,
         results: [],
-        data:[
-          {id:1,title:"aaa",des:"fff"},
-          {id:1,title:"aaa",des:"fff"},
-          {id:1,title:"aaa",des:"fff"},
-          {id:1,title:"aaa",des:"fff"},
-          {id:1,title:"aaa",des:"fff"},
-          {id:1,title:"aaa",des:"fff"},
-        ]
+        data:[]
       };
     },
-    methods:{ 
-
+    mounted() {
+      this.$http.get('http://182.92.57.178:5000/search/' + this.kind + 's', {
+        params:{keywords:this.keywords}
+      }).then(res=>{
+        console.log(res)
+        console.log(this.kind)
+        this.results = res["data"]["result"]
+        this.show()
+      }).catch(function(error){
+        console.log(error);
+      })
+    },
+    methods:{
+      show(){
+        var name = this.kind[0].toUpperCase() + this.kind.substr(1,this.kind.length)
+        for(var i=0;i<this.results.length;i++){
+          var id = this.results[i][name + "_id"]
+          var title = this.results[i][name + "_name"]
+          var des = this.results[i][name + "_intro"]
+          this.data.push({"id":id,"title":title,"des":des})
+        }
+      },
+      refresh(){
+        this.data.length = 0
+        this.$http.get('http://182.92.57.178:5000/search/' + this.kind + 's', {
+          params:{keywords:this.keywords}
+        }).then(res=>{
+          console.log(res)
+          console.log(this.kind)
+          this.results = res["data"]["result"]
+          this.show()
+        }).catch(function(error){
+          console.log(error);
+        })
+      }
     },
   }
 </script>
