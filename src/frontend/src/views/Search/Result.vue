@@ -42,10 +42,11 @@
             :description="item.des"
           >
             <a slot="title" :href="'/#/'+ kind + '/object/' + item.id">{{ item.title }}</a>
-            <!--a-avatar
+            <img
+              width="60px"
               slot="avatar"
-              src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-            /-->
+              :src="item.img"
+            />
           </a-list-item-meta>
           </a-card>
         </a-list-item>
@@ -85,7 +86,8 @@
           var id = this.results[i][name + "_id"]
           var title = this.results[i][name + "_name"]
           var des = this.results[i][name + "_intro"]
-          this.data.push({"id":id,"title":title,"des":des})
+          var img = this.results[i][name + "_src"]
+          this.data.push({"id":id,"title":title,"des":des,"img":img})
         }
       },
       refresh(){
