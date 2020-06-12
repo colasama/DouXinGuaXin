@@ -68,6 +68,7 @@
         }).then(function(res){
           global_.username=self.username;
           global_.token=res.data.result.token;
+          
           console.log("Login Page: "+global_.token);
           self.$router.push({path:"/"});
         }).catch(function(error){

@@ -80,7 +80,7 @@ export default {
   },
   data() {
     return {
-      showLogin:false,//控制注册登录按钮和按钮菜单的出现
+      showLogin:true,//控制注册登录按钮和按钮菜单的出现
       current: ['index'],
       username:"",
       token:''
@@ -108,10 +108,10 @@ export default {
       document.title = this.$route.meta.title || this.$route.meta.pathName
     },
     current:function(){
-      console.log(this.current);
-      console.log(this.username);
       this.username=global_.username;
       this.token=global_.token;
+      console.log(this.current);
+      console.log(this.username);
     },
     token:function(newval){
       console.log('环境改变');
