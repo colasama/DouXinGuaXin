@@ -11,6 +11,7 @@
             <a-icon slot="prefix" type="info-circle" />
           </a-input-password>
           <a-button type="link" @click="toResetpw" style="text-align:right;margin:10px 0 0 0;">忘记密码？</a-button>
+          <div v-if="errorLogin" style="color:red">用户名或密码错误！</div>
           <a-row type="flex" justify="center" style="margin-top:10px;margin-bottom:30px">
           <a-col :span="11" style="margin-right:10px">
           <a-button type="primary" block @click="toRegister">注册</a-button>
@@ -38,6 +39,7 @@
         username:'',
         password:"",
         token:'',
+        errorLogin: false,
       };
     },
     created: function(){
@@ -56,23 +58,25 @@
       this.$router.push({path:"/register"});
       },
       toIndex(){
-        if(global_.token!=''){
-          global_.username=this.username;
-          console.log(global_.token+this.username)
-          this.$router.push({path:"/"});
-        }
+        this.$router.push({path:"/"});
       },
       checklogin(){
+        var self = this;
         Vue.axios.post('http://182.92.57.178:5000/login',{
             name:this.username,
             password:this.password
         }).then(function(res){
           global_.token=res.data.result.token;
+          console.log(global_.token);
+          self.$router.push({path:"/"});
         }).catch(function(error){
+          console.log("nmdwsm");
           console.log(error); 
+          self.changeErrorLogin();
         })
-        console.log(global_.token!='')
-        this.toIndex()
+      },
+      changeErrorLogin(){
+        this.errorLogin=true;
       }
     }
   }
