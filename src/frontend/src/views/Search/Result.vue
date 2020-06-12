@@ -5,22 +5,35 @@
         <a-page-header
           style="text-align:center"
           title="搜索结果"
+          sub-title="Result"
+          @back="() => this.$router.go(-1)"
         />
-        <a-select style="width: 70px;height: 40px;" v-model="kind">
-          <a-select-option value="book">
-            书籍
-          </a-select-option>
-          <a-select-option value="movie">
-            影视
-          </a-select-option>
-          <a-select-option value="posts">
-            帖子
-          </a-select-option>
-          <a-select-option value="topic">
-            图文
-          </a-select-option>
-        </a-select>
-        <a-input-search placeholder="书籍搜索" style="width: 400px;height:40px;" @search="refresh" v-model="keywords"/>
+        
+        <div style="text-align:center">
+          <a-input-group compact style="height:100px;margin-top:14px">
+            <a-select size="large" v-model="kind" style="width:70px;height:50px;text-align:center">
+              <a-select-option value="book">
+                书籍
+              </a-select-option>
+              <a-select-option value="movie">
+                影视
+              </a-select-option>
+              <a-select-option value="group">
+                小组
+              </a-select-option>
+              <a-select-option value="topic">
+                话题
+              </a-select-option>
+              <a-select-option value="topic_content">
+                图文
+              </a-select-option>
+              <a-select-option value="group_content">
+                帖子
+              </a-select-option>
+            </a-select>
+            <a-input-search placeholder="搜索" style="width: 400px;" size="large" @search="refresh" v-model="keywords"/>
+          </a-input-group>
+      </div>
       
       <a-list item-layout="horizontal" :data-source="data">
         <a-list-item slot="renderItem" slot-scope="item">

@@ -1,6 +1,7 @@
 <template>
     <div style="text-align:center">
-        <a-select v-model="value" style="width: 70px">
+        <a-input-group compact style="width: 270px;margin-top:16px">
+          <a-select v-model="value" style="width: 70px;height:50px">
           <a-select-option value="book">
             书籍
           </a-select-option>
@@ -20,7 +21,8 @@
             帖子
           </a-select-option>
         </a-select>
-        <a-input-search placeholder="搜索" style="width: 200px" @search="onSearch" v-model="keywords"/>
+          <a-input-search placeholder="搜索" style="width: 200px" @search="onSearch" v-model="keywords"/>
+        </a-input-group>
     </div>
 </template>
 <script>
