@@ -73,10 +73,6 @@ export default {
           key: 'article',
           tab: '个人信息',
         },
-        {
-          key: 'project',
-          tab: '设置',
-        },
       ],
       key: 'tab1',
       noTitleKey: 'article',

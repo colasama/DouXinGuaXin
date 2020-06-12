@@ -33,16 +33,14 @@
 
                 <a-col :span="4">
                   <a-card hoverable style="width: 240px">
-                    <a :href="'/#/book/object/'+books[0].Book_id">
                     <img
-                      width="60px"
                       slot="cover"
                       alt="example"
-                      :src="books[0].Book_src"
-                    /></a>
-                    <a-card-meta :title="books[0].Book_name">
+                      src="https://img9.doubanio.com/view/subject/l/public/s33621450.jpg"
+                    />
+                    <a-card-meta title="Book1">
                       <template slot="description">
-                        {{books[0].Book_intro.substr(0,35)}}
+                        description 1
                       </template>
                     </a-card-meta>
                   </a-card>
@@ -52,16 +50,14 @@
 
                 <a-col :span="4">
                   <a-card hoverable style="width: 240px">
-                    <a :href="'/#/book/object/'+books[1].Book_id">
-                      <img
-                        width="60px"
-                        slot="cover"
-                        alt="example"
-                        :src="books[1].Book_src"
-                      /></a>
-                    <a-card-meta :title="books[1].Book_name">
+                    <img
+                      slot="cover"
+                      alt="example"
+                      src="https://img9.doubanio.com/view/subject/l/public/s33613369.jpg"
+                    />
+                    <a-card-meta title="Book2">
                       <template slot="description">
-                        {{books[1].Book_intro.substr(0,35)}}
+                        description 2
                       </template>
                     </a-card-meta>
                   </a-card>
@@ -71,16 +67,14 @@
                 
                 <a-col :span="4">
                   <a-card hoverable style="width: 240px">
-                    <a :href="'/#/book/object/'+books[2].Book_id">
-                      <img
-                        width="60px"
-                        slot="cover"
-                        alt="example"
-                        :src="books[2].Book_src"
-                      /></a>
-                    <a-card-meta :title="books[2].Book_name">
+                    <img
+                      slot="cover"
+                      alt="example"
+                      src="https://img9.doubanio.com/view/subject/l/public/s33601722.jpg"
+                    />
+                    <a-card-meta title="Book3">
                       <template slot="description">
-                        {{books[2].Book_intro.substr(0,35)}}
+                        escription 3
                       </template>
                     </a-card-meta>
                   </a-card>
@@ -104,16 +98,14 @@
 
                 <a-col :span="4">
                   <a-card hoverable style="width: 240px">
-                    <a :href="'/#/movie/object/'+movies[0].Movie_id">
-                      <img
-                        width="60px"
-                        slot="cover"
-                        alt="example"
-                        :src="movies[0].Movie_src"
-                      /></a>
-                    <a-card-meta :title="movies[0].Movie_name">
+                    <img
+                      slot="cover"
+                      alt="example"
+                      src="https://img9.doubanio.com/view/subject/l/public/s33621450.jpg"
+                    />
+                    <a-card-meta title="Book1">
                       <template slot="description">
-                        {{movies[0].Movie_intro.substr(0,35)}}
+                        description 1
                       </template>
                     </a-card-meta>
                   </a-card>
@@ -123,16 +115,14 @@
 
                 <a-col :span="4">
                   <a-card hoverable style="width: 240px">
-                    <a :href="'/#/movie/object/'+movies[1].Movie_id">
-                      <img
-                        width="60px"
-                        slot="cover"
-                        alt="example"
-                        :src="movies[1].Movie_src"
-                      /></a>
-                    <a-card-meta :title="movies[1].Movie_name">
+                    <img
+                      slot="cover"
+                      alt="example"
+                      src="https://img9.doubanio.com/view/subject/l/public/s33613369.jpg"
+                    />
+                    <a-card-meta title="Book2">
                       <template slot="description">
-                        {{movies[1].Movie_intro.substr(0,35)}}
+                        description 2
                       </template>
                     </a-card-meta>
                   </a-card>
@@ -142,16 +132,14 @@
                 
                 <a-col :span="4">
                   <a-card hoverable style="width: 240px">
-                    <a :href="'/#/movie/object/'+movies[2].Movie_id">
-                      <img
-                        width="60px"
-                        slot="cover"
-                        alt="example"
-                        :src="movies[2].Movie_src"
-                      /></a>
-                    <a-card-meta :title="movies[2].Movie_name">
+                    <img
+                      slot="cover"
+                      alt="example"
+                      src="https://img9.doubanio.com/view/subject/l/public/s33601722.jpg"
+                    />
+                    <a-card-meta title="Book3">
                       <template slot="description">
-                        {{movies[2].Movie_intro.substr(0,35)}}
+                        escription 3
                       </template>
                     </a-card-meta>
                   </a-card>
@@ -241,48 +229,16 @@ export default {
             "User_id": 15, "Username":"test","Group_content_image": "/example", "Create_time": "2020-06-03 17:50:52", "Is_highlighted": 1, "Is_pinned": 1}, 
             {"Group_content_id": 5, "Group_content_content": "testtesttest123", "Group_content_title": "test123", "Group_id": 1, 
             "User_id": 15,  "Username":"test","Group_content_image": "/example", "Create_time": "2020-06-03 18:30:04", "Is_highlighted": 1, "Is_pinned": 1}
-        ],
-      books: [],
-      movies: []
+        ]
     }
   },
   created:function(){
     console.log(global_.username);
   },
-  mounted() {
-    this.$http.get('http://182.92.57.178:5000/books').then(res=>{
-      console.log(res)
-      this.books = res.data.result
-      this.showBook()
-    }).catch(function(error){
-      console.log(error);
-    })
-    this.$http.get('http://182.92.57.178:5000/movies').then(res=>{
-      console.log(res)
-      this.movies = res.data.result
-      this.showMovie()
-    }).catch(function(error){
-      console.log(error);
-    })
-  },
   methods: {
     onChange(a, b, c) {
       console.log(a, b, c);
     },
-    showBook(){
-      console.log(this.books);
-      this.books.sort(function (a, b) {
-        return b.Book_score - a.Book_score;
-      })
-      console.log(this.books);
-    },
-    showMovie(){
-      console.log(this.movies);
-      this.movies.sort(function (a, b) {
-        return b.Movie_score - a.Movie_score;
-      })
-      console.log(this.movies);
-    }
   },
 
 }

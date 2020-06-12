@@ -61,7 +61,6 @@
                     onOK(){
                         this.destroyALL();
                     }
-
                 })
             },
         }

@@ -1,11 +1,11 @@
 <template>
   <div>
   <a-layout style="min-height:100%">
-      <a-layout-content>
+      <a-layout-content style="margin:0 10% 0 10%">
         <a-page-header
             style="margin-left:28px;margin-top:30px"
             title="话题"
-            sub-title="Groups"
+            sub-title="Topics"
         />
          <wordcloud
           :data="groups"
@@ -17,12 +17,13 @@
           </wordcloud>
 
         <a-list :grid="{ gutter: 16, column: 16 }" :data-source="groupp" style="margin:24px">
-          <a-list-item slot="renderItem" slot-scope="group">
-            <a-tag>{{group}}</a-tag>
+          <a-list-item slot="renderItem" slot-scope="group" style="margin:0 10px 0 10px">
+            <a-tag style="margin:0 50px 0 50px">{{group}}</a-tag>
           </a-list-item>
         </a-list>
         
         <a-divider/>
+
         <a-page-header
             style="margin-left:10%;margin-top:30px"
             title="最热图文"
@@ -65,9 +66,18 @@ export default {
   data() {
     return {
       groups: [
-        {"name":"系统编程","value":"4"},
-        {"name":"面向对象","value":"5"},
-        {"name":"软件工程","value":"5"}
+        {"name":"系统编程","value":"28","id":"1"},
+        {"name":"面向对象","value":"30","id":"2"},
+        {"name":"软件工程","value":"31","id":"3"},
+        {"name":"系统编程","value":"28","id":"1"},
+        {"name":"面向对象","value":"30","id":"2"},
+        {"name":"软件工程","value":"31","id":"3"},
+        {"name":"系统编程","value":"28","id":"1"},
+        {"name":"面向对象","value":"30","id":"2"},
+        {"name":"软件工程","value":"31","id":"3"},
+        {"name":"系统编程","value":"28","id":"1"},
+        {"name":"面向对象","value":"30","id":"2"},
+        {"name":"软件工程","value":"31","id":"3"},
       ],
       posts:[
         {"name":"rr","title":"aa","content":"aasasasas","id":"1"},
