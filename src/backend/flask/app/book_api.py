@@ -235,14 +235,14 @@ class Book_comment_approve(Resource):
 class getAll_comments(Resource):
     def get(self):
         cursor.execute(
-            "SELECT * FROM Books_Comments"
+            "SELECT * FROM Book_Comments"
         )
-        resultb = cursor.fetchone()
+        resultb = cursor.fetchall()
         connection.commit()
         cursor.execute(
-            "SELECT * FROM Movies_Comments"
+            "SELECT * FROM Movie_Comments"
         )
-        resultm = cursor.fetchone()
+        resultm = cursor.fetchall()
         connection.commit()
         for i in resultb:
             i['Create_time'] = str(i['Create_time'])
