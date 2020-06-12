@@ -1,7 +1,7 @@
 <template>
   <div>
   <a-layout style="min-height:100%">
-      <a-layout-content>
+      <a-layout-content style="margin:0 10% 0 10%">
         <a-page-header
             style="margin-left:28px;margin-top:30px"
             title="小组"
@@ -9,16 +9,18 @@
         />
          <wordcloud
           :data="groups"
+          style="cursor: pointer;"
           nameKey="name"
           valueKey="value"
           :color="myColors"
           :showTooltip="false"
+          fontScale="n"
           :wordClick="wordClickHandler">
           </wordcloud>
 
         <a-list :grid="{ gutter: 16, column: 16 }" :data-source="groupp" style="margin:24px">
-          <a-list-item slot="renderItem" slot-scope="group">
-            <a-tag>{{group}}</a-tag>
+          <a-list-item slot="renderItem" slot-scope="group" style="margin:0 10px 0 10px">
+            <a-tag style="margin:0 50px 0 50px">{{group}}</a-tag>
           </a-list-item>
         </a-list>
         
@@ -65,10 +67,18 @@ export default {
   data() {
     return {
       groups: [
-        {"name":"系统编程","value":"28"},
-        {"name":"面向对象","value":"30"},
-        {"name":"软件工程","value":"31"},
-        {"name":"面向对象","value":"20"},
+        {"name":"系统编程","value":"28","id":"1"},
+        {"name":"面向对象","value":"30","id":"2"},
+        {"name":"软件工程","value":"31","id":"3"},
+        {"name":"系统编程","value":"28","id":"1"},
+        {"name":"面向对象","value":"30","id":"2"},
+        {"name":"软件工程","value":"31","id":"3"},
+        {"name":"系统编程","value":"28","id":"1"},
+        {"name":"面向对象","value":"30","id":"2"},
+        {"name":"软件工程","value":"31","id":"3"},
+        {"name":"系统编程","value":"28","id":"1"},
+        {"name":"面向对象","value":"30","id":"2"},
+        {"name":"软件工程","value":"31","id":"3"},
       ],
       posts:[
         {"name":"rr","title":"aa","content":"aasasasas","id":"1"},
@@ -81,9 +91,10 @@ export default {
     };
   },
   methods: {
-    wordClickHandler(){
-      
-    }
+    wordClickHandler(name){
+      console.log(this.groups.findIndex(name).id)
+      this.$router.push({path:"/group/group/"+this.groups.findIndex(name).id});
+    },
   }
 };
 </script>

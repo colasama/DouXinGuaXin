@@ -6,7 +6,8 @@
         <a-layout>
           <a-layout-content>
             <a-page-header style="margin-left:0" title="返回上一页" @back="back" />
-            <a-card style="margin:0 20px 0 20px">
+            <div style="margin:0 auto;max-width:1200px">
+            <a-card style="margin:0 20px 0 20px;max-width:1200px;">
               <a-row>
                 <img style="text-align:left" :src="info.Book_src" height="500px" />
               </a-row>
@@ -26,6 +27,7 @@
                 <div style="margin:0 50px 0 50px">{{info.Book_intro}}</div>
               </a-row>
             </a-card>
+            </div>
           </a-layout-content>
         </a-layout>
         <a-page-header style="margin-left:10%;margin-top:30px" title="评论列表" sub-title="Comments" />
@@ -44,6 +46,7 @@
             </div>
 
             <!--以下是列表渲染部分-->
+            <div style="margin:0 auto;max-width:1000px;text-align:center">
             <a-list
               class="comment-list"
               :header="`共有${comments.length}条评论`"
@@ -51,31 +54,31 @@
               :data-source="comments"
               style="margin:20px;text-align:center"
             >
-              <a-list-item slot="renderItem" slot-scope="item">
-                <a-comment :author="item.User_name" :avatar="item.User_id">
-                  <template slot="actions">
-                    <span>
-                      <a-icon type="like-o" style="margin-left: 8px" />赞
-                    </span>
-                    <span>
-                      <a-icon type="dislike-o" style="margin-left: 8px" />踩
-                    </span>
-                    <span>
-                      <a-icon type="warning" style="margin-left: 8px" />举报
-                    </span>
-                  </template>
-                  <p slot="content">{{ item.Book_comment_content }}</p>
-                  <a-tooltip slot="datetime" :title="item.Create_time">
-                    <span>{{ item.Create_time}}</span>
-                  </a-tooltip>
-                </a-comment>
+              
+              <a-list-item slot="renderItem" slot-scope="item" style="text-align:left">
+                
+                <a-list-item-meta :description="item.Book_comment_content">
+                    <a slot="title">
+                    <b>{{item.Book_comment_title}}</b>
+                    </a>
+                    <a-avatar slot="avatar">{{item.User_name.substring(0,1)}}</a-avatar>
+                </a-list-item-meta>
+                <template slot="actions" >
+                    <span> 作者：{{item.User_name}}</span>
+                    <span> <a-icon type="like-o" style="margin-left: 8px" /> 赞</span>
+                    <span> <a-icon type="dislike-o" style="margin-left: 8px" /> 踩</span>
+                    <span> <a-icon type="warning" style="margin-left: 8px" /> 举报</span>
+                    <a-tooltip :title="item.Create_time"><span>{{ item.Create_time}}</span></a-tooltip>    
+                </template>
               </a-list-item>
             </a-list>
+            </div>
 
             <div style="margin:0 auto;max-width:1000px">
               <a-card title="发表评论" style="text-align:center;margin:24px">
                 <div style="font-size:30px" v-if="commentRate">{{commentRate*2}}</div>
-                <a-rate v-model="commentRate" allow-half />
+                评分：<a-rate v-model="commentRate" allow-half />
+                <a-input v-model="commentTitle" placeholder="请输入标题" style="margin:14px 5px 0 5px;"/>
                 <a-textarea
                   v-model="commentValue"
                   placeholder="请输入评论内容"
