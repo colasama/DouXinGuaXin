@@ -135,8 +135,8 @@ export default {
             this.$route.params.id +
             '/comments',
           {
-            book_comment_title: "Flintstone",
-            book_comment_content: "test_content",
+            book_comment_title: this.commentTitle,
+            book_comment_content: this.commentValue,
           },
           {
             headers:{
