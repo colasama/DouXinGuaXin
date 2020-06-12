@@ -4,7 +4,7 @@ from requests import post, get, put, delete
 
 
 # Register
-post('http://localhost:5000/register', data={'name': 'yzy', 'password': 'yzy123456',
+post('http://182.92.57.178:5000/register', data={'name': 'yzy', 'password': 'yzy123456',
                                              'email': '123@qq.com', 'phonenum': '123456789', 'motto': 'balabalabala'}).json()
 
 # Login

@@ -95,41 +95,13 @@
 <script>
 import moment from "moment";
 import global_ from "../../components/Global";
+import Vue from 'vue'
 export default {
   data() {
     return {
       commentRate: 0,
       info: {},
       comments: {},
-      book: [
-        {
-          name: "Hunter X Hunter",
-          author: "富坚义博",
-          pro:
-            "故事讲述一个自幼丧母的少年小冈，为了要寻找失散多年的父亲，及成为一个和父亲一样出色的“猎人”，踏上了崎岖而漫长的旅程，接受重重测试，途中遇上各色各样的同伴和敌人，各自为了不同的目的而展开一场又一场的战斗……",
-          star: "5",
-          coversrc:
-            "https://img9.doubanio.com/view/subject/l/public/s26041185.jpg"
-        }
-      ],
-      data: [
-        {
-          author: "Han Solo",
-          avatar:
-            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          content:
-            "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-          datetime: moment().subtract(1, "days")
-        },
-        {
-          author: "Han Solo",
-          avatar:
-            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          content:
-            "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-          datetime: moment().subtract(2, "days")
-        }
-      ],
       moment
     };
   },
@@ -153,18 +125,29 @@ export default {
       this.$router.push({ path: "/book/index" });
     },
     comment() {
-      this.$http.post(
-        "http://182.92.57.178:5000/books/" + this.$route.params.id + "comments",
-        {
-          firstName: "Fred",
-          lastName: "Flintstone"
-        },
-        {
-          headers: {
-            token: global_.token
+      console.log(global_.token);
+      Vue.axios
+        .post(
+          'http://182.92.57.178:5000/books/' +
+            this.$route.params.id +
+            '/comments',
+          {
+            book_comment_title: "Flintstone",
+            book_comment_content: "test_content",
+          },
+          {
+            headers:{
+              token:global_.token
+            }
           }
-        }
-      );
+        )
+        .then(response => {
+          console.log(response);
+        })
+        .catch(response => {
+          console.log(response.response);
+          alert("评论失败");
+        });
     }
   }
 };
