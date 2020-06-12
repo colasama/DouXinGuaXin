@@ -17,14 +17,14 @@
               登录
             </a-button>
             <a-dropdown v-if="!showLogin">
-              <a-menu slot="overlay" @click="handleMenuClick">
+              <a-menu slot="overlay">
                 <a-menu-item key="1" @click="toUserindex">
                   个人主页
                 </a-menu-item>
-                <a-menu-item key="2">
+                <a-menu-item key="2" @click="toUserChange">
                   设置
                 </a-menu-item>
-                <a-menu-item key="3">
+                <a-menu-item key="3" @click="exit">
                   退出
                 </a-menu-item>
               </a-menu> 
@@ -83,27 +83,24 @@ export default {
   },
   data() {
     return {
-      showExit:false,
       showLogin:false,//控制注册登录按钮和按钮菜单的出现
       current: ['index'],
-      username:"Colanns",
+      username:"",
+      token:''
     };
   },
   created: function(){
     document.title = this.$route.meta.title || this.$route.meta.pathName
     console.log(global_.token);
     console.log('head has been created');
-    if(global_.username!='not login'){//意念写代码，可能有点问题
-      this.showLogin=false;
-      this.username=global_.username;
-    }
+    this.username=global_.username;
+    this.token=global_.token;
   },
   computed:{
     token_head:function(){
-      console.log('token has changed');
       console.log("是否已登录");
       console.log(global_.token!='');
-      return global_.token;
+      return this.global_.token;
     },
     username_head:function(){
       return global_.username;
@@ -113,20 +110,28 @@ export default {
     $route(){
       document.title = this.$route.meta.title || this.$route.meta.pathName
     },
-    token_head:function(newval){
+    current:function(){
+      console.log(this.current);
+      console.log(this.username);
+      this.username=global_.username;
+      this.token=global_.token;
+    },
+    token:function(newval){
+      console.log('环境改变');
       if(newval=='')
-        this.showExit=false,this.showLogin=true;
+        this.showLogin=true;
       else
-        this.showExit=true,this.showLogin=false;
-    }
+        this.showLogin=false;
+    },
   },
   methods: {
     handleMenuClick(){
       this.toUserindex();
     },
     exit(){
-      this.showExit=false;
       this.showLogin=true;
+      global_.token='';
+      global_.username='not login';
     },
     toIndex(){
       this.current='index';
@@ -158,8 +163,15 @@ export default {
     },
     toUserindex(){
       this.current='login';
-      this.$router.push({path:"/user/index"});
+      this.$router.push({
+        path:"/user/index",
+        query:{
+          token:global_.token
+        }});
     },
+    toUserChange(){
+      this.current='login';
+    }
   }
 };
 </script>

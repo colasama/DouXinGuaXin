@@ -18,16 +18,16 @@
           <div v-if="noTitleKey === 'article'" style="margin-bottom:20px">
             <a-avatar :size="128" style="margin-top:20px"></a-avatar>
             <div style="font-size:24px;color:grey;margin:10px"><b>{{User_name}}</b></div>
-            <div>账号：colanns</div>
-            <div>ID: 0000001</div>
-            <div>手机号：13051008168</div>
-            <div>邮箱：mycolands@gmail.com</div>
+            <div>账号：{{User_name}}</div>
+            <div>ID: {{id}}</div>
+            <div>手机号：{{phonenum}}</div>
+            <div>邮箱：{{email}}</div>
           </div>
           <div v-else-if="noTitleKey === 'project'">
-            <div><a-input placeholder="手机号" style="width:400px;margin-top:20px"></a-input></div>
-            <div><a-input placeholder="修改邮箱" style="width:400px;margin-top:20px"></a-input></div>
-            <div><a-input placeholder="昵称" style="width:400px;margin-top:20px"></a-input></div>
-            <div><a-button type="primary" style="width:400px;margin:20px 0 20px 0">保存</a-button></div>
+            <div><a-input placeholder="手机号" style="width:400px;margin-top:20px" v-model="newphone"></a-input></div>
+            <div><a-input placeholder="修改邮箱" style="width:400px;margin-top:20px" v-model="newemail"></a-input></div>
+            <div><a-input placeholder="昵称" style="width:400px;margin-top:20px" v-model="newname"></a-input></div>
+            <div><a-button type="primary" style="width:400px;margin:20px 0 20px 0" @click="resetInfo">保存</a-button></div>
           </div>
         </a-card>
       </div>
@@ -40,10 +40,19 @@
 </style>
 
 <script>
+import Vue from 'vue'
+import global_ from '../../components/Global'
 export default {
   data() {
     return {
-      User_name:"Colanns",
+      token:"null",
+      User_name:"",
+      id:-1,
+      phonenum:"",
+      email:"",
+      newname:'',
+      newphone:"",
+      newemail:"",
       tabList: [
         {
           key: 'tab1',
@@ -73,11 +82,39 @@ export default {
       noTitleKey: 'article',
     };
   },
+  created:function(){
+    this.getUserInfo();
+    console.log(this.token)
+  },
+  mounted:{
+  },
   methods: {
     onTabChange(key, type) {
       console.log(key, type);
       this[type] = key;
     },
+    getUserInfo(){
+        Vue.axios.get(
+          'http://182.92.57.178:5000/users/info',
+          {
+            headers:{
+              'Authorization':global_.token,
+              'token':global_.token
+            }
+          }
+        ).then((response)=>{
+          console.log(response);
+          console.log(response.data.result.User_id);
+          this.User_name=response.data.result.User_name;
+          this.id=response.data.result.User_id;
+          this.phonenum=response.data.result.User_phonenum;
+          this.email=response.data.result.User_email;
+        }).catch(function(response){
+          console.log(response);
+        })
+      },
+    resetInfo(){
+    }
   },
 };
 </script>
