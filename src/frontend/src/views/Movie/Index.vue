@@ -12,18 +12,21 @@
         <!--以下是列表渲染部分-->
         <a-list :grid="{ gutter: 16, column: 4 }" :data-source="movies.result" style="margin:24px">
           <a-list-item slot="renderItem" slot-scope="movie">
-            <a-card>
+            <a-card style="max-width:400px;min-width:400px">
               <a-row type="flex" justify="center" align="center">
-                <a-col :span="8" >
+                <a-col :span="8" style="text-align:left" >
                 <img
-                  height="200px"
+                  :href="'/object/'+movie.Movie_id"
+                  width="120px"
                   :src="movie.Movie_src"
                 />
                 </a-col>
-                <a-col :span="16">
-                  <a-card-meta :title="movie.Movie_name"/>
-                    {{movie.Movie_intro.substring(0,50)}}...<br/>
-                  <a-rate :default-value="movie.Movie_score" disabled />
+                <a-col :span="3"/>
+                <a-col :span="13" style="text-align:left;max-width:160px;">
+                  <div><a :href="'/#/movie/object/'+movie.Movie_id" style="font-size:20px;"><b>{{movie.Movie_name}}</b></a></div>
+                  <!--a-card-meta :title="movie.Movie_name"/-->
+                    <div style="margin-top:10px;text-indent:2em;text-align:justify">{{movie.Movie_intro.substring(0,50)}}...</div>
+                  <a-rate style="margin-top:10px" :default-value="movie.Movie_score/2" disabled />
                 </a-col>
               </a-row>
             </a-card>

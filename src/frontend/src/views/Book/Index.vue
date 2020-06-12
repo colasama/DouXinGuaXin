@@ -26,7 +26,7 @@
                   <div><a :href="'/#/book/object/'+book.Book_id" style="font-size:20px;"><b>{{book.Book_name}}</b></a></div>
                   <!--a-card-meta :title="book.Book_name"/-->
                     <div style="margin-top:10px;text-indent:2em;text-align:justify">{{book.Book_intro.substring(0,50)}}...</div>
-                  <a-rate style="margin-top:10px" :default-value="book.Book_score" disabled />
+                  <a-rate style="margin-top:10px" :default-value="book.Book_score/2" disabled />
                 </a-col>
               </a-row>
             </a-card>

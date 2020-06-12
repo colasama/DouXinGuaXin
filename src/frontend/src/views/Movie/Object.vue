@@ -8,22 +8,22 @@
             <a-page-header style="margin-left:0" title="返回上一页" @back="back" />
             <a-card style="margin:0 20px 0 20px">
               <a-row>
-                <img style="text-align:left" :src="book[0].coversrc" height="500px" />
+                <img style="text-align:left" :src="movie[0].coversrc" height="500px" />
               </a-row>
               <a-row>
-                <h style="font-size:40px">{{info.Book_name}}</h>
-                <div style="font-size:18px">{{info.Book_writer}}</div>
+                <h style="font-size:40px">{{info.Movie_name}}</h>
+                <div style="font-size:18px">{{info.Movie_writer}}</div>
               </a-row>
               <a-row>
-                <a-rate :value="info.Book_score/2" disabled />
+                <a-rate :value="info.Movie_score/2" disabled />
               </a-row>
               <a-row>
                 <div style="font-size:32px">
-                  <h1>{{info.Book_score}}</h1>
+                  <h1>{{info.Movie_score}}</h1>
                 </div>
               </a-row>
               <a-row>
-                <div style="margin:0 50px 0 50px">{{info.Book_intro}}</div>
+                <div style="margin:0 50px 0 50px">{{info.Movie_intro}}</div>
               </a-row>
             </a-card>
           </a-layout-content>
@@ -64,7 +64,7 @@
                       <a-icon type="warning" style="margin-left: 8px" />举报
                     </span>
                   </template>
-                  <p slot="content">{{ item.Book_comment_content }}</p>
+                  <p slot="content">{{ item.Movie_comment_content }}</p>
                   <a-tooltip slot="datetime" :title="item.Create_time">
                     <span>{{ item.Create_time}}</span>
                   </a-tooltip>
@@ -101,7 +101,7 @@ export default {
       commentRate: 0,
       info:{},
       comments:{},
-      book: [
+      movie: [
         {
           name: "Hunter X Hunter",
           author: "富坚义博",
@@ -137,7 +137,7 @@ export default {
     console.log("乌乌创建了");
     console.log(this.$route.params.id);
     this.$http
-      .get("http://182.92.57.178:5000/books/"+this.$route.params.id)
+      .get("http://182.92.57.178:5000/movies/"+this.$route.params.id)
       .then(response => {
         this.info = response.data.result.info;
         this.comments = response.data.result.comments;
@@ -150,7 +150,7 @@ export default {
   },
   methods: {
     back() {
-      this.$router.push({ path: "/book/index" });
+      this.$router.push({ path: "/movie/index" });
     }
   }
 };
