@@ -248,9 +248,8 @@ export default {
 /* For demo */
 .ant-carousel >>> .slick-slide {
   text-align: center;
-  height: 520px;
-  line-height: 240px;
-  background: rgb(255, 192, 181);
+  line-height: calc( 100% / 1700 * 520 );
+  background: rgb(66, 66, 66);
   overflow: hidden;
 }
 

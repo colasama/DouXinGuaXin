@@ -124,6 +124,16 @@ Vue.use(VueRouter)
     name: 'Test',
     meta:{title: '功能测试页面 - 豆辛瓜辛 - 一个书籍影视交流平台',},
     component: () => import('../views/Test.vue')
+  },
+  {
+    path: '/404',
+    name: '404',
+    meta:{title: '乌乌，页面丢失了 - 豆辛瓜辛 - 一个书籍影视交流平台',},
+    component: () => import('../views/404.vue')
+  },
+  {
+    path: '*',    // 此处需特别注意至于最底部
+    redirect: '/404'
   }
 ]
 

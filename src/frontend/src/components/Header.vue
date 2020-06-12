@@ -21,14 +21,11 @@
                 <a-menu-item key="1" @click="toUserindex">
                   个人主页
                 </a-menu-item>
-                <a-menu-item key="2" @click="toUserChange">
-                  设置
-                </a-menu-item>
                 <a-menu-item key="3" @click="exit">
                   退出
                 </a-menu-item>
               </a-menu> 
-              <a-button type="link" @clock="toUserindex"> 欢迎回来，{{username}}。 <a-icon type="down" /> </a-button>
+              <a-button type="link" @click="toUserindex"> 欢迎回来，{{username}}。 <a-icon type="down" /> </a-button>
             </a-dropdown>
             <!--a-sub-menu key="topic" v-if="showExit">
               <span>
