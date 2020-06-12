@@ -234,25 +234,24 @@ class Book_comment_approve(Resource):
 
 class getAll_comments(Resource):
     def get(self):
-        def get(self):
-            cursor.execute(
-                "SELECT * FROM Books_Comments"
-            )
-            resultb = cursor.fetchone()
-            connection.commit()
-            cursor.execute(
-                "SELECT * FROM Movies_Comments"
-            )
-            resultm = cursor.fetchone()
-            connection.commit()
-            for i in resultb:
-                i['Create_time'] = str(i['Create_time'])
-            for i in resultm:
-                i['Create_time'] = str(i['Create_time'])
-            return {'result': {
-                'book_comments': resultb,
-                'movie_comments': resultm,
-            }}
+        cursor.execute(
+            "SELECT * FROM Books_Comments"
+        )
+        resultb = cursor.fetchone()
+        connection.commit()
+        cursor.execute(
+            "SELECT * FROM Movies_Comments"
+        )
+        resultm = cursor.fetchone()
+        connection.commit()
+        for i in resultb:
+            i['Create_time'] = str(i['Create_time'])
+        for i in resultm:
+            i['Create_time'] = str(i['Create_time'])
+        return {'result': {
+            'book_comments': resultb,
+            'movie_comments': resultm,
+        }}
 
 
 api.add_resource(Get_all_books, '/books')
