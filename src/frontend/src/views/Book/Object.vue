@@ -52,7 +52,7 @@
               style="margin:20px;text-align:center"
             >
               <a-list-item slot="renderItem" slot-scope="item">
-                <a-comment :author="item.User_id" :avatar="item.User_id">
+                <a-comment :author="item.User_name" :avatar="item.User_id">
                   <template slot="actions">
                     <span>
                       <a-icon type="like-o" style="margin-left: 8px" />赞
