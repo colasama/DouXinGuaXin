@@ -66,12 +66,14 @@
             name:this.username,
             password:this.password
         }).then(function(res){
+          global_.username=self.username;
           global_.token=res.data.result.token;
-          console.log(global_.token);
+          console.log("Login Page: "+global_.token);
           self.$router.push({path:"/"});
         }).catch(function(error){
           console.log("nmdwsm");
-          console.log(error); 
+          console.log(error);
+
           self.changeErrorLogin();
         })
       },
