@@ -22,7 +22,9 @@ class Get_movies_by_id(Resource):
         if result is None:
             abort_if_doesnt_exist("Movie_id")
         cursor.execute(
-            "SELECT * FROM Movie_Comments WHERE Movie_id LIKE '%s'" % (movie_id))
+            "SELECT Movie_comment_id,Movie_comment_title,Movie_comment_approve,Movie_comment_disapprove,Movie_comment_content,\
+            Movie_id,Create_time,`User`.User_id,`User`.User_name FROM Movie_Comments,`User`\
+            WHERE Movie_id= %d and Movie_Comments.User_id=User.User_id" % (movie_id))
         content = cursor.fetchall()
         connection.commit()
         for i in content:
@@ -231,7 +233,7 @@ class Movie_comment_approve(Resource):
         return {'result': result}
 
 api.add_resource(Get_all_movies, '/movies')
-api.add_resource(Get_movies_by_id, '/movies/<movie_id>')
+api.add_resource(Get_movies_by_id, '/movies/<int:movie_id>')
 api.add_resource(Movie_comment, '/movies/<int:movie_id>/comments')
 api.add_resource(Movie_score, '/movies/<int:movie_id>/scores')
 api.add_resource(Get_movies_by_keywords, '/search/movies')

@@ -8,7 +8,7 @@
             <a-page-header style="margin-left:0" title="返回上一页" @back="back" />
             <a-card style="margin:0 20px 0 20px">
               <a-row>
-                <img style="text-align:left" :src="movie[0].coversrc" height="500px" />
+                <img style="text-align:left" :src="info.Movie_src" height="500px" />
               </a-row>
               <a-row>
                 <h style="font-size:40px">{{info.Movie_name}}</h>

@@ -8,7 +8,7 @@
             <a-page-header style="margin-left:0" title="返回上一页" @back="back" />
             <a-card style="margin:0 20px 0 20px">
               <a-row>
-                <img style="text-align:left" :src="book[0].coversrc" height="500px" />
+                <img style="text-align:left" :src="info.Book_src" height="500px" />
               </a-row>
               <a-row>
                 <h style="font-size:40px">{{info.Book_name}}</h>
@@ -74,7 +74,7 @@
 
             <div style="margin:0 auto;max-width:1000px">
               <a-card title="发表评论" style="text-align:center;margin:24px">
-                <div style="font-size:30px" v-if="commentRate">{{commentRate}}</div>
+                <div style="font-size:30px" v-if="commentRate">{{commentRate*2}}</div>
                 <a-rate v-model="commentRate" allow-half />
                 <a-textarea
                   v-model="commentValue"
@@ -82,7 +82,7 @@
                   :auto-size="{ minRows: 4, maxRows: 4 }"
                   style="margin:14px 5px 0 5px;"
                 />
-                <a-button style="margin:15px 5px 0 5px;">发表</a-button>
+                <a-button style="margin:15px 5px 0 5px;" @click="comment">发表</a-button>
               </a-card>
             </div>
           </a-col>
@@ -94,13 +94,13 @@
 
 <script>
 import moment from "moment";
-
+import global_ from "../../components/Global";
 export default {
   data() {
     return {
       commentRate: 0,
-      info:{},
-      comments:{},
+      info: {},
+      comments: {},
       book: [
         {
           name: "Hunter X Hunter",
@@ -137,7 +137,7 @@ export default {
     console.log("乌乌创建了");
     console.log(this.$route.params.id);
     this.$http
-      .get("http://182.92.57.178:5000/books/"+this.$route.params.id)
+      .get("http://182.92.57.178:5000/books/" + this.$route.params.id)
       .then(response => {
         this.info = response.data.result.info;
         this.comments = response.data.result.comments;
@@ -151,6 +151,20 @@ export default {
   methods: {
     back() {
       this.$router.push({ path: "/book/index" });
+    },
+    comment() {
+      this.$http.post(
+        "http://182.92.57.178:5000/books/" + this.$route.params.id + "comments",
+        {
+          firstName: "Fred",
+          lastName: "Flintstone"
+        },
+        {
+          headers: {
+            token: global_.token
+          }
+        }
+      );
     }
   }
 };

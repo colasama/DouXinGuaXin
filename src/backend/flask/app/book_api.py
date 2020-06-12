@@ -22,7 +22,9 @@ class Get_books_by_id(Resource):
         if result is None:
             abort_if_doesnt_exist("Book_id")
         cursor.execute(
-            "SELECT * FROM Book_Comments WHERE Book_id LIKE '%s'" % (book_id))
+            "SELECT Book_comment_id,Book_comment_title,Book_comment_approve,Book_comment_disapprove,Book_comment_content,\
+            Book_id,Create_time,`User`.User_id,`User`.User_name FROM Book_Comments,`User`\
+            WHERE Book_id= %d and Book_Comments.User_id=User.User_id" % (book_id))
         content = cursor.fetchall()
         connection.commit()
         for i in content:
