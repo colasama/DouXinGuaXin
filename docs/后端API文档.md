@@ -459,7 +459,7 @@ HTTP方法：`POST`
 
 HTTP方法：`POST`
 
-请求URL：`http://182.92.57.178:5000/books/<int:book_id>/scroes`
+请求URL：`http://182.92.57.178:5000/books/<int:book_id>/scores`
 
 请求参数
 

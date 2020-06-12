@@ -7,26 +7,26 @@
           <a-layout-content>
             <a-page-header style="margin-left:0" title="返回上一页" @back="back" />
             <div style="margin:0 auto;max-width:1200px">
-            <a-card style="margin:0 20px 0 20px;max-width:1200px;">
-              <a-row>
-                <img style="text-align:left" :src="info.Book_src" height="500px" />
-              </a-row>
-              <a-row>
-                <h style="font-size:40px">{{info.Book_name}}</h>
-                <div style="font-size:18px">{{info.Book_writer}}</div>
-              </a-row>
-              <a-row>
-                <a-rate :value="info.Book_score/2" disabled />
-              </a-row>
-              <a-row>
-                <div style="font-size:32px">
-                  <h1>{{info.Book_score}}</h1>
-                </div>
-              </a-row>
-              <a-row>
-                <div style="margin:0 50px 0 50px">{{info.Book_intro}}</div>
-              </a-row>
-            </a-card>
+              <a-card style="margin:0 20px 0 20px;max-width:1200px;">
+                <a-row>
+                  <img style="text-align:left" :src="info.Book_src" height="500px" />
+                </a-row>
+                <a-row>
+                  <h style="font-size:40px">{{info.Book_name}}</h>
+                  <div style="font-size:18px">{{info.Book_writer}}</div>
+                </a-row>
+                <a-row>
+                  <a-rate :value="info.Book_score/2" disabled />
+                </a-row>
+                <a-row>
+                  <div style="font-size:32px">
+                    <h1>{{info.Book_score}}</h1>
+                  </div>
+                </a-row>
+                <a-row>
+                  <div style="margin:0 50px 0 50px">{{info.Book_intro}}</div>
+                </a-row>
+              </a-card>
             </div>
           </a-layout-content>
         </a-layout>
@@ -47,38 +47,44 @@
 
             <!--以下是列表渲染部分-->
             <div style="margin:0 auto;max-width:1000px;text-align:center">
-            <a-list
-              class="comment-list"
-              :header="`共有${comments.length}条评论`"
-              item-layout="vertical"
-              :data-source="comments"
-              style="margin:20px;text-align:center"
-            >
-              
-              <a-list-item slot="renderItem" slot-scope="item" style="text-align:left">
-                
-                <a-list-item-meta :description="item.Book_comment_content">
+              <a-list
+                class="comment-list"
+                :header="`共有${comments.length}条评论`"
+                item-layout="vertical"
+                :data-source="comments"
+                style="margin:20px;text-align:center"
+              >
+                <a-list-item slot="renderItem" slot-scope="item" style="text-align:left">
+                  <a-list-item-meta :description="item.Book_comment_content">
                     <a slot="title">
-                    <b>{{item.Book_comment_title}}</b>
+                      <b>{{item.Book_comment_title}}</b>
                     </a>
                     <a-avatar slot="avatar">{{item.User_name.substring(0,1)}}</a-avatar>
-                </a-list-item-meta>
-                <template slot="actions" >
-                    <span> 作者：{{item.User_name}}</span>
-                    <span> <a-icon type="like-o" style="margin-left: 8px" /> 赞</span>
-                    <span> <a-icon type="dislike-o" style="margin-left: 8px" /> 踩</span>
-                    <span> <a-icon type="warning" style="margin-left: 8px" /> 举报</span>
-                    <a-tooltip :title="item.Create_time"><span>{{ item.Create_time}}</span></a-tooltip>    
-                </template>
-              </a-list-item>
-            </a-list>
+                  </a-list-item-meta>
+                  <template slot="actions">
+                    <span>作者：{{item.User_name}}</span>
+                    <span>
+                      <a-icon type="like-o" style="margin-left: 8px" />赞
+                    </span>
+                    <span>
+                      <a-icon type="dislike-o" style="margin-left: 8px" />踩
+                    </span>
+                    <span>
+                      <a-icon type="warning" style="margin-left: 8px" />举报
+                    </span>
+                    <a-tooltip :title="item.Create_time">
+                      <span>{{ item.Create_time}}</span>
+                    </a-tooltip>
+                  </template>
+                </a-list-item>
+              </a-list>
             </div>
 
             <div style="margin:0 auto;max-width:1000px">
               <a-card title="发表评论" style="text-align:center;margin:24px">
-                <div style="font-size:30px" v-if="commentRate">{{commentRate*2}}</div>
-                评分：<a-rate v-model="commentRate" allow-half />
-                <a-input v-model="commentTitle" placeholder="请输入标题" style="margin:14px 5px 0 5px;"/>
+                <div style="font-size:30px" v-if="commentRate">{{commentRate*2}}</div>评分：
+                <a-rate v-model="commentRate" allow-half />
+                <a-input v-model="commentTitle" placeholder="请输入标题" style="margin:14px 5px 0 5px;" />
                 <a-textarea
                   v-model="commentValue"
                   placeholder="请输入评论内容"
@@ -98,7 +104,7 @@
 <script>
 import moment from "moment";
 import global_ from "../../components/Global";
-import Vue from 'vue'
+import Vue from "vue";
 export default {
   data() {
     return {
@@ -109,7 +115,6 @@ export default {
     };
   },
   mounted: function() {
-    console.log("乌乌创建了");
     console.log(this.$route.params.id);
     this.$http
       .get("http://182.92.57.178:5000/books/" + this.$route.params.id)
@@ -128,28 +133,64 @@ export default {
       this.$router.push({ path: "/book/index" });
     },
     comment() {
-      console.log(global_.token);
+      if (this.commentRate == 0) {
+        alert("请打分");
+        return;
+      }
       Vue.axios
         .post(
-          'http://182.92.57.178:5000/books/' +
+          "http://182.92.57.178:5000/books/" +
             this.$route.params.id +
-            '/comments',
+            "/comments",
           {
             book_comment_title: this.commentTitle,
-            book_comment_content: this.commentValue,
+            book_comment_content: this.commentValue
           },
           {
-            headers:{
-              token:global_.token
+            headers: {
+              token: global_.token
             }
           }
         )
         .then(response => {
           console.log(response);
+          this.$http
+            .get("http://182.92.57.178:5000/books/" + this.$route.params.id)
+            .then(response => {
+              this.info = response.data.result.info;
+              this.comments = response.data.result.comments;
+              console.log(this.info);
+              console.log(this.comments.length);
+            })
+            .catch(response => {
+              console.log(response);
+            });
         })
         .catch(response => {
-          console.log(response.response);
+          console.log(response);
           alert("评论失败");
+        });
+      Vue.axios
+        .post(
+          "http://182.92.57.178:5000/books/" +
+            this.$route.params.id +
+            "/scores",
+          {
+            book_score: this.commentRate
+          },
+          {
+            headers: {
+              token: global_.token
+            }
+          }
+        )
+        .then(ans => {
+          console.log(ans);
+          alert("评论成功");
+        })
+        .catch(response => {
+          console.log(response);
+          alert("评分失败");
         });
     }
   }
