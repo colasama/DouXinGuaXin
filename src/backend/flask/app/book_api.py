@@ -255,7 +255,7 @@ class getAll_comments(Resource):
 
 
 api.add_resource(Get_all_books, '/books')
-api.add_resource(Get_books_by_id, '/books/<book_id>')
+api.add_resource(Get_books_by_id, '/books/<int:book_id>')
 api.add_resource(Book_comment, '/books/<int:book_id>/comments')
 api.add_resource(Book_score, '/books/<int:book_id>/scores')
 api.add_resource(Get_books_by_keywords, '/search/books')
