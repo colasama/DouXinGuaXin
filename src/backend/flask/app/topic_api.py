@@ -24,7 +24,8 @@ class Get_topics_by_id(Resource):
         if result is None:
             abort_if_doesnt_exist("Topic_id")
         cursor.execute(
-            "SELECT * FROM Topic_Contents WHERE Topic_id LIKE '%s'" % (topic_id))
+            "SELECT Topic_content_id,Topic_content_content,Topic_content_image,Topic_id,Create_time,`User`.User_id,`User`.User_name FROM Topic_Contents,`User`\
+            WHERE Topic_id = %d AND Topic_Contents.User_id=`User`.User_id" % (topic_id))
         content = cursor.fetchall()
         connection.commit()
         for i in content:
@@ -139,7 +140,7 @@ class Post_topic_content(Resource):
 
 
 api.add_resource(Get_all_topics, '/topics')
-api.add_resource(Get_topics_by_id, '/topics/<topic_id>')
+api.add_resource(Get_topics_by_id, '/topics/<int:topic_id>')
 api.add_resource(Add_user_to_topic, '/topics/<int:topic_id>/join')
 api.add_resource(Get_topic_by_keywords, '/search/topics')
 api.add_resource(Get_topic_content_by_keywords, '/search/topic_contents')

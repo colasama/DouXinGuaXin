@@ -23,7 +23,9 @@ class Get_groups_by_id(Resource):
         if result is None:
             abort_if_doesnt_exist("Group_id")
         cursor.execute(
-            "SELECT * FROM Group_Contents WHERE Group_id LIKE '%s'" % (group_id))
+            "SELECT Group_content_id,Group_content_content,Group_content_title,Group_id,Group_content_image,Create_time,\
+            Is_highlighted,Is_pinned,`User`.User_id,`User`.User_name FROM Group_Contents,`User`\
+            WHERE Group_id=%d and Group_Contents.User_id=User.User_id" % (group_id))
         content = cursor.fetchall()
         connection.commit()
         for i in content:
