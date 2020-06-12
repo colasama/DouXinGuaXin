@@ -16,12 +16,13 @@
           @tabChange="key => onTabChange(key, 'noTitleKey')"
         >
           <div v-if="noTitleKey === 'article'" style="margin-bottom:20px">
-            <a-avatar :size="128" style="margin-top:20px"></a-avatar>
-            <div style="font-size:24px;color:grey;margin:10px"><b>{{User_name}}</b></div>
-            <div>账号：{{User_name}}</div>
-            <div>ID: {{id}}</div>
-            <div>手机号：{{phonenum}}</div>
-            <div>邮箱：{{email}}</div>
+            <a-avatar :size="128" style="margin-top:20px;color:#f56a00;backgroundColor:#fde3cf" icon="user"></a-avatar>
+            <div style="font-size:24px;color:grey;margin:10px" ><b>{{User_name}}</b></div>
+            <div style="margin-top:5px">账号：{{User_name}}</div>
+            <div style="margin-top:5px">ID: {{id}}</div>
+            <div style="margin-top:5px">手机号：{{phonenum}}</div>
+            <div style="margin-top:5px">邮箱：{{email}}</div>
+            <div style="margin-top:5px" v-if="priv">权限：<a-tag color="orange">小组管理员</a-tag></div>
           </div>
           <div v-else-if="noTitleKey === 'project'">
             <div><a-input placeholder="手机号" style="width:400px;margin-top:20px" v-model="newphone"></a-input></div>
@@ -53,6 +54,8 @@ export default {
       newname:'',
       newphone:"",
       newemail:"",
+      priv:"",
+      showPriv:false,
       tabList: [
         {
           key: 'tab1',
@@ -105,6 +108,9 @@ export default {
           this.id=response.data.result.User_id;
           this.phonenum=response.data.result.User_phonenum;
           this.email=response.data.result.User_email;
+          this.priv=response.data.result.User_authority;
+          if(this.priv!=0)
+            this.showPriv=true;
         }).catch(function(response){
           console.log(response);
         })

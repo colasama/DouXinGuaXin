@@ -39,6 +39,7 @@
         username:'',
         password:"",
         token:'',
+        count:"",
         errorLogin: false,
       };
     },
@@ -67,10 +68,12 @@
             password:this.password
         }).then(function(res){
           global_.username=self.username;
+          console.log(global_.username);
           global_.token=res.data.result.token;
-          
-          console.log("Login Page: "+global_.token);
-          self.$router.push({path:"/"});
+          //console.log("Login Page: "+global_.token);
+          self.startDivi();
+          //self.$router.push({path:"/"});
+          //self.destroyALL();
         }).catch(function(error){
           console.log("nmdwsm");
           console.log(error);
@@ -80,7 +83,31 @@
       },
       changeErrorLogin(){
         this.errorLogin=true;
-      }
+      },
+      startDivi(){
+        const TIME_COUNT = 2;
+        const hide = this.$message.loading('登陆成功！即将返回首页！', 0);
+        setTimeout(hide, 2500);
+        if(!this.timer){
+            this.count = TIME_COUNT;
+            this.show = false;
+            this.timer = setInterval(()=>{
+            if(this.count > 0 && this.count <= TIME_COUNT){
+                this.count--;
+            }else{
+                this.show = true;
+                clearInterval(this.timer);
+                this.timer = null;
+                //跳转的页面写在此处
+                this.$router.push({
+                    path: '/'
+                });
+                
+            }
+          },1000)
+        }
+        
+    },
     }
   }
 </script>

@@ -27,8 +27,7 @@ export default {
   },
   data() {
     return {
-      
-    };
+    }
   },
   created: function(){
     document.title = this.$route.meta.title || this.$route.meta.pathName
