@@ -33,14 +33,16 @@
 
                 <a-col :span="4">
                   <a-card hoverable style="width: 240px">
+                    <a :href="'/#/book/object/'+books[0].Book_id">
                     <img
+                      width="60px"
                       slot="cover"
                       alt="example"
-                      src="https://img9.doubanio.com/view/subject/l/public/s33621450.jpg"
-                    />
-                    <a-card-meta title="Book1">
+                      :src="books[0].Book_src"
+                    /></a>
+                    <a-card-meta :title="books[0].Book_name">
                       <template slot="description">
-                        description 1
+                        {{books[0].Book_intro.substr(0,35)}}
                       </template>
                     </a-card-meta>
                   </a-card>
@@ -50,14 +52,16 @@
 
                 <a-col :span="4">
                   <a-card hoverable style="width: 240px">
-                    <img
-                      slot="cover"
-                      alt="example"
-                      src="https://img9.doubanio.com/view/subject/l/public/s33613369.jpg"
-                    />
-                    <a-card-meta title="Book2">
+                    <a :href="'/#/book/object/'+books[1].Book_id">
+                      <img
+                        width="60px"
+                        slot="cover"
+                        alt="example"
+                        :src="books[1].Book_src"
+                      /></a>
+                    <a-card-meta :title="books[1].Book_name">
                       <template slot="description">
-                        description 2
+                        {{books[1].Book_intro.substr(0,35)}}
                       </template>
                     </a-card-meta>
                   </a-card>
@@ -67,14 +71,16 @@
                 
                 <a-col :span="4">
                   <a-card hoverable style="width: 240px">
-                    <img
-                      slot="cover"
-                      alt="example"
-                      src="https://img9.doubanio.com/view/subject/l/public/s33601722.jpg"
-                    />
-                    <a-card-meta title="Book3">
+                    <a :href="'/#/book/object/'+books[2].Book_id">
+                      <img
+                        width="60px"
+                        slot="cover"
+                        alt="example"
+                        :src="books[2].Book_src"
+                      /></a>
+                    <a-card-meta :title="books[2].Book_name">
                       <template slot="description">
-                        escription 3
+                        {{books[2].Book_intro.substr(0,35)}}
                       </template>
                     </a-card-meta>
                   </a-card>
@@ -98,14 +104,16 @@
 
                 <a-col :span="4">
                   <a-card hoverable style="width: 240px">
-                    <img
-                      slot="cover"
-                      alt="example"
-                      src="https://img9.doubanio.com/view/subject/l/public/s33621450.jpg"
-                    />
-                    <a-card-meta title="Book1">
+                    <a :href="'/#/movie/object/'+movies[0].Movie_id">
+                      <img
+                        width="60px"
+                        slot="cover"
+                        alt="example"
+                        :src="movies[0].Movie_src"
+                      /></a>
+                    <a-card-meta :title="movies[0].Movie_name">
                       <template slot="description">
-                        description 1
+                        {{movies[0].Movie_intro.substr(0,35)}}
                       </template>
                     </a-card-meta>
                   </a-card>
@@ -115,14 +123,16 @@
 
                 <a-col :span="4">
                   <a-card hoverable style="width: 240px">
-                    <img
-                      slot="cover"
-                      alt="example"
-                      src="https://img9.doubanio.com/view/subject/l/public/s33613369.jpg"
-                    />
-                    <a-card-meta title="Book2">
+                    <a :href="'/#/movie/object/'+movies[1].Movie_id">
+                      <img
+                        width="60px"
+                        slot="cover"
+                        alt="example"
+                        :src="movies[1].Movie_src"
+                      /></a>
+                    <a-card-meta :title="movies[1].Movie_name">
                       <template slot="description">
-                        description 2
+                        {{movies[1].Movie_intro.substr(0,35)}}
                       </template>
                     </a-card-meta>
                   </a-card>
@@ -132,14 +142,16 @@
                 
                 <a-col :span="4">
                   <a-card hoverable style="width: 240px">
-                    <img
-                      slot="cover"
-                      alt="example"
-                      src="https://img9.doubanio.com/view/subject/l/public/s33601722.jpg"
-                    />
-                    <a-card-meta title="Book3">
+                    <a :href="'/#/movie/object/'+movies[2].Movie_id">
+                      <img
+                        width="60px"
+                        slot="cover"
+                        alt="example"
+                        :src="movies[2].Movie_src"
+                      /></a>
+                    <a-card-meta :title="movies[2].Movie_name">
                       <template slot="description">
-                        escription 3
+                        {{movies[2].Movie_intro.substr(0,35)}}
                       </template>
                     </a-card-meta>
                   </a-card>
@@ -168,9 +180,9 @@
                   style="margin:24px;text-align:center"
               >
               <a-list-item slot="renderItem" slot-scope="item" style="text-align:left">
-                  <a-list-item-meta :description="item.Group_content_content">
-                      <a slot="title" :href="'/object/'+item.Group_content_id">
-                      {{item.Group_content_title}}
+                  <a-list-item-meta :description="item.content">
+                      <a slot="title" :href="'/object/'+item.id">
+                      {{item.title}}
                       </a>
                       <!--a-avatar slot="avatar" :src="item.avatar" /-->
                   </a-list-item-meta>
@@ -224,21 +236,84 @@ export default {
         "https://i.loli.net/2020/06/08/t5GDicomyeKW7ad.jpg",
         "https://i.loli.net/2020/06/08/eyvBgJF6lbIVLRp.jpg",
       ],
-      posts:[
-            {"Group_content_id": 4, "Group_content_content": "testtesttest", "Group_content_title": "test", "Group_id":1, 
-            "User_id": 15, "Username":"test","Group_content_image": "/example", "Create_time": "2020-06-03 17:50:52", "Is_highlighted": 1, "Is_pinned": 1}, 
-            {"Group_content_id": 5, "Group_content_content": "testtesttest123", "Group_content_title": "test123", "Group_id": 1, 
-            "User_id": 15,  "Username":"test","Group_content_image": "/example", "Create_time": "2020-06-03 18:30:04", "Is_highlighted": 1, "Is_pinned": 1}
-        ]
+      posts: [],
+      books: [],
+      movies: [],
+      bookcomments: [],
+      moviecomments: [],
     }
   },
   created:function(){
     console.log(global_.username);
   },
+  mounted() {
+    this.$http.get('http://182.92.57.178:5000/books').then(res=>{
+      console.log(res)
+      this.books = res.data.result
+      this.showBook()
+    }).catch(function(error){
+      console.log(error);
+    })
+    this.$http.get('http://182.92.57.178:5000/movies').then(res=>{
+      console.log(res)
+      this.movies = res.data.result
+      this.showMovie()
+    }).catch(function(error){
+      console.log(error);
+    })
+    this.$http.get('http://182.92.57.178:5000/all_comments').then(res=>{
+      console.log(res)
+      this.bookcomments = res.data.result.book_comments
+      this.moviecomments = res.data.result.movie_comments
+      this.sortComment()
+    }).catch(function(error){
+      console.log(error);
+    })
+  },
   methods: {
     onChange(a, b, c) {
       console.log(a, b, c);
     },
+    showBook(){
+      console.log(this.books);
+      this.books.sort(function (a, b) {
+        return b.Book_score - a.Book_score;
+      })
+      console.log(this.books);
+    },
+    showMovie(){
+      console.log(this.movies);
+      this.movies.sort(function (a, b) {
+        return b.Movie_score - a.Movie_score;
+      })
+      console.log(this.movies);
+    },
+    sortComment(){
+      this.bookcomments.sort(function (a, b) {
+        return b.Book_comment_approve - a.Book_comment_approve;
+      })
+      this.moviecomments.sort(function (a, b) {
+        return b.Movie_comment_approve - a.Movie_comment_approve;
+      })
+      console.log(this.bookcomments)
+      console.log(this.moviecomments)
+      this.posts.push({
+        "id": this.bookcomments[0].Book_comment_id,
+        "content": this.bookcomments[0].Book_comment_content,
+        "title": this.bookcomments[0].Book_comment_title,
+        "Create_time": this.bookcomments[0].Create_time,
+        "disapproval": this.bookcomments[0].Book_comment_disapprove,
+        "approval": this.bookcomments[0].Book_comment_approve
+      })
+      this.posts.push({
+        "id": this.moviecomments[0].Movie_comment_id,
+        "content": this.moviecomments[0].Movie_comment_content,
+        "title": this.moviecomments[0].Movie_comment_title,
+        "Create_time": this.moviecomments[0].Create_time,
+        "disapproval": this.moviecomments[0].Movie_comment_disapprove,
+        "approval": this.moviecomments[0].Movie_comment_approve
+      })
+    }
   },
 
 }
