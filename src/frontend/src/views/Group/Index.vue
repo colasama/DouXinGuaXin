@@ -10,19 +10,13 @@
          <wordcloud
           :data="groups"
           style="cursor: pointer;"
-          nameKey="name"
-          valueKey="value"
+          nameKey="Group_name"
+          valueKey="Group_id"
           :color="myColors"
           :showTooltip="false"
           fontScale="n"
           :wordClick="wordClickHandler">
           </wordcloud>
-
-        <a-list :grid="{ gutter: 16, column: 16 }" :data-source="groupp" style="margin:24px">
-          <a-list-item slot="renderItem" slot-scope="group" style="margin:0 10px 0 10px">
-            <a-tag style="margin:0 50px 0 50px">{{group}}</a-tag>
-          </a-list-item>
-        </a-list>
         
         <a-divider/>
         
@@ -66,30 +60,22 @@ export default {
   },
   data() {
     return {
-      groups: [
-        {"name":"系统编程","value":"28","id":"1"},
-        {"name":"面向对象","value":"30","id":"2"},
-        {"name":"软件工程","value":"31","id":"3"},
-        {"name":"系统编程","value":"28","id":"1"},
-        {"name":"面向对象","value":"30","id":"2"},
-        {"name":"软件工程","value":"31","id":"3"},
-        {"name":"系统编程","value":"28","id":"1"},
-        {"name":"面向对象","value":"30","id":"2"},
-        {"name":"软件工程","value":"31","id":"3"},
-        {"name":"系统编程","value":"28","id":"1"},
-        {"name":"面向对象","value":"30","id":"2"},
-        {"name":"软件工程","value":"31","id":"3"},
-      ],
+      groups: [],
       posts:[
         {"name":"rr","title":"aa","content":"aasasasas","id":"1"},
         {"name":"rr","title":"aa","content":"aasasasas","id":"2"}
       ],
-      groupp: [
-        "软件工程","面向对象","系统编程"
-      ],
       myColors: ['#1f77b4', '#629fc9', '#94bedb', '#c9e0ef'],
     };
   },
+  mounted:function(){
+      this.$http.get('http://182.92.57.178:5000/groups').then((response)=>{
+        console.log(response.data);
+        this.groups=response.data.result;
+      }).catch((response)=>{
+        console.log(response);
+      })
+    },
   methods: {
     wordClickHandler(name){
       console.log(this.groups.findIndex(name).id)

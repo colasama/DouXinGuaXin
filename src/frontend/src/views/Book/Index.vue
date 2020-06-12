@@ -47,9 +47,7 @@ export default {
     };
   },
   mounted:function(){
-      console.log("乌乌创建了");
       this.$http.get('http://182.92.57.178:5000/books').then((response)=>{
-        console.log("rua");
         console.log(response.data);
         this.books=response.data;
       }).catch((response)=>{
