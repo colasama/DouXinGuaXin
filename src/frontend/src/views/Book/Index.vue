@@ -15,11 +15,12 @@
             <a-card style="max-width:400px;min-width:400px">
               <a-row type="flex" justify="center" align="center">
                 <a-col :span="8" style="text-align:left" >
-                <img
-                  :href="'/object/'+book.Book_id"
-                  width="120px"
-                  :src="book.Book_src"
-                />
+                <a :href="'/#/book/object/'+book.Book_id">
+                    <img
+                      width="120px"
+                      :src="book.Book_src"
+                    />
+                  </a>
                 </a-col>
                 <a-col :span="3"/>
                 <a-col :span="13" style="text-align:left;max-width:160px;">
