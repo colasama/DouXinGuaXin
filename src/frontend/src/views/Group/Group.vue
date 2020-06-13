@@ -69,7 +69,7 @@
           <a-list-item slot="renderItem" slot-scope="item" style="text-align:left">
             <a-list-item-meta :description="item.Group_content_content">
               <a-avatar slot="avatar">{{item.User_name.substring(0,1)}}</a-avatar>
-              <a slot="title" :href="'/object/'+item.Group_content_id">
+              <a slot="title" ><!-- :href="'/object/'+item.Group_content_id"鸽了鸽了-->
                 {{item.Group_content_title}}
                 <a-tag style="margin-left:8px" color="red" v-if="item.Is_highlighted">精华</a-tag>
                 <a-tag style="margin-left:8px" color="orange" v-if="item.Is_pinned">置顶</a-tag>
@@ -84,6 +84,10 @@
               <a-tooltip :title="item.Create_time">
                 <span>{{ item.Create_time}}</span>
               </a-tooltip>
+
+              <span v-if="permissonOn" @click="setTop(item.Group_content_id)">置顶</span>
+              <span v-if="permissonOn" @click="setGood(item.Group_content_id)">加精</span>
+              <span v-if="permissonOn" @click="setDelete(item.Group_content_id)">删除</span>
             </template>
           </a-list-item>
         </a-list>
@@ -116,16 +120,66 @@ export default {
       id: -1,
       info: [],
       postTitle: "",
-      postContent: ""
+      postContent: "",
+      permissonOn: false,
     };
   },
   mounted: function() {
+    
     this.ifLoggedIn = global_.loginStatus;
     this.id = this.$route.params.id;
     console.log(this.id);
     this.load_data(this.id);
+    this.getUserPermission();
+
   },
   methods: {
+    getUserPermission(){
+      this.$http
+        .get(
+          "http://182.92.57.178:5000/users/info",
+          {
+            headers: {
+              token: global_.token
+            }
+          }
+        )
+        .then(response => {
+          console.log(response.data.result.User_authority);
+          if(response.data.result.User_authority==this.$route.params.id)
+            this.permissonOn=true;
+        })
+        .catch(response => {
+          console.log(response);
+        });
+    },
+    setTop(id){
+      Vue.axios
+        .post(
+          "http://182.92.57.178:5000/groups/pinned_content/" + id,
+          {},
+          {
+            headers: {
+              token: global_.token
+            }
+          }
+        )
+        .then(res => {
+          console.log(res);
+          this.load_data();
+        })
+        .catch(res => {
+          console.log(res);
+        });
+      console.log(id)
+    },
+    setGood(id){
+      
+      console.log(id)
+    },
+    setDelete(id){
+      console.log(id)
+    },
     load_data() {
       this.$http
         .get("http://182.92.57.178:5000/groups/" + this.$route.params.id)
