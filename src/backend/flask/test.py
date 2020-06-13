@@ -65,7 +65,7 @@ post('http://localhost:5000/groups/1/add_content',
 post('http://localhost:5000/groups/delete_content/3', headers=headers).json()
 post('http://localhost:5000/groups/highlighted_content/5', headers=headers).json()
 post('http://localhost:5000/groups/pinned_content/5', headers=headers).json()
-
+post('http://localhost:5000/groups/2/apply_manager',data={'group_apply_content': 'test'},headers=headers).json()
 
 # Add Topic Content + token
 post('http://localhost:5000/topics/1/add_content',

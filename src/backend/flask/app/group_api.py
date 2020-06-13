@@ -262,12 +262,46 @@ class Pinned_group_content(Resource):
         return {'result': result}
 
 
+class Apply_manager(Resource):
+    def post(self, group_id):
+        parser = RequestParser()
+        parser.add_argument("token", type=str,
+                            location="headers", required=True)
+        parser.add_argument('group_apply_content', type=str, required=True)
+        args = parser.parse_args(strict=True)
+        token = args["token"]
+        user_id = verify_token(token)
+        if user_id is None:
+            return {'message': 'Illegal token.'}, 403
+        group_apply_content = args['group_apply_content']
+        cursor.execute(
+            "INSERT into Group_Apply(Group_apply_content,Group_id,User_id)\
+            VALUES('%s',%d,%d)" % (group_apply_content, group_id, user_id)
+        )
+        connection.commit()
+        cursor.execute(
+            "INSERT into Group_Apply(Group_apply_content,Group_id,User_id)\
+            VALUES('%s',%d,%d)" % (group_apply_content, group_id, user_id)
+        )
+        cursor.execute(
+            "SELECT LAST_INSERT_ID()"
+        )
+        result = cursor.fetchone()['LAST_INSERT_ID()']
+        cursor.execute(
+            "SELECT * FROM Group_Apply where Group_apply_id = %d" % result
+        )
+        result = cursor.fetchone()
+        connection.commit()
+        return {'result': result}
+
+
 api.add_resource(Get_all_groups, '/groups')
 api.add_resource(Get_groups_by_id, '/groups/<int:group_id>')
 api.add_resource(Get_group_by_keywords, '/search/groups')
 api.add_resource(Get_group_content_by_keywords, '/search/group_contents')
 api.add_resource(Add_user_to_group, '/groups/<int:group_id>/join')
 api.add_resource(Post_group_content, '/groups/<int:group_id>/add_content')
+api.add_resource(Apply_manager, '/groups/<int:group_id>/apply_manager')
 api.add_resource(Delete_group_content,
                  '/groups/delete_content/<int:group_content_id>')
 api.add_resource(Highlighted_group_content,
