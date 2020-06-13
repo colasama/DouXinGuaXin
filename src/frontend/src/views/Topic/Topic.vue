@@ -73,6 +73,10 @@
           <div style="font-size:18px">共有{{posts.length}}条图文</div>
         </a-divider>
 
+        <a-modal :visible="previewVisible" :footer="null" @cancel="handleUCancel">
+            <img alt="example" style="width: 100%" :src="previewImage" />
+        </a-modal>
+
         <!--帖子渲染部分-->
         <a-list
           class="comment-list"
@@ -81,6 +85,14 @@
           style="margin:24px;text-align:center"
         >
           <a-list-item slot="renderItem" slot-scope="item" style="text-align:left">
+            <img
+              slot="extra"
+              width="272"
+              alt="logo"
+              style="cursor: pointer;"
+              :src="item.Topic_content_image"
+              @click="handlePreviewForNormalUse(item.Topic_content_image)"
+            />
             <a-list-item-meta :description="item.Topic_content_content">
               <a-avatar slot="avatar">{{item.User_name.substring(0,1)}}</a-avatar>
               <a slot="title" :href="'/object/'+item.Topic_content_id">{{item.Topic_content_title}}</a>
@@ -154,7 +166,8 @@ export default {
       previewVisible: false,
       previewImage: "",
       fileList:[],
-      topic_content_content:""
+      topic_content_content:"",
+      pics:[]
     };
   },
   methods: {
@@ -202,6 +215,10 @@ export default {
       this.previewImage = file.url || file.preview;
       this.previewVisible = true;
       console.log(file);
+    },
+    handlePreviewForNormalUse(src) {
+      this.previewImage = src;
+      this.previewVisible = true;
     },
     //这几个是发表图文的函数
     handleChange(info) {
