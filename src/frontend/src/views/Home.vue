@@ -35,14 +35,14 @@
                   <a-card hoverable style="width: 240px">
                     <a :href="'/#/book/object/'+books[0].Book_id">
                     <img
-                      width="60px"
+                      width="180px"
                       slot="cover"
                       alt="example"
                       :src="books[0].Book_src"
                     /></a>
-                    <a-card-meta :title="books[0].Book_name">
+                    <a-card-meta :title="books[0].Book_name" style="margin-top:10px">
                       <template slot="description">
-                        {{books[0].Book_intro.substr(0,35)}}
+                        {{books[0].Book_intro.substr(0,35)}}...
                       </template>
                     </a-card-meta>
                   </a-card>
@@ -54,14 +54,14 @@
                   <a-card hoverable style="width: 240px">
                     <a :href="'/#/book/object/'+books[1].Book_id">
                       <img
-                        width="60px"
+                        width="180px"
                         slot="cover"
                         alt="example"
                         :src="books[1].Book_src"
                       /></a>
-                    <a-card-meta :title="books[1].Book_name">
+                    <a-card-meta :title="books[1].Book_name"  style="margin-top:10px">
                       <template slot="description">
-                        {{books[1].Book_intro.substr(0,35)}}
+                        {{books[1].Book_intro.substr(0,35)}}...
                       </template>
                     </a-card-meta>
                   </a-card>
@@ -73,14 +73,14 @@
                   <a-card hoverable style="width: 240px">
                     <a :href="'/#/book/object/'+books[2].Book_id">
                       <img
-                        width="60px"
+                        width="180px"
                         slot="cover"
                         alt="example"
                         :src="books[2].Book_src"
                       /></a>
-                    <a-card-meta :title="books[2].Book_name">
+                    <a-card-meta :title="books[2].Book_name" style="margin-top:10px">
                       <template slot="description">
-                        {{books[2].Book_intro.substr(0,35)}}
+                        {{books[2].Book_intro.substr(0,35)}}...
                       </template>
                     </a-card-meta>
                   </a-card>
@@ -106,14 +106,14 @@
                   <a-card hoverable style="width: 240px">
                     <a :href="'/#/movie/object/'+movies[0].Movie_id">
                       <img
-                        width="60px"
+                        width="180px"
                         slot="cover"
                         alt="example"
                         :src="movies[0].Movie_src"
                       /></a>
-                    <a-card-meta :title="movies[0].Movie_name">
+                    <a-card-meta :title="movies[0].Movie_name" style="margin-top:10px">
                       <template slot="description">
-                        {{movies[0].Movie_intro.substr(0,35)}}
+                        {{movies[0].Movie_intro.substr(0,35)}}...
                       </template>
                     </a-card-meta>
                   </a-card>
@@ -125,14 +125,14 @@
                   <a-card hoverable style="width: 240px">
                     <a :href="'/#/movie/object/'+movies[1].Movie_id">
                       <img
-                        width="60px"
+                        width="180px"
                         slot="cover"
                         alt="example"
                         :src="movies[1].Movie_src"
                       /></a>
-                    <a-card-meta :title="movies[1].Movie_name">
+                    <a-card-meta :title="movies[1].Movie_name" style="margin-top:10px">
                       <template slot="description">
-                        {{movies[1].Movie_intro.substr(0,35)}}
+                        {{movies[1].Movie_intro.substr(0,35)}}...
                       </template>
                     </a-card-meta>
                   </a-card>
@@ -144,14 +144,15 @@
                   <a-card hoverable style="width: 240px">
                     <a :href="'/#/movie/object/'+movies[2].Movie_id">
                       <img
-                        width="60px"
+                        width="180px"
                         slot="cover"
                         alt="example"
+                        style="margin:0 auto;text-align:center"
                         :src="movies[2].Movie_src"
                       /></a>
-                    <a-card-meta :title="movies[2].Movie_name">
+                    <a-card-meta :title="movies[2].Movie_name" style="margin-top:10px">
                       <template slot="description">
-                        {{movies[2].Movie_intro.substr(0,35)}}
+                        {{movies[2].Movie_intro.substr(0,35)}}...
                       </template>
                     </a-card-meta>
                   </a-card>
@@ -204,16 +205,18 @@
                 style="margin-left:0px"
                 title="热门话题"
               />
-              <a-card style="margin-top:10px">
-                <div style="color:rgb(170, 46, 24);"><a :href="'/#/topic/object/'+ topics[0].Topic_id">
-                  <b>话题-{{topics[0].Topic_name}}</b>
-                </a></div>
-              </a-card>
-              <a-card style="margin-top:10px">
-                <div style="color:rgb(170, 46, 24);"><a :href="'/#/topic/object/'+ topics[1].Topic_id">
-                  <b>话题-{{topics[1].Topic_name}}</b>
-                </a></div>
-              </a-card>
+              <a-list
+                  item-layout="vertical"
+                  :data-source="topics"
+              >
+              <a-list-item slot="renderItem" slot-scope="item" style="text-align:left">
+                  <a-card>
+                    <div style="color:rgb(170, 46, 24);"><a :href="'/#/topic/topic/'+ item.Topic_id">
+                      <b style="color:red">#{{item.Topic_name}}</b>
+                    </a></div>
+                  </a-card>
+              </a-list-item>
+              </a-list>
             </a-col>
 
             <a-col :span="3"/>
