@@ -10,9 +10,13 @@
 
             <div class="header">
                 <div>
-                    <h1 style="color:white;font-size:40px">#一个话题</h1>
-                    <a-button style="text-align:center;border:1px" v-if="!ifJoinedTopic" type="dashed" ><b>参与话题</b></a-button>
-                    <a-button v-if="ifJoinedTopic" type="dashed"><b>发表图文</b></a-button>
+                    <h1 style="color:white;font-size:40px">#{{info.Topic_name}} </h1>
+                    <div style="color:white;margin:24px">话题简介：{{info.Topic_intro}}</div>
+                    <a-button style="text-align:center;border:1px" v-if="!ifJoinedTopic" type="default" @click="jointopic"><b>参与话题</b></a-button>
+                    <a-button v-if="ifJoinedTopic" type="default"><b>发表图文</b></a-button>
+                    <div style="margin-top:50px">
+                      <span style="color:white;margin:24px"><a-icon type="profile" style="margin:5px"/>话题相关：{{info.Topic_related}}</span>
+                    </div>
                 </div>
             </div>
 
@@ -28,9 +32,9 @@
                 style="margin:24px;text-align:center"
             >
             <a-list-item slot="renderItem" slot-scope="item" style="text-align:left">
-                <a-list-item-meta :description="item.Group_content_content">
-                    <a slot="title" :href="'/object/'+item.Group_content_id">
-                    {{item.Group_content_title}}
+                <a-list-item-meta :description="item.Topic_content_content">
+                    <a slot="title" :href="'/object/'+item.Topic_content_id">
+                    {{item.Topic_content_title}}
                     </a>
                     <!--a-avatar slot="avatar" :src="item.avatar" /-->
                 </a-list-item-meta>
@@ -59,9 +63,39 @@
 }
 </style>
 <script>
+import global_ from '../../components/Global'
+import Vue from 'vue'
 export default {
   components:{
     
+  },
+  created:function(){
+      this.id=this.$route.params.id;
+      console.log(this.id);
+      this.$http
+      .get("http://182.92.57.178:5000/topics/" + this.$route.params.id)
+      .then(response => {
+        this.info = response.data.result.info;
+        console.log(this.info);
+      })
+      .catch(response => {
+        console.log(response);
+      });
+      Vue.axios.post(//判断是否加入了小组？不知道可不可行
+          'http://182.92.57.178:5000/topics/'+this.id+'/join',
+          {
+          },
+          {
+            headers:{
+              'token':global_.token
+            }
+          }
+        ).then((res)=>{
+        console.log(res)
+      }).catch((res)=>{
+        this.ifJoinedTopic=true
+        console.log(res)
+      })
   },
   data() {
     return {
@@ -71,6 +105,7 @@ export default {
             {"Group_content_id": 5, "Group_content_content": "testtesttest123", "Group_content_title": "test123", "Group_id": 1, 
             "User_id": 15,  "Username":"test","Group_content_image": "/example", "Create_time": "2020-06-03 18:30:04", "Is_highlighted": 1, "Is_pinned": 1}
         ],
+        info:[],
         ifJoinedTopic:false,
     };
   },

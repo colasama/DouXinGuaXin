@@ -1,30 +1,35 @@
 <template>
   <div>
-    {{this.$route.params.id}}
     <a-layout style="min-height:100%">
       <a-layout-content style="margin-top:30px;text-align:center">
         <a-layout>
           <a-layout-content>
             <a-page-header style="margin-left:0" title="返回上一页" @back="back" />
-            <div style="margin:0 auto;max-width:1200px">
+            <div style="margin:0 auto;max-width:1000px">
               <a-card style="margin:0 20px 0 20px;max-width:1200px;">
                 <a-row>
-                  <img style="text-align:left" :src="info.Book_src" height="500px" />
-                </a-row>
-                <a-row>
-                  <h style="font-size:40px">{{info.Book_name}}</h>
-                  <div style="font-size:18px">{{info.Book_writer}}</div>
-                </a-row>
-                <a-row>
-                  <a-rate :value="parseInt(info.Book_score)/2" disabled allow-half />
-                </a-row>
-                <a-row>
-                  <div style="font-size:32px">
-                    <h1>{{info.Book_score.toFixed(1)}}</h1>
-                  </div>
-                </a-row>
-                <a-row>
-                  <div style="margin:0 50px 0 50px">{{info.Book_intro}}</div>
+                <a-col :span="10" style="text-align:left">
+                  <a-row>
+                    <img style="text-align:left;margin:24px 0 0 64px" :src="info.Book_src" height="400px" />
+                  </a-row>
+                  <a-row>
+                      <span style="font-size:48px;margin:12px 0 12px 76px"><b>{{info.Book_score.toFixed(1)}}</b></span>
+                      <a-rate :value="parseInt(info.Book_score)/2" allow-half disabled />
+                  </a-row>
+                  
+                </a-col>
+                <a-col :span="14" style="text-align:left">
+                  
+                  <a-row style="margin:48px 40px 12px 0">
+                    <h style="font-size:40px"><b>{{info.Book_name}}</b></h>
+                    <div style="color:grey"><b>作者：</b>{{info.Book_writer}}</div>
+                    <div style="color:grey"><b>ISBN：</b>{{info.Book_ISBN}}</div>
+                    <div style="color:grey"><b>出版社：</b>{{info.Book_publisher}}</div>
+                  </a-row>
+                  <a-row style="margin:12px 64px 24px 0">
+                    <div style="white-space: pre-line;"><b>简介：</b>{{info.Book_intro}}</div>
+                  </a-row>
+                </a-col>
                 </a-row>
               </a-card>
             </div>

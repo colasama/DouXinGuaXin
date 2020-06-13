@@ -10,9 +10,14 @@
 
             <div class="header">
                 <div>
-                    <h1 style="color:white;font-size:40px">#一个小组</h1>
-                    <a-button style="text-align:center;border:1px" v-if="!ifJoinedGroup" type="dashed" ><b>加入小组</b></a-button>
-                    <a-button v-if="ifJoinedGroup" type="dashed"><b>发表帖子</b></a-button>
+                    <h1 style="color:white;font-size:40px">#{{info.Group_name}} </h1>
+                    <div style="color:white;margin:24px">小组简介：{{info.Group_intro}}</div>
+                    <a-button style="text-align:center;border:1px" v-if="!ifJoinedGroup||!ifLoggedIn" type="default" @click="joingroup"><b>加入小组</b></a-button>
+                    <a-button v-if="ifJoinedGroup&&ifLoggedIn" type="default"><b>发表帖子</b></a-button>
+                    <div style="margin-top:50px">
+                      <span style="color:white;margin:24px"><a-icon type="profile" style="margin:5px"/>小组相关：{{info.Group_related}}</span>
+                      <span style="color:white;margin:24px"><a-icon type="user"/>管理员ID：{{info.User_id}}</span>
+                    </div>
                 </div>
             </div>
 
@@ -61,6 +66,8 @@
 }
 </style>
 <script>
+import global_ from '../../components/Global'
+import Vue from 'vue'
 export default {
   components:{
     
@@ -74,10 +81,61 @@ export default {
             "User_id": 15,  "Username":"test","Group_content_image": "/example", "Create_time": "2020-06-03 18:30:04", "Is_highlighted": 1, "Is_pinned": 1}
         ],
         ifJoinedGroup:false,
+        ifLoggedIn:false,
+        id:-1,
+        info:[],
+
     };
+  },
+  created:function(){
+      this.ifLoggedIn = global_.ifLoggedIn;
+      this.id=this.$route.params.id;
+      console.log(this.id);
+      this.$http
+      .get("http://182.92.57.178:5000/groups/" + this.$route.params.id)
+      .then(response => {
+        this.info = response.data.result.info;
+        console.log(this.info);
+      })
+      .catch(response => {
+        console.log(response);
+      });
+      Vue.axios.post(//判断是否加入了小组？不知道可不可行
+          'http://182.92.57.178:5000/groups/'+this.id+'/join',
+          {
+          },
+          {
+            headers:{
+              'token':global_.token
+            }
+          }
+        ).then((res)=>{
+        console.log(res)
+      }).catch((res)=>{
+        this.ifJoinedGroup=true
+        console.log(res)
+      })
   },
   methods: {
     //估计得有一个getUsernameByID一个getPosts
+    joingroup(){
+        console.log(global_.token);
+        Vue.axios.post(
+          'http://182.92.57.178:5000/groups/'+this.id+'/join',
+          {
+          },
+          {
+            headers:{
+              'token':global_.token
+            }
+          }
+        ).then((res)=>{
+        console.log(res)
+        this.ifJoinedGroup=true
+      }).catch((res)=>{
+        console.log(res)
+      })
+    }
   }
 };
 </script>

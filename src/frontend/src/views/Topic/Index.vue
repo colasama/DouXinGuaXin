@@ -7,6 +7,7 @@
             title="话题"
             sub-title="Topics"
         />
+        
          <wordcloud
           :data="topics"
           nameKey="Topic_name"
@@ -59,6 +60,7 @@ export default {
   },
   data() {
     return {
+      wewe:"asas",
       topics: [],
       posts:[
         {"name":"rr","title":"aa","content":"aasasasas","id":"1"},
@@ -76,8 +78,9 @@ export default {
       })
     },
   methods: {
-    wordClickHandler(){
-      
+    wordClickHandler(name,value){
+      console.log(name)
+      this.$router.push({ path:"/topic/topic/"+value});
     }
   }
 };

@@ -73,7 +73,7 @@
       }).then(res=>{
         console.log(res)
         console.log(this.kind)
-        this.results = res["data"]["result"]
+        this.results = res.data.result
         this.show()
       }).catch(function(error){
         console.log(error);
@@ -91,13 +91,13 @@
         }
       },
       refresh(){
-        this.data.length = 0
+        this.data.splice(0,this.data.length)
         this.$http.get('http://182.92.57.178:5000/search/' + this.kind + 's', {
           params:{keywords:this.keywords}
         }).then(res=>{
           console.log(res)
           console.log(this.kind)
-          this.results = res["data"]["result"]
+          this.results = res.data.result
           this.show()
         }).catch(function(error){
           console.log(error);
