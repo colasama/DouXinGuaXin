@@ -16,11 +16,11 @@
                   <div style="font-size:18px">{{info.Book_writer}}</div>
                 </a-row>
                 <a-row>
-                  <a-rate :value="info.Book_score/2" disabled />
+                  <a-rate :value="parseInt(info.Book_score)/2" disabled allow-half />
                 </a-row>
                 <a-row>
                   <div style="font-size:32px">
-                    <h1>{{info.Book_score}}</h1>
+                    <h1>{{info.Book_score.toFixed(1)}}</h1>
                   </div>
                 </a-row>
                 <a-row>
@@ -183,7 +183,7 @@ export default {
             this.$route.params.id +
             "/scores",
           {
-            book_score: this.commentRate
+            book_score: this.commentRate*2
           },
           {
             headers: {

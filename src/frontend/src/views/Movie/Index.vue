@@ -7,18 +7,18 @@
             title="影视"
             sub-title="Movies"
         />
-        <a-button @click="refresh">Refresh</a-button>
-        <div>{{movies}}</div>
+        <!--a-button @click="refresh">Refresh</a-button>
+        <div>{{movies}}</div-->
         <!--以下是列表渲染部分-->
-        <a-list :grid="{ gutter: 16, column: 4 }" :data-source="movies.result" style="margin:24px">
+        <a-list :grid="{ gutter: 16, column: 4 }" :data-source="movies.result" style="margin:24px;text-align:center">
           <a-list-item slot="renderItem" slot-scope="movie">
-            <a-card style="max-width:400px;min-width:400px">
+            <a-card style="max-width:400px;min-width:400px;max-height:240px;min-height:240px">
               <a-row type="flex" justify="center" align="center">
                 <a-col :span="8" style="text-align:left" >
                 <a :href="'/#/movie/object/'+movie.Movie_id">
                     <img
-                            width="120px"
-                            :src="movie.Movie_src"
+                      width="120px"
+                      :src="movie.Movie_src"
                     />
                   </a>
                 </a-col>
@@ -27,7 +27,7 @@
                   <div><a :href="'/#/movie/object/'+movie.Movie_id" style="font-size:20px;"><b>{{movie.Movie_name}}</b></a></div>
                   <!--a-card-meta :title="movie.Movie_name"/-->
                     <div style="margin-top:10px;text-indent:2em;text-align:justify">{{movie.Movie_intro.substring(0,50)}}...</div>
-                  <a-rate style="margin-top:10px" :default-value="movie.Movie_score/2" disabled />
+                  <a-rate style="margin-bottom:10px" :default-value="parseInt(movie.Movie_score)/2" disabled allow-half />
                 </a-col>
               </a-row>
             </a-card>
@@ -47,9 +47,7 @@ export default {
     };
   },
   mounted:function(){
-      console.log("乌乌创建了");
       this.$http.get('http://182.92.57.178:5000/movies').then((response)=>{
-        console.log("rua");
         console.log(response.data);
         this.movies=response.data;
       }).catch((response)=>{
