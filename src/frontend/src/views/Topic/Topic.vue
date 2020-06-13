@@ -40,15 +40,15 @@
           cancelText="取消"
         >
           <div>
-            <a-input style="margin-top:10px" placeholder="请填写图文标题" />
             <a-textarea
               style="margin-top:10px"
+              v-model="topic_content_content"
               placeholder="请填写图文内容，图片可以点击下方上传按钮上传哦~"
               :auto-size="{ minRows: 5, maxRows: 5 }"
             ></a-textarea>
             <div style="margin-top:10px">
               <a-upload
-                action="http://127.0.0.1:5000/pictures/add"
+                action="http://182.92.57.178:5000/pictures/add"
                 method='post'
                 list-type="picture-card"
                 :file-list="fileList"
@@ -153,7 +153,8 @@ export default {
       ifJoinedTopic: false,
       previewVisible: false,
       previewImage: "",
-      fileList:[]
+      fileList:[],
+      topic_content_content:""
     };
   },
   methods: {
@@ -218,9 +219,34 @@ export default {
     },
     handleOk(e) {
       console.log(e);
-      this.postVisible = false;
-      console.log(this.fileList);
-      this.showSuccess();
+      var src =""
+      for (let index = 0; index < this.fileList.length-1; index++) {
+        const element = this.fileList[index].url;
+        src+=element+","
+      }
+      src+=this.fileList[this.fileList.length-1].url
+      Vue.axios
+        .post(
+          "http://182.92.57.178:5000/topics/" + this.id + "/add_content",
+          {
+            topic_content_content: this.topic_content_content,
+            topic_content_image: src,
+          },
+          {
+            headers: {
+              token: global_.token
+            }
+          }
+        )
+        .then(res => {
+          console.log(res);
+          this.postVisible = false;
+          this.showSuccess();
+        })
+        .catch(res => {
+          console.log(res);
+        });
+      
     },
     handleCancel() {
       this.postVisible = false;
