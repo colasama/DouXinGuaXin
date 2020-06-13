@@ -205,10 +205,14 @@
                 title="热门话题"
               />
               <a-card style="margin-top:10px">
-                <div style="color:rgb(170, 46, 24);"><b>#一个小组</b></div>
+                <div style="color:rgb(170, 46, 24);"><a :href="'/#/topic/object/'+ topics[0].Topic_id">
+                  <b>话题-{{topics[0].Topic_name}}</b>
+                </a></div>
               </a-card>
               <a-card style="margin-top:10px">
-                <div style="color:rgb(170, 46, 24);"><b>#二个小组</b></div>
+                <div style="color:rgb(170, 46, 24);"><a :href="'/#/topic/object/'+ topics[1].Topic_id">
+                  <b>话题-{{topics[1].Topic_name}}</b>
+                </a></div>
               </a-card>
             </a-col>
 
@@ -241,6 +245,7 @@ export default {
       movies: [],
       bookcomments: [],
       moviecomments: [],
+      topics: []
     }
   },
   created:function(){
@@ -265,7 +270,14 @@ export default {
       console.log(res)
       this.bookcomments = res.data.result.book_comments
       this.moviecomments = res.data.result.movie_comments
-      this.sortComment()
+      this.showComment()
+    }).catch(function(error){
+      console.log(error);
+    })
+    this.$http.get('http://182.92.57.178:5000/topics/hot').then(res=>{
+      console.log(res)
+      this.topics = res.data.result
+      this.showTopics()
     }).catch(function(error){
       console.log(error);
     })
@@ -288,7 +300,7 @@ export default {
       })
       console.log(this.movies);
     },
-    sortComment(){
+    showComment(){
       this.bookcomments.sort(function (a, b) {
         return b.Book_comment_approve - a.Book_comment_approve;
       })
@@ -313,6 +325,9 @@ export default {
         "disapproval": this.moviecomments[0].Movie_comment_disapprove,
         "approval": this.moviecomments[0].Movie_comment_approve
       })
+    },
+    showTopics(){
+
     }
   },
 
