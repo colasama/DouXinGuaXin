@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 import functools
-from flask import request
+from flask import request,Response
 from flask_restful.reqparse import RequestParser
 
 from app._api import cursor, connection, verify_token, abort_if_doesnt_exist
 from app import api
 from flask_restful import Resource, reqparse
-
+import time
+import os
 
 class Get_all_topics(Resource):
     def get(self):
@@ -155,6 +156,26 @@ class Get_hot_topic(Resource):
         return {'result': result}
 
 
+class Add_pic(Resource):
+    def post(self):
+        img = request.files.get('file')
+        millis = int(round(time.time() * 1000))
+        ext = os.path.splitext(img.filename)[-1]
+        filename = str(millis)+ext
+        img.save('../pic/'+filename)
+        return{'url':'http://182.92.57.178:5000/pictures/'+filename}
+
+
+class Get_pic(Resource):
+    def get(self,pic_name):
+        try:
+            file = open('../pic/'+pic_name, 'rb')
+            img = file.read()
+            resp = Response(img, mimetype="image")
+            return resp
+        except FileNotFoundError :
+            abort_if_doesnt_exist("pictrue not found")
+
 api.add_resource(Get_all_topics, '/topics')
 api.add_resource(Get_topics_by_id, '/topics/<int:topic_id>')
 api.add_resource(Add_user_to_topic, '/topics/<int:topic_id>/join')
@@ -162,3 +183,5 @@ api.add_resource(Get_topic_by_keywords, '/search/topics')
 api.add_resource(Get_topic_content_by_keywords, '/search/topic_contents')
 api.add_resource(Post_topic_content, '/topics/<int:topic_id>/add_content')
 api.add_resource(Get_hot_topic, '/topics/hot')
+api.add_resource(Add_pic,'/pictures/add')
+api.add_resource(Get_pic,'/pictures/<pic_name>')

@@ -16,7 +16,7 @@
             >
               <b>参与话题</b>
             </a-button>
-            <a-button v-if="ifJoinedTopic" type="default">
+            <a-button v-if="ifJoinedTopic" type="default" @click="showPost">
               <b>发表图文</b>
             </a-button>
             <div style="margin-top:50px">
@@ -48,9 +48,11 @@
             ></a-textarea>
             <div style="margin-top:10px">
               <a-upload
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                action="http://127.0.0.1:5000/pictures/add"
+                method='post'
                 list-type="picture-card"
                 :file-list="fileList"
+                :before-upload="beforeUpload"
                 @preview="handlePreview"
                 @change="handleChange"
               >
@@ -147,19 +149,11 @@ export default {
     return {
       posts: [],
       info: [],
-      postVisible: true,
+      postVisible: false,
       ifJoinedTopic: false,
       previewVisible: false,
       previewImage: "",
-      fileList: [
-        {
-          uid: "-1",
-          name: "image.png",
-          status: "done",
-          url:
-            "https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-        }
-      ]
+      fileList:[]
     };
   },
   methods: {
@@ -191,6 +185,11 @@ export default {
           console.log(res);
         });
     },
+    showPost() {
+      this.postVisible = true;
+    },
+    beforeUpload(){
+    },
     //这几个是上传部分的函数
     handleUCancel() {
       this.previewVisible = false;
@@ -201,9 +200,17 @@ export default {
       }
       this.previewImage = file.url || file.preview;
       this.previewVisible = true;
+      console.log(file);
     },
     //这几个是发表图文的函数
-    handleChange({ fileList }) {
+    handleChange(info) {
+      let fileList = [...info.fileList];
+      fileList = fileList.map(file => {
+        if (file.response) {
+          file.url = file.response.url;
+        }
+        return file;
+      });
       this.fileList = fileList;
     },
     showReport() {
@@ -212,6 +219,7 @@ export default {
     handleOk(e) {
       console.log(e);
       this.postVisible = false;
+      console.log(this.fileList);
       this.showSuccess();
     },
     handleCancel() {

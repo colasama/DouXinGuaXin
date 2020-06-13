@@ -140,6 +140,7 @@ export default {
       this.showLogin=true;
       global_.token='';
       global_.username='not login';
+      global_.loginStatus=false;
     },
     toIndex(){
       this.current='index';
