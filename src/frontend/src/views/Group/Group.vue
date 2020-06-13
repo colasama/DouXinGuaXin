@@ -19,7 +19,7 @@
             <a-button v-if="ifJoinedGroup&&ifLoggedIn" type="default" @click="showPost">
               <b>发表帖子</b>
             </a-button>
-            <a-button  v-if="!permissonOn" type="default" @click="applyManager">
+            <a-button  v-if="ifLoggedIn&&(!permissonOn)" type="default" @click="applyManager">
               <b>申请管理员</b>
             </a-button>
             <div style="margin-top:50px">
