@@ -235,12 +235,16 @@ class Book_comment_approve(Resource):
 class getAll_comments(Resource):
     def get(self):
         cursor.execute(
-            "SELECT * FROM Book_Comments"
+            "SELECT Book_comment_id,Book_comment_title,Book_comment_approve,Book_comment_disapprove,Book_comment_content,\
+            Book_id,Create_time,`User`.User_id,`User`.User_name FROM Book_Comments,`User`\
+            WHERE Book_Comments.User_id=User.User_id"
         )
         resultb = cursor.fetchall()
         connection.commit()
         cursor.execute(
-            "SELECT * FROM Movie_Comments"
+           "SELECT Movie_comment_id,Movie_comment_title,Movie_comment_approve,Movie_comment_disapprove,Movie_comment_content,\
+            Movie_id,Create_time,`User`.User_id,`User`.User_name FROM Movie_Comments,`User`\
+            WHERE Movie_Comments.User_id=User.User_id"
         )
         resultm = cursor.fetchall()
         connection.commit()

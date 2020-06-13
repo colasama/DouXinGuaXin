@@ -188,9 +188,10 @@
                       <!--a-avatar slot="avatar" :src="item.avatar" /-->
                   </a-list-item-meta>
                   <template slot="actions" >
-                      <span> <a-icon type="like-o" style="margin-left: 8px" /> 赞</span>
-                      <span> <a-icon type="dislike-o" style="margin-left: 8px" /> 踩</span>
-                      <span> <a-icon type="warning" style="margin-left: 8px" /> 举报</span>
+                    <span>作者：{{item.User_name}}</span>
+                      <span @click="approve(item.id)"> <a-icon type="like-o" style="margin-left: 8px" />{{item.approval}}</span>
+                      <span @click="disapprove(item.id)"> <a-icon type="dislike-o" style="margin-left: 8px" />{{item.disapproval}}</span>
+                      <span @click="report(item.id)"> <a-icon type="warning" style="margin-left: 8px" />举报</span>
                       <a-tooltip :title="item.Create_time"><span>{{ item.Create_time}}</span></a-tooltip>    
                   </template>
               </a-list-item>
@@ -231,6 +232,7 @@
 // @ is an alias to /src
 
 import global_ from '../components/Global'
+import Vue from "vue";
 export default {
   components: {
 
@@ -280,7 +282,6 @@ export default {
     this.$http.get('http://182.92.57.178:5000/topics/hot').then(res=>{
       console.log(res)
       this.topics = res.data.result
-      this.showTopics()
     }).catch(function(error){
       console.log(error);
     })
@@ -314,6 +315,7 @@ export default {
       console.log(this.moviecomments)
       this.posts.push({
         "id": this.bookcomments[0].Book_comment_id,
+        "User_name": this.bookcomments[0].User_name,
         "kind": 'book',
         "kind_id": this.bookcomments[0].Book_id,
         "content": this.bookcomments[0].Book_comment_content,
@@ -324,6 +326,7 @@ export default {
       })
       this.posts.push({
         "id": this.moviecomments[0].Movie_comment_id,
+        "User_name": this.moviecomments[0].User_name,
         "kind": 'movie',
         "kind_id": this.moviecomments[0].Movie_id,
         "content": this.moviecomments[0].Movie_comment_content,
@@ -333,8 +336,42 @@ export default {
         "approval": this.moviecomments[0].Movie_comment_approve
       })
     },
-    showTopics(){
-
+    approve(message) {
+      console.log(message);
+      if (global_.loginStatus == false) {
+        alert("请先登录");
+        return;
+      }
+      Vue.axios.post("http://182.92.57.178:5000/book_comments/" + message + "/approve", {type: 1}, {
+        headers: {
+          token: global_.token
+        }
+      }).then(response => {
+        console.log(response);
+        this.load_data(this.$route.params.id);
+      }).catch(response => {
+        console.log(response);
+        alert("你已经点赞/反对了");
+      }).bind(this);
+    },
+    disapprove(message) {
+      console.log(message);
+      if (global_.loginStatus == false) {
+        alert("请先登录");
+        return;
+      }
+      Vue.axios.post("http://182.92.57.178:5000/book_comments/" + message + "/approve", {type: -1}, {
+        headers: {token: global_.token}}
+      ).then(response => {
+        console.log(response);
+        this.load_data(this.$route.params.id);
+      }).catch(response => {
+        console.log(response);
+        alert("你已经点赞/反对了");
+      }).bind(this);
+    },
+    report(message){
+      console.log(message)
     }
   },
 
