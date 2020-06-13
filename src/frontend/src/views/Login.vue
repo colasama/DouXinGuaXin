@@ -33,6 +33,7 @@
 <script>
   import Vue from 'vue'
   import global_ from '../components/Global'
+  import Bus from '../bus.js'
   export default{
     data() {
       return {
@@ -57,6 +58,9 @@
       },
       toRegister(){
       this.$router.push({path:"/register"});
+      },
+      changeCurrent(){
+        Bus.$emit('current','index')
       },
       toIndex(){
         this.$router.push({path:"/"});
@@ -125,6 +129,7 @@
                 clearInterval(this.timer);
                 this.timer = null;
                 //跳转的页面写在此处
+                this.changeCurrent();
                 this.$router.push({
                     path: '/'
                 });
