@@ -5,7 +5,7 @@
         <a-layout>
           <a-layout-content>
             <a-page-header style="margin-left:0" title="返回上一页" @back="back" />
-            <div style="margin:0 auto;max-width:1000px">
+            <div style="margin:0 auto;min-width:1000px;max-width:1000px">
               <a-card style="margin:0 20px 0 20px;max-width:1200px;">
                 <a-row>
                 <a-col :span="10" style="text-align:left">
@@ -85,7 +85,7 @@
                       />
                       {{item.Book_comment_disapprove}}
                     </span>
-                    <span @click="report(item.Book_comment_id)">
+                    <span @click="report(item.Book_comment_id,item.Book_comment_content)">
                       <a-icon type="warning" style="margin-left: 8px" />举报
                     </span>
                     <a-tooltip :title="item.Create_time">
@@ -95,6 +95,26 @@
                 </a-list-item>
               </a-list>
             </div>
+            
+            <!--举报框-->
+            <a-modal 
+                centered="true"
+                title="提交举报"
+                :visible="reportVisible"
+                :confirm-loading="confirmLoading"
+                @ok="handleOk"
+                @cancel="handleCancel"
+                okText="提交"
+                cancelText="取消"
+                >
+                <div>
+                        <div style="margin-top:10px">请确认您要举报的内容：</div>
+                        <h2 style="color:black;margin-top:10px;text-align:center">{{reportInfo}}</h2>
+                        <a-input style="margin-top:10px" v-model="reportTitle" placeholder="请填写举报标题" />
+                        <a-textarea style="margin-top:10px" v-model="reportContent" placeholder="请描述举报原因，原因需要大于15字符。" :auto-size="{ minRows: 5, maxRows: 5 }"></a-textarea>
+                        <!--a-button style="margin-top:10px">提交</a-button-->
+                </div>
+            </a-modal>
 
             <div style="margin:0 auto;max-width:1000px">
               <a-card title="发表评论" style="text-align:center;margin:24px">
@@ -129,7 +149,14 @@ export default {
       info: {},
       comments: {},
       iscomment: false,
-      moment
+      moment,
+      reportVisible: false,
+      okVisible: false,
+      confirmLoading: false,
+      reportInfo:"",
+      reportTitle:"",
+      reportContent:"",
+      reportId:""
     };
   },
   mounted: function() {
@@ -159,12 +186,17 @@ export default {
       this.$router.push({ path: "/book/index" });
     },
     comment() {
-      if (this.commentRate == 0) {
-        alert("请打分");
+      
+      if (global_.loginStatus == false) {
+        alert("请先登录哦！");
         return;
       }
-      if (global_.loginStatus == false) {
-        alert("请先登录");
+      if (this.commentRate == 0) {
+        alert("请不要忘记打分哦！");
+        return;
+      }
+      if(this.commentValue.length < 25){
+        alert("评论字数不够哦！");
         return;
       }
       Vue.axios
@@ -280,9 +312,75 @@ export default {
         })
         .bind(this);
     },
-    report(message){
+    report(id,message){
+      this.showReport();
+      this.reportId = id;
+      this.reportInfo = message;
       console.log(message);
-    }
+    },
+    showReport(){
+                this.reportVisible=true;
+            },
+            handleOk(e){
+                if(global_.loginStatus==false){
+                  alert("还没有登录哦，不能够举报！");
+                  this.reportVisible = false;
+                  this.reportTitle="";
+                  this.reportContent="";
+                }
+                else if(this.reportContent.length<15)
+                  alert("字数不够哦！")
+                else{
+                Vue.axios
+                .post(
+                  "http://182.92.57.178:5000/book_comments/" +
+                    this.reportId +
+                    "/report",
+                  {
+                    book_report_title: this.reportTitle,
+                    book_report_reason: this.reportContent
+                  },
+                  {
+                    headers: {
+                      token: global_.token
+                    }
+                  }
+                )
+                .then(response => {
+                  this.reportVisible=false;
+                  this.showSuccess();
+                  this.reportTitle="";
+                  this.reportContent="";
+                  console.log(response);
+                })
+                .catch(response => {
+                  console.log(this.reportTitle)
+                  console.log(this.reportContent)
+                  console.log(response);
+                  alert("举报失败！");
+                });
+                }
+               
+
+                console.log(e);
+                
+            },
+            handleCancel(){
+                this.reportVisible=false;
+            },
+            destroyALL(){
+                this.$destroyAll();
+            },
+            showSuccess(){
+                this.$success({
+                    centered: true,
+                    title: '举报成功',
+                    content: "已经收到了您的举报，我们将尽快核实并处理！",//<a-result status="success" title=""/>,
+                    onOK(){
+                        this.destroyALL();
+                    }
+                })
+            },
   }
 };
 </script>

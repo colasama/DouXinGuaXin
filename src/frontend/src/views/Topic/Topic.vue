@@ -89,9 +89,9 @@
               v-for="pic in item.Topic_content_image"
               :key="pic"
               slot="extra"
-              width="272"
+              height="120px"
               alt="logo"
-              style="cursor: pointer;"
+              style="cursor: pointer;margin:12px"
               :src="pic"
               @click="handlePreviewForNormalUse(pic)"
             />
