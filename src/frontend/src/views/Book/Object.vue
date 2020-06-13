@@ -64,10 +64,21 @@
                   <template slot="actions">
                     <span>作者：{{item.User_name}}</span>
                     <span>
-                      <a-icon type="like-o" style="margin-left: 8px" />赞
+                      <a-icon
+                        type="like-o"
+                        style="margin-left: 8px"
+                        theme="outlined"
+                        v-on:click="approve(item.Book_comment_id)"
+                      />
+                      {{item.Book_comment_approve}}
                     </span>
                     <span>
-                      <a-icon type="dislike-o" style="margin-left: 8px" />踩
+                      <a-icon
+                        type="dislike-o"
+                        style="margin-left: 8px"
+                        v-on:click="disapprove(item.Book_comment_id)"
+                      />
+                      {{item.Book_comment_disapprove}}
                     </span>
                     <span>
                       <a-icon type="warning" style="margin-left: 8px" />举报
@@ -118,30 +129,37 @@ export default {
   },
   mounted: function() {
     console.log(this.$route.params.id);
-    this.$http
-      .get("http://182.92.57.178:5000/books/" + this.$route.params.id)
-      .then(response => {
-        this.info = response.data.result.info;
-        this.comments = response.data.result.comments;
-        console.log(this.info);
-        console.log(this.comments.length);
-      })
-      .catch(response => {
-        console.log(response);
-      });
-    global_.my_book_comments.forEach(element => {
-      if (element.Book_id == this.$route.params.id) {
-        this.iscomment = true;
-      }
-    });
+    this.load_data(this.$route.params.id);
   },
   methods: {
+    load_data(id) {
+      this.$http
+        .get("http://182.92.57.178:5000/books/" + id)
+        .then(response => {
+          this.info = response.data.result.info;
+          this.comments = response.data.result.comments;
+          console.log(this.info);
+          console.log(this.comments.length);
+        })
+        .catch(response => {
+          console.log(response);
+        });
+      global_.my_book_comments.forEach(element => {
+        if (element.Book_id == this.$route.params.id) {
+          this.iscomment = true;
+        }
+      });
+    },
     back() {
       this.$router.push({ path: "/book/index" });
     },
     comment() {
       if (this.commentRate == 0) {
         alert("请打分");
+        return;
+      }
+      if (global_.loginStatus == false) {
+        alert("请先登录");
         return;
       }
       Vue.axios
@@ -161,17 +179,7 @@ export default {
         )
         .then(response => {
           console.log(response);
-          this.$http
-            .get("http://182.92.57.178:5000/books/" + this.$route.params.id)
-            .then(response => {
-              this.info = response.data.result.info;
-              this.comments = response.data.result.comments;
-              console.log(this.info);
-              console.log(this.comments.length);
-            })
-            .catch(response => {
-              console.log(response);
-            });
+          this.load_data(this.$route.params.id);
         })
         .catch(response => {
           console.log(response);
@@ -183,7 +191,7 @@ export default {
             this.$route.params.id +
             "/scores",
           {
-            book_score: this.commentRate*2
+            book_score: this.commentRate * 2
           },
           {
             headers: {
@@ -210,6 +218,62 @@ export default {
           console.log(response);
           alert("评分失败");
         });
+    },
+    approve(message) {
+      console.log(message);
+      if (global_.loginStatus == false) {
+        alert("请先登录");
+        return;
+      }
+      Vue.axios
+        .post(
+          "http://182.92.57.178:5000/book_comments/" + message + "/approve",
+          {
+            type: 1
+          },
+          {
+            headers: {
+              token: global_.token
+            }
+          }
+        )
+        .then(response => {
+          console.log(response);
+          this.load_data(this.$route.params.id);
+        })
+        .catch(response => {
+          console.log(response);
+          alert("你已经点赞/反对了");
+        })
+        .bind(this);
+    },
+    disapprove(message) {
+      console.log(message);
+      if (global_.loginStatus == false) {
+        alert("请先登录");
+        return;
+      }
+      Vue.axios
+        .post(
+          "http://182.92.57.178:5000/book_comments/" + message + "/approve",
+          {
+            type: -1
+          },
+          {
+            headers: {
+              token: global_.token
+            }
+          }
+        )
+        .then(response => {
+          console.log(response);
+          this.load_data(this.$route.params.id);
+        })
+        .catch(response => {
+          console.log(response);
+          alert("你已经点赞/反对了");
+        })
+        .bind(this);
     }
   }
 };

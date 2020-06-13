@@ -74,6 +74,7 @@
           global_.username=self.username;
           console.log(global_.username);
           global_.token=res.data.result.token;
+          global_.loginStatus=true;
           //console.log("Login Page: "+global_.token);
           self.startDivi();
           //self.$router.push({path:"/"});
