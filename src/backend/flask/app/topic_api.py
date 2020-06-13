@@ -174,7 +174,7 @@ class Get_pic(Resource):
             resp = Response(img, mimetype="image")
             return resp
         except FileNotFoundError :
-            abort_if_doesnt_exist("pictrue not found")
+            abort_if_doesnt_exist("pictrue")
 
 api.add_resource(Get_all_topics, '/topics')
 api.add_resource(Get_topics_by_id, '/topics/<int:topic_id>')

@@ -25,7 +25,7 @@ class Get_groups_by_id(Resource):
         cursor.execute(
             "SELECT Group_content_id,Group_content_content,Group_content_title,Group_id,Group_content_image,Create_time,\
             Is_highlighted,Is_pinned,`User`.User_id,`User`.User_name FROM Group_Contents,`User`\
-            WHERE Group_id=%d and Group_Contents.User_id=User.User_id" % (group_id))
+            WHERE Group_id=%d and Group_Contents.User_id=User.User_id ORDER BY Is_pinned DESC" % (group_id))
         content = cursor.fetchall()
         connection.commit()
         for i in content:
