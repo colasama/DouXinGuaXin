@@ -235,10 +235,10 @@ export default {
   data(){
     return{
       head:[
-        "https://i.loli.net/2020/06/08/Sj6c3gY9Ilebf1N.png",
-        "https://i.loli.net/2020/06/08/TG8EqWNlRjt6MVo.png",
-        "https://i.loli.net/2020/06/08/t5GDicomyeKW7ad.jpg",
-        "https://i.loli.net/2020/06/08/eyvBgJF6lbIVLRp.jpg",
+        "https://i.loli.net/2020/06/13/mZMXQlvjiAEuVcz.jpg",
+        "https://i.loli.net/2020/06/13/VxiAKgYeRTJzcau.jpg",
+        "https://i.loli.net/2020/06/13/vMjOu8w1USeiy9Q.jpg",
+        "https://i.loli.net/2020/06/13/a9iUSQFYjs56H1o.jpg",
       ],
       posts: [],
       books: [],
