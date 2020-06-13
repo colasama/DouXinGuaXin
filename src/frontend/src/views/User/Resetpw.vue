@@ -22,6 +22,7 @@
 </style>
 
 <script>
+import Vue from 'vue'
 import global_ from '../../components/Global'
 export default{
     data() {
@@ -64,7 +65,22 @@ export default{
             })
         },
         resetPasswd(){
-
+            Vue.axios.post(
+          'http://182.92.57.178:5000/users/modify_password',
+          {
+            old_password:this.npassword,
+            new_password:this.nnpassword
+          },
+          {
+            headers:{
+              'token':global_.token
+            }
+          }
+        ).then((res)=>{
+          console.log(res)
+        }).catch((res)=>{
+          console.log(res)
+        })
         }
     }
 }

@@ -10,8 +10,8 @@
 
             <div class="header">
                 <div>
-                    <h1 style="color:white;font-size:40px">#一个小组</h1>
-                    <a-button style="text-align:center;border:1px" v-if="!ifJoinedGroup" type="dashed" ><b>加入小组</b></a-button>
+                    <h1 style="color:white;font-size:40px">#{{groupname}} </h1>
+                    <a-button style="text-align:center;border:1px" v-if="!ifJoinedGroup" type="dashed" @click="joingroup"><b>加入小组</b></a-button>
                     <a-button v-if="ifJoinedGroup" type="dashed"><b>发表帖子</b></a-button>
                 </div>
             </div>
@@ -61,6 +61,8 @@
 }
 </style>
 <script>
+import global_ from '../../components/Global'
+import Vue from 'vue'
 export default {
   components:{
     
@@ -74,10 +76,33 @@ export default {
             "User_id": 15,  "Username":"test","Group_content_image": "/example", "Create_time": "2020-06-03 18:30:04", "Is_highlighted": 1, "Is_pinned": 1}
         ],
         ifJoinedGroup:false,
+        id:-1,
+        message:''
     };
+  },
+  created:function(){
+      this.id=this.$route.params.id;
+      console.log(this.id);
   },
   methods: {
     //估计得有一个getUsernameByID一个getPosts
+    joingroup(){
+        console.log(global_.token);
+        Vue.axios.post(
+          'http://182.92.57.178:5000/groups/'+this.id+'/join',
+          {
+          },
+          {
+            headers:{
+              'token':global_.token
+            }
+          }
+        ).then((res)=>{
+        console.log(res)
+      }).catch((res)=>{
+        console.log(res)
+      })
+    }
   }
 };
 </script>
