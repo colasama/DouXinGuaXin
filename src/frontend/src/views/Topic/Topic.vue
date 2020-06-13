@@ -49,7 +49,7 @@
             <div style="margin-top:10px">
               <a-upload
                 action="http://182.92.57.178:5000/pictures/add"
-                method='post'
+                method="post"
                 list-type="picture-card"
                 :file-list="fileList"
                 :before-upload="beforeUpload"
@@ -74,7 +74,7 @@
         </a-divider>
 
         <a-modal :visible="previewVisible" :footer="null" @cancel="handleUCancel">
-            <img alt="example" style="width: 100%" :src="previewImage" />
+          <img alt="example" style="width: 100%" :src="previewImage" />
         </a-modal>
 
         <!--帖子渲染部分-->
@@ -86,12 +86,14 @@
         >
           <a-list-item slot="renderItem" slot-scope="item" style="text-align:left">
             <img
+              v-for="pic in item.Topic_content_image"
+              :key="pic"
               slot="extra"
               width="272"
               alt="logo"
               style="cursor: pointer;"
-              :src="item.Topic_content_image"
-              @click="handlePreviewForNormalUse(item.Topic_content_image)"
+              :src="pic"
+              @click="handlePreviewForNormalUse(pic)"
             />
             <a-list-item-meta :description="item.Topic_content_content">
               <a-avatar slot="avatar">{{item.User_name.substring(0,1)}}</a-avatar>
@@ -126,7 +128,7 @@
 </style>
 <script>
 import global_ from "../../components/Global";
-import Vue from 'vue';
+import Vue from "vue";
 function getBase64(file) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -141,21 +143,7 @@ export default {
   mounted: function() {
     this.id = this.$route.params.id;
     console.log(this.id);
-    this.$http
-      .get("http://182.92.57.178:5000/topics/" + this.$route.params.id)
-      .then(response => {
-        this.info = response.data.result.info;
-        this.posts = response.data.result.contents;
-        console.log(this.info);
-      })
-      .catch(response => {
-        console.log(response);
-      });
-    global_.my_topics.forEach(element => {
-      if (element.Topic_id == this.$route.params.id) {
-        this.ifJoinedTopic = true;
-      }
-    });
+    this.load_data();
   },
   data() {
     return {
@@ -165,12 +153,39 @@ export default {
       ifJoinedTopic: false,
       previewVisible: false,
       previewImage: "",
-      fileList:[],
-      topic_content_content:"",
-      pics:[]
+      fileList: [],
+      topic_content_content: "",
+      pics: []
     };
   },
   methods: {
+    load_data() {
+      this.$http
+        .get("http://182.92.57.178:5000/topics/" + this.$route.params.id)
+        .then(response => {
+          this.info = response.data.result.info;
+          this.posts = response.data.result.contents;
+          for (let index = 0; index < this.posts.length; index++) {
+            console.log(this.posts[index].Topic_content_image);
+            if (this.posts[index].Topic_content_image == "None") {
+              this.posts[index].Topic_content_image = [];
+            } else {
+              var images_src = this.posts[index].Topic_content_image.split(",");
+              this.posts[index].Topic_content_image = images_src;
+            }
+          }
+          console.log(this.info);
+          console.log(this.posts);
+        })
+        .catch(response => {
+          console.log(response);
+        });
+      global_.my_topics.forEach(element => {
+        if (element.Topic_id == this.$route.params.id) {
+          this.ifJoinedTopic = true;
+        }
+      });
+    },
     jointopic() {
       if (global_.loginStatus == false) {
         alert("请先登录");
@@ -202,8 +217,7 @@ export default {
     showPost() {
       this.postVisible = true;
     },
-    beforeUpload(){
-    },
+    beforeUpload() {},
     //这几个是上传部分的函数
     handleUCancel() {
       this.previewVisible = false;
@@ -236,18 +250,21 @@ export default {
     },
     handleOk(e) {
       console.log(e);
-      var src =""
-      for (let index = 0; index < this.fileList.length-1; index++) {
-        const element = this.fileList[index].url;
-        src+=element+","
+      var src = "None";
+      if (this.fileList.length > 0) {
+        src = "";
+        for (let index = 0; index < this.fileList.length - 1; index++) {
+          const element = this.fileList[index].url;
+          src += element + ",";
+        }
+        src += this.fileList[this.fileList.length - 1].url;
       }
-      src+=this.fileList[this.fileList.length-1].url
       Vue.axios
         .post(
           "http://182.92.57.178:5000/topics/" + this.id + "/add_content",
           {
             topic_content_content: this.topic_content_content,
-            topic_content_image: src,
+            topic_content_image: src
           },
           {
             headers: {
@@ -258,12 +275,12 @@ export default {
         .then(res => {
           console.log(res);
           this.postVisible = false;
+          this.load_data();
           this.showSuccess();
         })
         .catch(res => {
           console.log(res);
         });
-      
     },
     handleCancel() {
       this.postVisible = false;
