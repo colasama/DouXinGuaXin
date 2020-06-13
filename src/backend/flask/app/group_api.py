@@ -280,10 +280,6 @@ class Apply_manager(Resource):
         )
         connection.commit()
         cursor.execute(
-            "INSERT into Group_Apply(Group_apply_content,Group_id,User_id)\
-            VALUES('%s',%d,%d)" % (group_apply_content, group_id, user_id)
-        )
-        cursor.execute(
             "SELECT LAST_INSERT_ID()"
         )
         result = cursor.fetchone()['LAST_INSERT_ID()']

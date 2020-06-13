@@ -19,6 +19,9 @@
             <a-button v-if="ifJoinedGroup&&ifLoggedIn" type="default" @click="showPost">
               <b>发表帖子</b>
             </a-button>
+            <a-button  v-if="!permissonOn" type="default" @click="applyManager">
+              <b>申请管理员</b>
+            </a-button>
             <div style="margin-top:50px">
               <span style="color:white;margin:24px">
                 <a-icon type="profile" style="margin:5px" />
@@ -54,7 +57,26 @@
             <!--a-button style="margin-top:10px">提交</a-button-->
           </div>
         </a-modal>
-
+        <a-modal
+          centered="true"
+          title="申请管理员"
+          :visible="applyVisible"
+          :confirm-loading="confirmLoading"
+          @ok="applyOK"
+          @cancel="applyCancel"
+          okText="申请"
+          cancelText="取消"
+        >
+          <div>
+            <a-textarea
+              style="margin-top:10px"
+              v-model="applyContent"
+              placeholder="请填写申请理由"
+              :auto-size="{ minRows: 5, maxRows: 5 }"
+            ></a-textarea>
+            <!--a-button style="margin-top:10px">提交</a-button-->
+          </div>
+        </a-modal>
         <a-divider>
           <div style="font-size:18px">共有{{posts.length}}条帖子</div>
         </a-divider>
@@ -115,6 +137,8 @@ export default {
     return {
       posts: [],
       postVisible: false,
+      applyVisible: false,
+      applyContent:"",
       ifJoinedGroup: false,
       ifLoggedIn: false,
       id: -1,
@@ -125,7 +149,6 @@ export default {
     };
   },
   mounted: function() {
-    
     this.ifLoggedIn = global_.loginStatus;
     this.id = this.$route.params.id;
     console.log(this.id);
@@ -254,6 +277,48 @@ export default {
         .catch(res => {
           console.log(res);
         });
+    },
+    applyManager(){
+      this.applyVisible=true;
+    },
+    applyOK(){
+      Vue.axios
+        .post(
+          "http://182.92.57.178:5000/groups/" +
+            this.$route.params.id +
+            "/apply_manager",
+          {
+            group_apply_content: this.applyContent
+          },
+          {
+            headers: {
+              token: global_.token
+            }
+          }
+        )
+        .then(response => {
+          console.log(response);
+          this.load_data();
+          this.applyVisible = false;
+          this.applySuccess();
+        })
+        .catch(response => {
+          console.log(response);
+          alert("提交失败");
+        });
+    },
+    applyCancel() {
+      this.applyVisible = false;
+    },
+    applySuccess() {
+      this.$success({
+        centered: true,
+        title: "提交申请成功",
+        content: "请等待系统管理员审核", //<a-result status="success" title=""/>,
+        onOK() {
+          this.destroyALL();
+        }
+      });
     },
     showPost() {
       this.postVisible = true;
