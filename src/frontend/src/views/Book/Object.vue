@@ -1,6 +1,5 @@
 <template>
   <div>
-    {{this.$route.params.id}}
     <a-layout style="min-height:100%">
       <a-layout-content style="margin-top:30px;text-align:center">
         <a-layout>
