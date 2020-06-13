@@ -131,7 +131,6 @@ export default {
     console.log(this.id);
     this.load_data(this.id);
     this.getUserPermission();
-
   },
   methods: {
     getUserPermission(){
@@ -145,8 +144,9 @@ export default {
           }
         )
         .then(response => {
-          console.log(response.data.result.User_authority);
-          if(response.data.result.User_authority==this.$route.params.id)
+          console.log("USERID:"+response.data.result.User_id);
+          console.log("ADMINID:"+this.info.User_id);
+          if(response.data.result.User_id==this.info.User_id)
             this.permissonOn=true;
         })
         .catch(response => {
@@ -171,14 +171,44 @@ export default {
         .catch(res => {
           console.log(res);
         });
-      console.log(id)
     },
     setGood(id){
-      
-      console.log(id)
+      Vue.axios
+        .post(
+          "http://182.92.57.178:5000/groups/highlighted_content/" + id,
+          {},
+          {
+            headers: {
+              token: global_.token
+            }
+          }
+        )
+        .then(res => {
+          console.log(res);
+          this.load_data();
+        })
+        .catch(res => {
+          console.log(res);
+        });
     },
     setDelete(id){
-      console.log(id)
+      Vue.axios
+        .post(
+          "http://182.92.57.178:5000/groups/delete_content/" + id,
+          {},
+          {
+            headers: {
+              token: global_.token
+            }
+          }
+        )
+        .then(res => {
+          console.log(res);
+          this.load_data();
+        })
+        .catch(res => {
+          console.log(res);
+        });
     },
     load_data() {
       this.$http

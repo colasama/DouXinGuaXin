@@ -32,7 +32,7 @@
                 <a-col :span="4"/>
 
                 <a-col :span="4">
-                  <a-card hoverable style="width: 240px">
+                  <a-card hoverable style="width: 240px;height:420px">
                     <a :href="'/#/book/object/'+books[0].Book_id">
                     <img
                       width="180px"
@@ -51,7 +51,7 @@
                 <a-col :span="2"/>
 
                 <a-col :span="4">
-                  <a-card hoverable style="width: 240px">
+                  <a-card hoverable style="width: 240px;height:420px">
                     <a :href="'/#/book/object/'+books[1].Book_id">
                       <img
                         width="180px"
@@ -70,7 +70,7 @@
                 <a-col :span="2"/>
                 
                 <a-col :span="4">
-                  <a-card hoverable style="width: 240px">
+                  <a-card hoverable style="width: 240px;height:420px">
                     <a :href="'/#/book/object/'+books[2].Book_id">
                       <img
                         width="180px"
@@ -103,7 +103,7 @@
                 <a-col :span="4"/>
 
                 <a-col :span="4">
-                  <a-card hoverable style="width: 240px">
+                  <a-card hoverable style="width: 240px;height:420px">
                     <a :href="'/#/movie/object/'+movies[0].Movie_id">
                       <img
                         width="180px"
@@ -122,7 +122,7 @@
                 <a-col :span="2"/>
 
                 <a-col :span="4">
-                  <a-card hoverable style="width: 240px">
+                  <a-card hoverable style="width: 240px;height:420px">
                     <a :href="'/#/movie/object/'+movies[1].Movie_id">
                       <img
                         width="180px"
@@ -141,7 +141,7 @@
                 <a-col :span="2"/>
                 
                 <a-col :span="4">
-                  <a-card hoverable style="width: 240px">
+                  <a-card hoverable style="width: 240px;height:420px">
                     <a :href="'/#/movie/object/'+movies[2].Movie_id">
                       <img
                         width="180px"
