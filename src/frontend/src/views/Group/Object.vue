@@ -8,6 +8,7 @@
                 title="返回上一页"
                 @back="back"
             />
+          <!--参考那个Topic里一样的 唯一区别是这个有标题，其余大致相同 可以参考api文档的返回参数来设计
             <a-card style="margin:24px;text-align:left">
 
                 <span style="margin-left:24px;font-size:24px"><b>{{group_content_title}}</b></span>
@@ -20,7 +21,7 @@
                     <span> <a-icon type="dislike-o" style="margin-left: 8px" /> 踩</span>
                 </template>
         
-            </a-card>
+            </a-card>-->
       </a-layout-content>
     </a-layout>
   </div>
@@ -30,13 +31,18 @@
 export default {
     data() {
         return {
-            group_content_title:"DDL太多awsl",
-            User_name:"Colanns",
-            Create_time:"2020-06-03 17:50:52",
-            group_content_content:"ruaruarauaaekrfjekljlhihg",
+            group_cotents: []
         }
     },
-  methods: {
+    mounted() {
+        this.$http.get('http://182.92.57.178:5000/groups/' + this.$route.params.id).then(res=>{
+            console.log(res)
+            this.group_cotents = res.data.result
+        }).catch(function(error){
+            console.log(error);
+        })
+    },
+    methods: {
     back(){
         this.$router.push({path:"/group/index"});
     },
