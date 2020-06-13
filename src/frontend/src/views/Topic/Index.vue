@@ -21,29 +21,30 @@
 
         <a-page-header
             style="margin-left:10%;margin-top:30px"
-            title="最热图文"
-            sub-title="Hot Posts"
+            title="话题列表"
+            sub-title="Topic List"
         />
 
         <a-list
                   class="comment-list"
                   item-layout="vertical"
-                  :data-source="posts"
+                  :data-source="topics"
                   style="margin:24px 200px 0 200px;text-align:center"
               >
               <a-list-item slot="renderItem" slot-scope="item" style="text-align:left">
-                  <a-list-item-meta :description="item.content">
-                      <a slot="title" :href="'/object/'+item.id">
-                      {{item.title}}
-                      </a>
-                      <!--a-avatar slot="avatar" :src="item.avatar" /-->
-                  </a-list-item-meta>
-                  <template slot="actions" >
-                      <span> <a-icon type="like-o" style="margin-left: 8px" /> 赞</span>
-                      <span> <a-icon type="dislike-o" style="margin-left: 8px" /> 踩</span>
-                      <span> <a-icon type="warning" style="margin-left: 8px" /> 举报</span>
-                      <a-tooltip :title="item.Create_time"><span>{{ item.Create_time}}</span></a-tooltip>    
-                  </template>
+                  <a-card>
+                    <a-list-item-meta :description="'话题简介：'+item.Topic_intro">
+                        <a slot="title" :href="'/#/topic/topic/'+item.Topic_id">
+                        {{item.Topic_name}}
+                        </a>
+                        <!--a-avatar slot="avatar" :src="item.avatar" /-->
+                    </a-list-item-meta>
+                    <template >
+                        <span> <a-icon type="fire-o" style="margin-left: 8px" /> 话题相关： <span style="color:grey">{{item.Topic_related}}</span></span>
+                        <a-tooltip :title="item.Create_time"><span>{{ item.Create_time}}</span></a-tooltip>    
+                    </template>
+                  </a-card>
+                  
               </a-list-item>
               </a-list>
       </a-layout-content>
@@ -62,10 +63,6 @@ export default {
     return {
       wewe:"asas",
       topics: [],
-      posts:[
-        {"name":"rr","title":"aa","content":"aasasasas","id":"1"},
-        {"name":"rr","title":"aa","content":"aasasasas","id":"2"}
-      ],
       myColors: ['#1f77b4', '#629fc9', '#94bedb', '#c9e0ef'],
     };
   },
