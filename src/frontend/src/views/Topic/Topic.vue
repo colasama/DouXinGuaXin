@@ -90,8 +90,9 @@
               :key="pic"
               slot="extra"
               height="120px"
+              width="120px"
               alt="logo"
-              style="cursor: pointer;margin:12px"
+              style="cursor: pointer;margin:12px;object-fit:cover;"
               :src="pic"
               @click="handlePreviewForNormalUse(pic)"
             />
