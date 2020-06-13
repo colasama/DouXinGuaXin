@@ -182,7 +182,7 @@
               >
               <a-list-item slot="renderItem" slot-scope="item" style="text-align:left">
                   <a-list-item-meta :description="item.content">
-                      <a slot="title" :href="'/object/'+item.id">
+                      <a slot="title" :href="'/#/book/object/'+item.kind_id">
                       {{item.title}}
                       </a>
                       <!--a-avatar slot="avatar" :src="item.avatar" /-->
@@ -314,6 +314,7 @@ export default {
       console.log(this.moviecomments)
       this.posts.push({
         "id": this.bookcomments[0].Book_comment_id,
+        "kind_id": this.bookcomments[0].Book_id,
         "content": this.bookcomments[0].Book_comment_content,
         "title": this.bookcomments[0].Book_comment_title,
         "Create_time": this.bookcomments[0].Create_time,
@@ -322,6 +323,7 @@ export default {
       })
       this.posts.push({
         "id": this.moviecomments[0].Movie_comment_id,
+        "kind_id": this.bookcomments[0].Movie_id,
         "content": this.moviecomments[0].Movie_comment_content,
         "title": this.moviecomments[0].Movie_comment_title,
         "Create_time": this.moviecomments[0].Create_time,
