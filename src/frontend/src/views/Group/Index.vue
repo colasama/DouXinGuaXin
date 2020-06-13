@@ -76,10 +76,10 @@ export default {
       })
     },
   methods: {
-    wordClickHandler(name){
-      console.log(this.groups.findIndex(name).id)
-      this.$router.push({path:"/group/group/"+this.groups.findIndex(name).id});
-    },
+    wordClickHandler(name,value){
+      console.log(name)
+      this.$router.push({ path:"/group/group/"+value});
+    }
   }
 };
 </script>
