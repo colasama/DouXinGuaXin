@@ -7,8 +7,8 @@
             title="影视"
             sub-title="Movies"
         />
-        <a-button @click="refresh">Refresh</a-button>
-        <div>{{movies}}</div>
+        <!--a-button @click="refresh">Refresh</a-button>
+        <div>{{movies}}</div-->
         <!--以下是列表渲染部分-->
         <a-list :grid="{ gutter: 16, column: 4 }" :data-source="movies.result" style="margin:24px">
           <a-list-item slot="renderItem" slot-scope="movie">
