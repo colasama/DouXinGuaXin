@@ -139,9 +139,26 @@ class Post_topic_content(Resource):
         return {'result': result}
 
 
+class Get_hot_topic(Resource):
+    def get(self):
+        cursor.execute(
+            "SELECT Topic_id FROM Topic_Contents GROUP BY Topic_id ORDER BY COUNT(Topic_Content_id) DESC"
+        )
+        result = cursor.fetchmany(2)
+        connection.commit()
+        cursor.execute(
+            "SELECT * FROM Topics WHERE Topic_id = '%d' or Topic_id = '%d'"
+            % (result[0]['Topic_id'], result[1]['Topic_id'])
+        )
+        result = cursor.fetchall()
+        connection.commit()
+        return {'result': result}
+
+
 api.add_resource(Get_all_topics, '/topics')
 api.add_resource(Get_topics_by_id, '/topics/<int:topic_id>')
 api.add_resource(Add_user_to_topic, '/topics/<int:topic_id>/join')
 api.add_resource(Get_topic_by_keywords, '/search/topics')
 api.add_resource(Get_topic_content_by_keywords, '/search/topic_contents')
 api.add_resource(Post_topic_content, '/topics/<int:topic_id>/add_content')
+api.add_resource(Get_hot_topic, '/topics/hot')
