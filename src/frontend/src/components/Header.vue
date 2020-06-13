@@ -74,6 +74,7 @@
 <script>
 import global_ from '../components/Global';
 import cSearch from '../components/Search.vue';
+import Bus from '../bus.js'
 export default {
   components:{
     cSearch
@@ -92,10 +93,14 @@ export default {
     console.log('head has been created');
     this.username=global_.username;
     this.token=global_.token;
+
+    Bus.$on('current',target=>{
+      console.log(target);
+      this.current=target;
+    })
   },
   computed:{
     token_head:function(){
-      console.log("是否已登录");
       console.log(global_.token!='');
       return this.global_.token;
     },
@@ -120,6 +125,12 @@ export default {
       else
         this.showLogin=false;
     },
+    token_head:function(newval){
+      if(newval=='')
+        this.showLogin=true;
+      else
+        this.showLogin=false;
+    }
   },
   methods: {
     handleMenuClick(){
