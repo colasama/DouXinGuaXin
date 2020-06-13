@@ -201,6 +201,105 @@ class Reset_password(Resource):
         return {'message': 'Reset successfully.'}
 
 
+class Get_my_group(Resource):
+    def get(self):
+        parser = RequestParser()
+        parser.add_argument('new_password', type=str, required=True)
+        parser.add_argument('token', type=str,
+                            location="headers", required=True)
+        args = parser.parse_args(strict=True)
+        token = args.get('token')
+        user_id = verify_token(token)
+        if user_id is None:
+            return {'message': 'Illegal token.'}, 403
+        cursor.execute(
+            "SELECT * FROM User_Group WHERE User_id = %d" %
+            (user_id))
+        result = cursor.fetchall()
+        connection.commit()
+        return {"result": result}
+
+
+class Get_my_topic(Resource):
+    def get(self):
+        parser = RequestParser()
+        parser.add_argument('new_password', type=str, required=True)
+        parser.add_argument('token', type=str,
+                            location="headers", required=True)
+        args = parser.parse_args(strict=True)
+        token = args.get('token')
+        user_id = verify_token(token)
+        if user_id is None:
+            return {'message': 'Illegal token.'}, 403
+        cursor.execute(
+            "SELECT * FROM User_Topic WHERE User_id = %d" %
+            (user_id))
+        result = cursor.fetchall()
+        connection.commit()
+        return {"result": result}
+
+
+class Get_my_book_comment(Resource):
+    def get(self):
+        parser = RequestParser()
+        parser.add_argument('new_password', type=str, required=True)
+        parser.add_argument('token', type=str,
+                            location="headers", required=True)
+        args = parser.parse_args(strict=True)
+        token = args.get('token')
+        user_id = verify_token(token)
+        if user_id is None:
+            return {'message': 'Illegal token.'}, 403
+        cursor.execute(
+            "SELECT * FROM Book_Comments WHERE User_id = %d" %
+            (user_id))
+        result = cursor.fetchall()
+        connection.commit()
+        return {"result": result}
+
+
+class Get_my_movie_comment(Resource):
+    def get(self):
+        parser = RequestParser()
+        parser.add_argument('new_password', type=str, required=True)
+        parser.add_argument('token', type=str,
+                            location="headers", required=True)
+        args = parser.parse_args(strict=True)
+        token = args.get('token')
+        user_id = verify_token(token)
+        if user_id is None:
+            return {'message': 'Illegal token.'}, 403
+        cursor.execute(
+            "SELECT * FROM Movie_Comments WHERE User_id = %d" %
+            (user_id))
+        result = cursor.fetchall()
+        connection.commit()
+        return {"result": result}
+
+
+class Get_my_report(Resource):
+    def get(self):
+        parser = RequestParser()
+        parser.add_argument('new_password', type=str, required=True)
+        parser.add_argument('token', type=str,
+                            location="headers", required=True)
+        args = parser.parse_args(strict=True)
+        token = args.get('token')
+        user_id = verify_token(token)
+        if user_id is None:
+            return {'message': 'Illegal token.'}, 403
+        cursor.execute(
+            "SELECT * FROM Movie_Reports WHERE User_id = %d" %
+            (user_id))
+        result_m = cursor.fetchall()
+        cursor.execute(
+            "SELECT * FROM Book_Reports WHERE User_id = %d" %
+            (user_id))
+        result_b = cursor.fetchall()
+        connection.commit()
+        return {"result": {"books": result_b, "movies": result_m}}
+
+
 api.add_resource(Register, '/register')
 api.add_resource(Login, '/login')
 api.add_resource(Get_user_info, '/users/info')
@@ -208,4 +307,9 @@ api.add_resource(Modify_password, '/users/modify_password')
 api.add_resource(Send_email, '/users/reset_password/send_email')
 api.add_resource(Reset_password, '/users/reset_password')
 api.add_resource(Get_user_movie_approvals, '/users/movie_approvals')
-api.add_resource(Get_user_book_approvals,'/users/book_approvals')
+api.add_resource(Get_user_book_approvals, '/users/book_approvals')
+api.add_resource(Get_my_group, '/users/groups')
+api.add_resource(Get_my_topic, '/users/topics')
+api.add_resource(Get_my_book_comment, '/users/book_comments')
+api.add_resource(Get_my_movie_comment, '/users/movie_comments')
+api.add_resource(Get_my_report,'/users/reports')
