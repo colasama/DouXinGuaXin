@@ -64,38 +64,28 @@
 </style>
 <script>
 import global_ from '../../components/Global'
-import Vue from 'vue'
 export default {
   components:{
     
   },
-  created:function(){
+  mounted:function(){
       this.id=this.$route.params.id;
       console.log(this.id);
       this.$http
       .get("http://182.92.57.178:5000/topics/" + this.$route.params.id)
       .then(response => {
         this.info = response.data.result.info;
+        this.posts = response.data.result.contents;
         console.log(this.info);
       })
       .catch(response => {
         console.log(response);
       });
-      Vue.axios.post(//判断是否加入了小组？不知道可不可行
-          'http://182.92.57.178:5000/topics/'+this.id+'/join',
-          {
-          },
-          {
-            headers:{
-              'token':global_.token
-            }
-          }
-        ).then((res)=>{
-        console.log(res)
-      }).catch((res)=>{
-        this.ifJoinedTopic=true
-        console.log(res)
-      })
+      global_.my_topics.forEach(element => {
+      if (element.Topic_id == this.$route.params.id) {
+        this.ifJoinedTopic = true;
+      }
+    });
   },
   data() {
     return {

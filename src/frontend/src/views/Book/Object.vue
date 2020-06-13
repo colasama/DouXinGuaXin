@@ -85,7 +85,7 @@
                       />
                       {{item.Book_comment_disapprove}}
                     </span>
-                    <span>
+                    <span @click="report(item.Book_comment_id)">
                       <a-icon type="warning" style="margin-left: 8px" />举报
                     </span>
                     <a-tooltip :title="item.Create_time">
@@ -279,6 +279,9 @@ export default {
           alert("你已经点赞/反对了");
         })
         .bind(this);
+    },
+    report(message){
+      console.log(message);
     }
   }
 };
