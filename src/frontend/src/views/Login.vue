@@ -74,6 +74,32 @@
           self.startDivi();
           //self.$router.push({path:"/"});
           //self.destroyALL();
+          Vue.axios.get('http://182.92.57.178:5000/users/groups',{headers:{"token":global_.token}}).then(function(res){
+            global_.my_groups=res.data.result;
+          }).catch(function(error){
+            console.log(error,Response);
+          })
+          Vue.axios.get('http://182.92.57.178:5000/users/topics',{headers:{"token":global_.token}}).then(function(res){
+            global_.my_topics=res.data.result;
+          }).catch(function(error){
+            console.log(error);
+          })
+          Vue.axios.get('http://182.92.57.178:5000/users/book_comments',{headers:{"token":global_.token}}).then(function(res){
+            global_.my_book_comments=res.data.result;
+          }).catch(function(error){
+            console.log(error);
+          })
+          Vue.axios.get('http://182.92.57.178:5000/users/movie_comments',{headers:{"token":global_.token}}).then(function(res){
+            global_.my_movie_comments=res.data.result;
+          }).catch(function(error){
+            console.log(error);
+          })
+          Vue.axios.get('http://182.92.57.178:5000/users/reports',{headers:{"token":global_.token}}).then(function(res){
+            global_.my_movie_reports=res.data.result.movies;
+            global_.my_book_reports=res.data.result.books;
+          }).catch(function(error){
+            console.log(error);
+          })
         }).catch(function(error){
           console.log("nmdwsm");
           console.log(error);

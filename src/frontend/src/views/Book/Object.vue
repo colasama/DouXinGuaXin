@@ -111,6 +111,7 @@ export default {
       commentRate: 0,
       info: {},
       comments: {},
+      iscomment,
       moment
     };
   },
@@ -127,6 +128,7 @@ export default {
       .catch(response => {
         console.log(response);
       });
+      isc
   },
   methods: {
     back() {

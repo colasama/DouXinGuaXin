@@ -204,7 +204,6 @@ class Reset_password(Resource):
 class Get_my_group(Resource):
     def get(self):
         parser = RequestParser()
-        parser.add_argument('new_password', type=str, required=True)
         parser.add_argument('token', type=str,
                             location="headers", required=True)
         args = parser.parse_args(strict=True)
@@ -223,7 +222,6 @@ class Get_my_group(Resource):
 class Get_my_topic(Resource):
     def get(self):
         parser = RequestParser()
-        parser.add_argument('new_password', type=str, required=True)
         parser.add_argument('token', type=str,
                             location="headers", required=True)
         args = parser.parse_args(strict=True)
@@ -242,7 +240,6 @@ class Get_my_topic(Resource):
 class Get_my_book_comment(Resource):
     def get(self):
         parser = RequestParser()
-        parser.add_argument('new_password', type=str, required=True)
         parser.add_argument('token', type=str,
                             location="headers", required=True)
         args = parser.parse_args(strict=True)
@@ -254,6 +251,8 @@ class Get_my_book_comment(Resource):
             "SELECT * FROM Book_Comments WHERE User_id = %d" %
             (user_id))
         result = cursor.fetchall()
+        for i in result:
+            i['Create_time'] = str(i['Create_time'])
         connection.commit()
         return {"result": result}
 
@@ -261,7 +260,6 @@ class Get_my_book_comment(Resource):
 class Get_my_movie_comment(Resource):
     def get(self):
         parser = RequestParser()
-        parser.add_argument('new_password', type=str, required=True)
         parser.add_argument('token', type=str,
                             location="headers", required=True)
         args = parser.parse_args(strict=True)
@@ -273,6 +271,9 @@ class Get_my_movie_comment(Resource):
             "SELECT * FROM Movie_Comments WHERE User_id = %d" %
             (user_id))
         result = cursor.fetchall()
+        result_m = cursor.fetchall()
+        for i in result:
+            i['Create_time'] = str(i['Create_time'])
         connection.commit()
         return {"result": result}
 
@@ -280,7 +281,6 @@ class Get_my_movie_comment(Resource):
 class Get_my_report(Resource):
     def get(self):
         parser = RequestParser()
-        parser.add_argument('new_password', type=str, required=True)
         parser.add_argument('token', type=str,
                             location="headers", required=True)
         args = parser.parse_args(strict=True)
@@ -292,10 +292,14 @@ class Get_my_report(Resource):
             "SELECT * FROM Movie_Reports WHERE User_id = %d" %
             (user_id))
         result_m = cursor.fetchall()
+        for i in result_m:
+            i['Create_time'] = str(i['Create_time'])
         cursor.execute(
             "SELECT * FROM Book_Reports WHERE User_id = %d" %
             (user_id))
         result_b = cursor.fetchall()
+        for i in result_b:
+            i['Create_time'] = str(i['Create_time'])
         connection.commit()
         return {"result": {"books": result_b, "movies": result_m}}
 
