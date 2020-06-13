@@ -91,7 +91,8 @@
                   :auto-size="{ minRows: 4, maxRows: 4 }"
                   style="margin:14px 5px 0 5px;"
                 />
-                <a-button style="margin:15px 5px 0 5px;" @click="comment">发表</a-button>
+                <a-button style="margin:15px 5px 0 5px;" @click="comment" v-if="!iscomment">发表</a-button>
+                <div style="font-size:30px" v-if="iscomment">您已经评论过了</div>
               </a-card>
             </div>
           </a-col>
@@ -111,7 +112,7 @@ export default {
       commentRate: 0,
       info: {},
       comments: {},
-      iscomment,
+      iscomment: false,
       moment
     };
   },
@@ -128,7 +129,11 @@ export default {
       .catch(response => {
         console.log(response);
       });
-      isc
+    global_.my_book_comments.forEach(element => {
+      if (element.Book_id == this.$route.params.id) {
+        this.iscomment = true;
+      }
+    });
   },
   methods: {
     back() {
@@ -189,6 +194,17 @@ export default {
         .then(ans => {
           console.log(ans);
           alert("评论成功");
+          this.iscomment = true;
+          Vue.axios
+            .get("http://182.92.57.178:5000/users/book_comments", {
+              headers: { token: global_.token }
+            })
+            .then(function(res) {
+              global_.my_book_comments = res.data.result;
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
         })
         .catch(response => {
           console.log(response);

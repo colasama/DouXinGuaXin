@@ -6,27 +6,27 @@
         <a-layout>
           <a-layout-content>
             <a-page-header style="margin-left:0" title="返回上一页" @back="back" />
-            <div style="margin:0 auto;max-width:1200px;text-align:center">
-            <a-card style="margin:0 20px 0 20px">
-              <a-row>
-                <img style="text-align:left" :src="info.Movie_src" height="500px" />
-              </a-row>
-              <a-row>
-                <h style="font-size:40px">{{info.Movie_name}}</h>
-                <div style="font-size:18px">{{info.Movie_writer}}</div>
-              </a-row>
-              <a-row>
-                <a-rate :value="info.Movie_score/2"/>
-              </a-row>
-              <a-row>
-                <div style="font-size:32px">
-                  <h1>{{info.Movie_score}}</h1>
-                </div>
-              </a-row>
-              <a-row>
-                <div style="margin:0 50px 0 50px">{{info.Movie_intro}}</div>
-              </a-row>
-            </a-card>
+            <div style="margin:0 auto;max-width:1200px">
+              <a-card style="margin:0 20px 0 20px;max-width:1200px;">
+                <a-row>
+                  <img style="text-align:left" :src="info.Movie_src" height="500px" />
+                </a-row>
+                <a-row>
+                  <h style="font-size:40px">{{info.Movie_name}}</h>
+                  <div style="font-size:18px">{{info.Movie_writer}}</div>
+                </a-row>
+                <a-row>
+                  <a-rate :value="info.Movie_score/2" disabled />
+                </a-row>
+                <a-row>
+                  <div style="font-size:32px">
+                    <h1>{{info.Movie_score}}</h1>
+                  </div>
+                </a-row>
+                <a-row>
+                  <div style="margin:0 50px 0 50px">{{info.Movie_intro}}</div>
+                </a-row>
+              </a-card>
             </div>
           </a-layout-content>
         </a-layout>
@@ -47,43 +47,52 @@
 
             <!--以下是列表渲染部分-->
             <div style="margin:0 auto;max-width:1000px;text-align:center">
-            <a-list
-              class="comment-list"
-              :header="`共有${comments.length}条评论`"
-              item-layout="vertical"
-              :data-source="comments"
-              style="margin:20px;text-align:center"
-            >
-              <a-list-item slot="renderItem" slot-scope="item" style="text-align:left">
-                <a-list-item-meta :description="item.Movie_comment_content">
+              <a-list
+                class="comment-list"
+                :header="`共有${comments.length}条评论`"
+                item-layout="vertical"
+                :data-source="comments"
+                style="margin:20px;text-align:center"
+              >
+                <a-list-item slot="renderItem" slot-scope="item" style="text-align:left">
+                  <a-list-item-meta :description="item.Movie_comment_content">
                     <a slot="title">
-                    <b>{{item.Movie_comment_title}}</b>
+                      <b>{{item.Movie_comment_title}}</b>
                     </a>
                     <a-avatar slot="avatar">{{item.User_name.substring(0,1)}}</a-avatar>
-                </a-list-item-meta>
-                <template slot="actions" >
-                    <span> 作者：{{item.User_name}}</span>
-                    <span> <a-icon type="like-o" style="margin-left: 8px" /> 赞</span>
-                    <span> <a-icon type="dislike-o" style="margin-left: 8px" /> 踩</span>
-                    <span> <a-icon type="warning" style="margin-left: 8px" /> 举报</span>
-                    <a-tooltip :title="item.Create_time"><span>{{ item.Create_time}}</span></a-tooltip>    
-                </template>
-              </a-list-item>
-            </a-list>
+                  </a-list-item-meta>
+                  <template slot="actions">
+                    <span>作者：{{item.User_name}}</span>
+                    <span>
+                      <a-icon type="like-o" style="margin-left: 8px" />赞
+                    </span>
+                    <span>
+                      <a-icon type="dislike-o" style="margin-left: 8px" />踩
+                    </span>
+                    <span>
+                      <a-icon type="warning" style="margin-left: 8px" />举报
+                    </span>
+                    <a-tooltip :title="item.Create_time">
+                      <span>{{ item.Create_time}}</span>
+                    </a-tooltip>
+                  </template>
+                </a-list-item>
+              </a-list>
             </div>
 
             <div style="margin:0 auto;max-width:1000px">
               <a-card title="发表评论" style="text-align:center;margin:24px">
-                <div style="font-size:30px" v-if="commentRate">{{commentRate}}</div>
-                评分：<a-rate v-model="commentRate" allow-half />
-                <a-input v-model="commentTitle" placeholder="请输入标题" style="margin:14px 5px 0 5px;"/>
+                <div style="font-size:30px" v-if="commentRate">{{commentRate*2}}</div>评分：
+                <a-rate v-model="commentRate" allow-half />
+                <a-input v-model="commentTitle" placeholder="请输入标题" style="margin:14px 5px 0 5px;" />
                 <a-textarea
                   v-model="commentValue"
                   placeholder="请输入评论内容"
                   :auto-size="{ minRows: 4, maxRows: 4 }"
                   style="margin:14px 5px 0 5px;"
                 />
-                <a-button style="margin:15px 5px 0 5px;">发表</a-button>
+                <a-button style="margin:15px 5px 0 5px;" @click="comment" v-if="!iscomment">发表</a-button>
+                <div style="font-size:30px" v-if="iscomment">您已经评论过了</div>
               </a-card>
             </div>
           </a-col>
@@ -95,50 +104,22 @@
 
 <script>
 import moment from "moment";
-
+import global_ from "../../components/Global";
+import Vue from "vue";
 export default {
   data() {
     return {
       commentRate: 0,
-      info:{},
-      comments:{},
-      movie: [
-        {
-          name: "Hunter X Hunter",
-          author: "富坚义博",
-          pro:
-            "故事讲述一个自幼丧母的少年小冈，为了要寻找失散多年的父亲，及成为一个和父亲一样出色的“猎人”，踏上了崎岖而漫长的旅程，接受重重测试，途中遇上各色各样的同伴和敌人，各自为了不同的目的而展开一场又一场的战斗……",
-          star: "5",
-          coversrc:
-            "https://img9.doubanio.com/view/subject/l/public/s26041185.jpg"
-        }
-      ],
-      data: [
-        {
-          author: "Han Solo",
-          avatar:
-            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          content:
-            "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-          datetime: moment().subtract(1, "days")
-        },
-        {
-          author: "Han Solo",
-          avatar:
-            "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",
-          content:
-            "We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.",
-          datetime: moment().subtract(2, "days")
-        }
-      ],
+      info: {},
+      comments: {},
+      iscomment: false,
       moment
     };
   },
   mounted: function() {
-    console.log("乌乌创建了");
     console.log(this.$route.params.id);
     this.$http
-      .get("http://182.92.57.178:5000/movies/"+this.$route.params.id)
+      .get("http://182.92.57.178:5000/movies/" + this.$route.params.id)
       .then(response => {
         this.info = response.data.result.info;
         this.comments = response.data.result.comments;
@@ -148,10 +129,87 @@ export default {
       .catch(response => {
         console.log(response);
       });
+    global_.my_movie_comments.forEach(element => {
+      if (element.Movie_id == this.$route.params.id) {
+        this.iscomment = true;
+      }
+    });
   },
   methods: {
     back() {
       this.$router.push({ path: "/movie/index" });
+    },
+    comment() {
+      if (this.commentRate == 0) {
+        alert("请打分");
+        return;
+      }
+      Vue.axios
+        .post(
+          "http://182.92.57.178:5000/movies/" +
+            this.$route.params.id +
+            "/comments",
+          {
+            movie_comment_title: this.commentTitle,
+            movie_comment_content: this.commentValue
+          },
+          {
+            headers: {
+              token: global_.token
+            }
+          }
+        )
+        .then(response => {
+          console.log(response);
+          this.$http
+            .get("http://182.92.57.178:5000/movies/" + this.$route.params.id)
+            .then(response => {
+              this.info = response.data.result.info;
+              this.comments = response.data.result.comments;
+              console.log(this.info);
+              console.log(this.comments.length);
+            })
+            .catch(response => {
+              console.log(response);
+            });
+        })
+        .catch(response => {
+          console.log(response);
+          alert("评论失败");
+        });
+      Vue.axios
+        .post(
+          "http://182.92.57.178:5000/movies/" +
+            this.$route.params.id +
+            "/scores",
+          {
+            movie_score: this.commentRate
+          },
+          {
+            headers: {
+              token: global_.token
+            }
+          }
+        )
+        .then(ans => {
+          console.log(ans);
+          alert("评论成功");
+          this.iscomment = true;
+          Vue.axios
+            .get("http://182.92.57.178:5000/users/movie_comments", {
+              headers: { token: global_.token }
+            })
+            .then(function(res) {
+              global_.my_movie_comments = res.data.result;
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        })
+        .catch(response => {
+          console.log(response);
+          alert("评分失败");
+        });
     }
   }
 };
