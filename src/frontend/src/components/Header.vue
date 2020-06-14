@@ -141,6 +141,8 @@ export default {
       global_.token='';
       global_.username='not login';
       global_.loginStatus=false;
+      this.toIndex();
+
     },
     toIndex(){
       this.current='index';

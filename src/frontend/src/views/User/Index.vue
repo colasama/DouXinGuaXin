@@ -22,7 +22,7 @@
             <div style="margin-top:5px">ID: {{id}}</div>
             <div style="margin-top:5px">手机号：{{phonenum}}</div>
             <div style="margin-top:5px">邮箱：{{email}}</div>
-            <div style="margin-top:5px" v-if="priv">权限：<a-tag color="orange">小组管理员</a-tag></div>
+            <div style="margin-top:5px" v-if="priv">权限：<a-tag color="orange">注册用户</a-tag></div>
           </div>
           <div v-else-if="noTitleKey === 'project'">
             <div><a-input placeholder="手机号" style="width:400px;margin-top:20px" v-model="newphone"></a-input></div>
