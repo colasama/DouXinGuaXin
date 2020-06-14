@@ -150,6 +150,7 @@
         }
         else 
           this.showerr=false;
+        var se = this;
         Vue.axios.post('http://182.92.57.178:5000/register',{
             name:this.username,
             password:this.password,
@@ -157,7 +158,7 @@
             phonenum:this.phonenum
         }).then(function(res){
           console.log(res.data);
-          this.showSuccess();
+          se.showSuccess();
         }).catch(function(error){
           console.log(error); 
         })
