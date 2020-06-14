@@ -36,6 +36,24 @@
           </a-row>
         </a-card>
         </div>
+
+        <a-modal 
+                centered="true"
+                title="注册成功"
+                :visible="successVisible"
+                :confirm-loading="confirmLoading"
+                @ok="handleOk"
+                @cancel="handleCancel"
+                okText="确认"
+                cancelText="等一下再过去"
+                >
+                <a-result
+                  status="success"
+                  title="欢迎来到豆辛瓜辛!"
+                  sub-title="点击确认键来登录吧！"
+                >
+                </a-result>
+            </a-modal>
       </a-layout-content>
     </a-layout>
   </div>
@@ -77,25 +95,36 @@
         phonenum:'',
         message:[],
         successVisible:false,
+        
       };
     },
     methods:{ 
       toLogin(){
-      this.$router.push({path:"/login"});
+        console.log("toLogin Function")
+        this.$router.push({path:"/login"});
     },
       destroyALL(){
         this.$destroyAll();
       },
+      handleOk(){
+        this.successVisible=false;
+        this.$router.push({path:"/login"});
+      },
+      handleCancel(){
+        this.successVisible=false;
+      },
       showSuccess(){
+        this.successVisible=true;
+        /*var se = this;
         this.$success({
           centered: true,
           title: '注册成功',
-          content: "已经将激活邮件发送至您的邮箱，请点击链接后完成最后的注册！",//<a-result status="success" title=""/>,
+          content: "按下ok键跳转到登录页面！",//<a-result status="success" title=""/>,
           onOK(){
-            this.destroyALL();
-            this.toLogin();
+            console.log("toLogin Function");
+            se.$router.push({path:"/login"});
             }
-        })
+        })*/
       },
       register(){
         var regEmail = /^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
@@ -128,10 +157,11 @@
             phonenum:this.phonenum
         }).then(function(res){
           console.log(res.data);
+          this.showSuccess();
         }).catch(function(error){
           console.log(error); 
         })
-        this.showSuccess();
+        
       }
     }
   }

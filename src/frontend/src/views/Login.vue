@@ -10,7 +10,6 @@
           <a-input-password placeholder="密码" ref="passwordInput" v-model="password" style="margin-top:20px">
             <a-icon slot="prefix" type="info-circle" />
           </a-input-password>
-          <a-button type="link" @click="toResetpw" style="text-align:right;margin:10px 0 0 0;">忘记密码？</a-button>
           <div v-if="errorLogin" style="color:red">用户名或密码错误！</div>
           <a-row type="flex" justify="center" style="margin-top:10px;margin-bottom:30px">
           <a-col :span="11" style="margin-right:10px">
