@@ -191,7 +191,7 @@
                     <span>作者：{{item.User_name}}</span>
                       <span @click="approve(item.id)"> <a-icon type="like-o" style="margin-left: 8px" />{{item.approval}}</span>
                       <span @click="disapprove(item.id)"> <a-icon type="dislike-o" style="margin-left: 8px" />{{item.disapproval}}</span>
-                      <span @click="report(item.id)"> <a-icon type="warning" style="margin-left: 8px" />举报</span>
+                      <span @click="report(item.id, item.content)"> <a-icon type="warning" style="margin-left: 8px" />举报</span>
                       <a-tooltip :title="item.Create_time"><span>{{ item.Create_time}}</span></a-tooltip>    
                   </template>
               </a-list-item>
@@ -223,6 +223,25 @@
             <a-col :span="3"/>
           </a-row>
         </div>
+        <!--举报框-->
+        <a-modal
+                centered="true"
+                title="提交举报"
+                :visible="reportVisible"
+                :confirm-loading="confirmLoading"
+                @ok="handleOk"
+                @cancel="handleCancel"
+                okText="提交"
+                cancelText="取消"
+        >
+          <div>
+            <div style="margin-top:10px">请确认您要举报的内容：</div>
+            <h2 style="color:black;margin-top:10px;text-align:center">{{reportInfo}}</h2>
+            <a-input style="margin-top:10px" v-model="reportTitle" placeholder="请填写举报标题" />
+            <a-textarea style="margin-top:10px" v-model="reportContent" placeholder="请描述举报原因，原因需要大于15字符。" :auto-size="{ minRows: 5, maxRows: 5 }"></a-textarea>
+            <!--a-button style="margin-top:10px">提交</a-button-->
+          </div>
+        </a-modal>
       </a-layout-content>
     </a-layout>
   </div>
@@ -250,7 +269,14 @@ export default {
       movies: [],
       bookcomments: [],
       moviecomments: [],
-      topics: []
+      topics: [],
+      reportVisible: false,
+      okVisible: false,
+      confirmLoading: false,
+      reportInfo:"",
+      reportTitle:"",
+      reportContent:"",
+      reportId:""
     }
   },
   created:function(){
@@ -370,9 +396,59 @@ export default {
         alert("你已经点赞/反对了");
       }).bind(this);
     },
-    report(message){
-      console.log(message)
-    }
+    report(id,message){
+      this.showReport();
+      this.reportId = id;
+      this.reportInfo = message;
+      console.log(message);
+    },
+    showReport(){
+      this.reportVisible=true;
+    },
+    handleOk(e){
+      if(global_.loginStatus==false){
+        alert("还没有登录哦，不能够举报！");
+        this.reportVisible = false;
+        this.reportTitle="";
+        this.reportContent="";
+      }
+      else if(this.reportContent.length<15)
+        alert("字数不够哦！")
+      else{
+        Vue.axios.post("http://182.92.57.178:5000/book_comments/" + this.reportId + "/report", {
+          book_report_title: this.reportTitle, book_report_reason: this.reportContent}, {
+          headers: {token: global_.token}
+        }).then(response => {
+          this.reportVisible=false;
+          this.showSuccess();
+          this.reportTitle="";
+          this.reportContent="";
+          console.log(response);
+        }).catch(response => {
+          console.log(this.reportTitle)
+          console.log(this.reportContent)
+          console.log(response);
+          alert("举报失败！");
+        });
+      }
+      console.log(e);
+    },
+    handleCancel(){
+      this.reportVisible=false;
+    },
+    destroyALL(){
+      this.$destroyAll();
+    },
+    showSuccess(){
+      this.$success({
+        centered: true,
+        title: '举报成功',
+        content: "已经收到了您的举报，我们将尽快核实并处理！",//<a-result status="success" title=""/>,
+        onOK(){
+          this.destroyALL();
+        }
+      })
+    },
   },
 
 }
