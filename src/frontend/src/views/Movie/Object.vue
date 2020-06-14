@@ -118,6 +118,7 @@
 
             <div style="margin:0 auto;max-width:1000px;min-width:1000px">
               <a-card title="发表评论" style="text-align:center;margin:24px">
+                <div v-if="!iscomment">
                 <div style="font-size:30px" v-if="commentRate">{{commentRate*2}}</div>评分：
                 <a-rate v-model="commentRate" allow-half />
                 <a-input v-model="commentTitle" placeholder="请输入标题" style="margin:14px 5px 0 5px;" />
@@ -128,7 +129,8 @@
                   style="margin:14px 5px 0 5px;"
                 />
                 <a-button style="margin:15px 5px 0 5px;" @click="comment" v-if="!iscomment">发表</a-button>
-                <div style="font-size:30px" v-if="iscomment">您已经评论过了</div>
+                </div>
+                <div style="font-size:18px;margin:24px;color:grey" v-if="iscomment"><b>您已经评论过了，请不要重复评论哦ヽ(✿ﾟ▽ﾟ)ノ</b></div>
               </a-card>
             </div>
           </a-col>
