@@ -11,7 +11,7 @@
         
         <div style="text-align:center">
           <a-input-group compact style="height:100px;margin-top:14px">
-            <a-select size="large" v-model="kind" style="width:70px;height:50px;text-align:center">
+            <a-select size="large" v-model="kind" style="width:70px;height:50px;text-align:center" @change="handleChange">
               <a-select-option value="book">
                 书籍
               </a-select-option>
@@ -37,23 +37,26 @@
       
       <a-list item-layout="horizontal" :data-source="data">
         <a-list-item slot="renderItem" slot-scope="item">
-          <a-card style="width:100%">
-            <a :href="'/#/'+ kind.substr(0,5) + '/' + object + '/' + item.id">
+          <div style="max-width:1000px;min-width:1000px;margin:0 auto">
+          <a-card style="width:100%;text-align:left">
+            <a :href="'/#/'+ kind.substr(0,5) + '/' + object + '/' + item.cid">
           <a-list-item-meta
             :description="item.des||item.content"
           >
             <img
-                    width="60px"
+                    height="120px"
                     slot="avatar"
+                    v-if="kind =='book'||kind =='movie'||kind =='topic_content'"
                     :src="item.img"
             />
             <a slot="title" :href="'/#/'+ kind.substr(0,5) + '/' + object + '/' + item.id">
-              {{ item.title }}
+              <b style="font-size:20px">{{ item.title }}</b>
             </a>
           </a-list-item-meta>
             <b>{{item.time}}</b>
             </a>
           </a-card>
+          </div>
         </a-list-item>
         
       </a-list>
@@ -83,6 +86,7 @@
           this.object = 'object'
         else{
           this.object = this.kind.substr(0,5)
+          console.log("New:"+this.object)
         }
         this.results = res.data.result
         this.show()
@@ -91,12 +95,23 @@
       })
     },
     methods:{
+      handleChange(value){
+        if(value == 'movie'||value == 'book')
+          this.object = 'object'
+        else{
+          this.object = value.substr(0,5)
+          console.log("New:"+this.object)
+        }
+      },
       show(){
-        console.log(this.kind)
-
+        console.log("Show:"+this.kind)
         var name = this.kind[0].toUpperCase() + this.kind.substr(1,this.kind.length)
         for(var i=0;i<this.results.length;i++){
           var id = this.results[i][name + "_id"]
+          var cid = id
+          if(this.kind=='topic_content'||this.kind=='group_content')
+            cid = this.results[i][name.substr(0,5) +"_id"]
+          console.log("cid:"+cid)
           var title = this.results[i][name + "_name"]
           var des = this.results[i][name + "_intro"]
           var img = this.results[i][name + "_src"]
@@ -106,8 +121,8 @@
             title = this.results[i][name + "_title"]
           var time = this.results[i]["Create_time"]
           var content = this.results[i][name + "_content"]
-          this.data.push({"id":id, "title":title, "des":des, "img":img, "content":content, "time":time})
-
+          this.data.push({"id":id, "title":title, "des":des, "img":img, "content":content, "time":time, "cid":cid})
+          console.log("Show() finished.")
         }
         console.log(this.data)
       },
