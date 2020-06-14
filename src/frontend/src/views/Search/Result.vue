@@ -79,7 +79,7 @@
       }).then(res=>{
         console.log(res)
         console.log(this.kind)
-        if(this.kind == 'moive'||this.kind == 'book')
+        if(this.kind == 'movie'||this.kind == 'book')
           this.object = 'object'
         else{
           this.object = this.kind.substr(0,5)
