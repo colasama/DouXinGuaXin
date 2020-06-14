@@ -160,7 +160,8 @@
           console.log(res.data);
           se.showSuccess();
         }).catch(function(error){
-          console.log(error); 
+          console.log(error);
+          alert("注册失败")
         })
         
       }
