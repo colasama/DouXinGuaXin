@@ -38,16 +38,21 @@
       <a-list item-layout="horizontal" :data-source="data">
         <a-list-item slot="renderItem" slot-scope="item">
           <a-card style="width:100%">
+            <a :href="'/#/'+ kind.substr(0,5) + '/' + object + '/' + item.id">
           <a-list-item-meta
-            :description="item.des"
+            :description="item.des||item.content"
           >
-            <a slot="title" :href="'/#/'+ kind + '/object/' + item.id">{{ item.title }}</a>
             <img
-              width="60px"
-              slot="avatar"
-              :src="item.img"
+                    width="60px"
+                    slot="avatar"
+                    :src="item.img"
             />
+            <a slot="title" :href="'/#/'+ kind.substr(0,5) + '/' + object + '/' + item.id">
+              {{ item.title }}
+            </a>
           </a-list-item-meta>
+            <b>{{item.time}}</b>
+            </a>
           </a-card>
         </a-list-item>
         
@@ -62,6 +67,7 @@
   data() {
       return {
         kind: this.$route.params.kind,
+        object: "",
         keywords: this.$route.params.keywords,
         results: [],
         data:[]
@@ -73,6 +79,11 @@
       }).then(res=>{
         console.log(res)
         console.log(this.kind)
+        if(this.kind == 'moive'||this.kind == 'book')
+          this.object = 'object'
+        else{
+          this.object = this.kind.substr(0,5)
+        }
         this.results = res.data.result
         this.show()
       }).catch(function(error){
@@ -81,14 +92,24 @@
     },
     methods:{
       show(){
+        console.log(this.kind)
+
         var name = this.kind[0].toUpperCase() + this.kind.substr(1,this.kind.length)
         for(var i=0;i<this.results.length;i++){
           var id = this.results[i][name + "_id"]
           var title = this.results[i][name + "_name"]
           var des = this.results[i][name + "_intro"]
           var img = this.results[i][name + "_src"]
-          this.data.push({"id":id,"title":title,"des":des,"img":img})
+          if(img == null || img == undefined)
+            img = this.results[i][name + "_image"]
+          if(title == null || title == undefined)
+            title = this.results[i][name + "_title"]
+          var time = this.results[i]["Create_time"]
+          var content = this.results[i][name + "_content"]
+          this.data.push({"id":id, "title":title, "des":des, "img":img, "content":content, "time":time})
+
         }
+        console.log(this.data)
       },
       refresh(){
         this.data.splice(0,this.data.length)
