@@ -116,12 +116,13 @@
           var des = this.results[i][name + "_intro"]
           var img = this.results[i][name + "_src"]
           if(img == null || img == undefined)
-            img = this.results[i][name + "_image"]
+            img = this.results[i][name + "_image"].split(',')
           if(title == null || title == undefined)
             title = this.results[i][name + "_title"]
           var time = this.results[i]["Create_time"]
           var content = this.results[i][name + "_content"]
-          this.data.push({"id":id, "title":title, "des":des, "img":img, "content":content, "time":time, "cid":cid})
+          if(img[0]=='None') img[0] = 'https://i.loli.net/2020/06/14/5OyIpPzjRFB1Xos.png'
+          this.data.push({"id":id, "title":title, "des":des, "img":img[0], "content":content, "time":time, "cid":cid})
           console.log("Show() finished.")
         }
         console.log(this.data)
